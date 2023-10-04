@@ -1,0 +1,152 @@
+[gd_scene load_steps=15 format=3 uid="uid://dsv6r37ingeaf"]
+
+[ext_resource type="Script" path="res://water_hand/water_hand_preview.gd" id="1_ocyw3"]
+[ext_resource type="PackedScene" uid="uid://dfha3vt2clmfq" path="res://water_hand/mesh/water_hand.glb" id="1_ul5tc"]
+[ext_resource type="Shader" path="res://assets/ground_checkerboard.gdshader" id="2_cvyox"]
+[ext_resource type="Material" uid="uid://btc57c1fm5im1" path="res://water_hand/materials/water_hand_mat.tres" id="2_nopph"]
+[ext_resource type="Texture2D" uid="uid://3ro0yvv3roj3" path="res://assets/checkerboard.svg" id="3_ky0hy"]
+[ext_resource type="Script" path="res://water_hand/camera.gd" id="6_lw2pg"]
+[ext_resource type="Script" path="res://water_hand/target.gd" id="7_jpeeq"]
+[ext_resource type="PackedScene" uid="uid://obrsol71nwet" path="res://water_hand/water_splash.tscn" id="8_qiyem"]
+
+[sub_resource type="Environment" id="Environment_63fgl"]
+background_mode = 1
+background_color = Color(0.14902, 0.14902, 0.14902, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.368627, 0.368627, 0.368627, 1)
+tonemap_mode = 2
+glow_enabled = true
+glow_normalized = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ax0qd"]
+render_priority = -128
+shader = ExtResource("2_cvyox")
+shader_parameter/albedo_color = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/checkerboard_sampler = ExtResource("3_ky0hy")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_xw368"]
+size = Vector2(20, 20)
+
+[sub_resource type="Curve" id="Curve_6g8wd"]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_cpwoa"]
+_data = [Vector2(0, 0.2), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5qwpf"]
+radius = 0.4
+height = 1.8
+
+[node name="WaterHandPreview" type="Node3D"]
+script = ExtResource("1_ocyw3")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_63fgl")
+
+[node name="WaterHand" parent="." instance=ExtResource("1_ul5tc")]
+unique_name_in_owner = true
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -3.6, 0, 0)
+
+[node name="Skeleton3D" parent="WaterHand/Armature" index="0"]
+bones/0/position = Vector3(0, -0.2, 0)
+bones/0/scale = Vector3(3.16228, 0.1, 3.16228)
+bones/1/position = Vector3(0, -0.19, 0)
+bones/1/scale = Vector3(2.97254, 0.1, 2.97254)
+bones/2/position = Vector3(0, -0.18, 0)
+bones/2/scale = Vector3(2.7828, 0.1, 2.7828)
+bones/3/position = Vector3(0, -0.17, 0)
+bones/3/scale = Vector3(2.59307, 0.1, 2.59307)
+bones/4/position = Vector3(0, -0.16, 0)
+bones/4/scale = Vector3(2.40333, 0.1, 2.40333)
+bones/5/position = Vector3(0, -0.15, 0)
+bones/5/scale = Vector3(2.21359, 0.1, 2.21359)
+bones/6/position = Vector3(0, -0.14, 0)
+bones/6/scale = Vector3(2.02386, 0.1, 2.02386)
+bones/7/position = Vector3(0, -0.13, 0)
+bones/7/scale = Vector3(1.83412, 0.1, 1.83412)
+bones/8/position = Vector3(0, -0.12, 0)
+bones/8/scale = Vector3(1.64438, 0.1, 1.64438)
+bones/9/position = Vector3(0, -0.11, 0)
+bones/9/scale = Vector3(1.45465, 0.1, 1.45465)
+bones/10/position = Vector3(0, -0.1, 0)
+bones/10/rotation = Quaternion(1.05367e-07, -4.21469e-08, -0.795242, 0.606292)
+bones/10/scale = Vector3(1, 1, 1)
+bones/11/position = Vector3(0.336603, -0.180161, 0.175658)
+bones/11/rotation = Quaternion(-0.0206594, 0.00762765, 0.999747, -0.00462034)
+bones/11/scale = Vector3(1, 1, 1)
+bones/12/position = Vector3(0.337618, -0.293963, 0.177415)
+bones/12/rotation = Quaternion(-0.0204032, -0.00828885, 0.741687, 0.670385)
+bones/12/scale = Vector3(1, 1, 1)
+bones/13/position = Vector3(0.359559, -0.175623, 0.0730534)
+bones/13/rotation = Quaternion(-1.71469e-07, -1.26441e-07, 0.999998, -0.00197074)
+bones/13/scale = Vector3(1, 1, 1)
+bones/14/position = Vector3(0.360036, -0.296644, 0.0730534)
+bones/14/rotation = Quaternion(8.42937e-08, -1.68587e-07, 0.743642, 0.668578)
+bones/14/scale = Vector3(1, 1, 1)
+bones/15/position = Vector3(0.364914, -0.17624, -0.0358783)
+bones/15/rotation = Quaternion(0.00104424, -0.000382525, 0.999997, -0.00197091)
+bones/15/scale = Vector3(1, 1, 1)
+bones/16/position = Vector3(0.365391, -0.297261, -0.0359714)
+bones/16/rotation = Quaternion(0.00103154, 0.000415737, 0.743641, 0.668578)
+bones/16/scale = Vector3(1, 1, 1)
+bones/17/position = Vector3(0.345317, -0.176812, -0.136023)
+bones/17/rotation = Quaternion(0.0294545, -0.0109701, 0.999478, -0.00745659)
+bones/17/scale = Vector3(1, 1, 1)
+bones/18/position = Vector3(0.346843, -0.283779, -0.138416)
+bones/18/rotation = Quaternion(0.0290861, 0.0119125, 0.739595, 0.672318)
+bones/18/scale = Vector3(1, 1, 1)
+bones/19/position = Vector3(0.101677, -0.212082, 0.135248)
+bones/19/rotation = Quaternion(0.789359, 0.380841, -0.464742, 0.126044)
+bones/19/scale = Vector3(1, 1, 1)
+bones/20/position = Vector3(0.179856, -0.285881, 0.118381)
+bones/20/rotation = Quaternion(0.566398, 0.668821, -0.47585, -0.0737495)
+bones/20/scale = Vector3(1, 1, 1)
+
+[node name="WaterHand" parent="WaterHand/Armature/Skeleton3D" index="0"]
+material_override = ExtResource("2_nopph")
+
+[node name="GroundMesh" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_ax0qd")
+mesh = SubResource("PlaneMesh_xw368")
+
+[node name="Anchor" type="Node3D" parent="."]
+transform = Transform3D(0.906308, -0.0588172, 0.418505, 0, 0.990268, 0.139173, -0.422618, -0.126134, 0.897488, 0, 3, 0)
+
+[node name="CameraAnchor" type="Node3D" parent="Anchor"]
+transform = Transform3D(1, -9.31323e-08, 1.78814e-07, 0, 1, 4.39584e-07, 0, 7.45058e-09, 1, 2.01166e-07, 4.76837e-07, 8)
+
+[node name="Camera3D" type="Camera3D" parent="Anchor/CameraAnchor"]
+unique_name_in_owner = true
+fov = 60.0
+script = ExtResource("6_lw2pg")
+shake_amount = SubResource("Curve_6g8wd")
+shake_duration = SubResource("Curve_cpwoa")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Target" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+script = ExtResource("7_jpeeq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Target"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_5qwpf")
+
+[node name="Caster" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.9, 0)
+mesh = SubResource("CapsuleMesh_5qwpf")
+
+[node name="ImpactSplash" parent="." instance=ExtResource("8_qiyem")]
+unique_name_in_owner = true
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 3, 0, 0)
+
+[node name="HandSplash" parent="." instance=ExtResource("8_qiyem")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 0, 0)
+
+[editable path="WaterHand"]

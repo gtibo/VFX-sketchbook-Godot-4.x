@@ -1,0 +1,28 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://btc57c1fm5im1"]
+
+[ext_resource type="Shader" path="res://water_hand/materials/water.gdshader" id="1_mqrtk"]
+[ext_resource type="Texture2D" uid="uid://bax1k2etu2b3" path="res://water_hand/textures/caustic_texture.png" id="2_8uy1l"]
+
+[sub_resource type="Gradient" id="Gradient_1fkit"]
+offsets = PackedFloat32Array(0.2, 0.8)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_g8x3a"]
+noise_type = 2
+fractal_type = 0
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7a5vk"]
+seamless = true
+color_ramp = SubResource("Gradient_1fkit")
+noise = SubResource("FastNoiseLite_g8x3a")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_mqrtk")
+shader_parameter/base_color = Color(0, 0.415686, 1, 1)
+shader_parameter/dark_color = Color(0.0117647, 0.184314, 0.560784, 1)
+shader_parameter/uv1_blend_sharpness = 0.1
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = null
+shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_7a5vk")
+shader_parameter/caustic_sampler = ExtResource("2_8uy1l")
