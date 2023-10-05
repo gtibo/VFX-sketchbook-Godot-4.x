@@ -1,9 +1,55 @@
-[gd_scene load_steps=17 format=3 uid="uid://obrsol71nwet"]
+[gd_scene load_steps=28 format=3 uid="uid://obrsol71nwet"]
 
 [ext_resource type="Script" path="res://water_hand/water_splash.gd" id="1_ctbb0"]
+[ext_resource type="Shader" path="res://water_hand/materials/water_droplet_particles.gdshader" id="2_7yqw3"]
 [ext_resource type="Material" uid="uid://btir5gntqbdb4" path="res://water_hand/materials/water_splash_mat.tres" id="2_tbwf0"]
 [ext_resource type="ArrayMesh" uid="uid://b48famqpe5dwl" path="res://water_hand/mesh/splash_shell.obj" id="3_hivpj"]
+[ext_resource type="Texture2D" uid="uid://dgetus6yvt1hi" path="res://water_hand/textures/water_particles_shape.png" id="5_e26qh"]
 [ext_resource type="Shader" path="res://water_hand/materials/small_drop_particles.gdshader" id="5_fbb7n"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_q8mmj"]
+noise_type = 2
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_nj12l"]
+seamless = true
+noise = SubResource("FastNoiseLite_q8mmj")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_77baq"]
+render_priority = 0
+shader = ExtResource("2_7yqw3")
+shader_parameter/atlas_sampler = ExtResource("5_e26qh")
+shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_nj12l")
+
+[sub_resource type="Gradient" id="Gradient_g4gmj"]
+offsets = PackedFloat32Array(0.4, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0klkw"]
+gradient = SubResource("Gradient_g4gmj")
+
+[sub_resource type="Curve" id="Curve_1seo8"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.8), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_fqce4"]
+curve = SubResource("Curve_1seo8")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0rbj1"]
+lifetime_randomness = 0.2
+direction = Vector3(0, 1, 0)
+spread = 20.0
+initial_velocity_min = 4.0
+initial_velocity_max = 8.0
+scale_min = 0.6
+scale_max = 1.2
+scale_curve = SubResource("CurveTexture_fqce4")
+color = Color(0, 0.4, 1, 1)
+color_ramp = SubResource("GradientTexture1D_0klkw")
+anim_offset_max = 1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_hoojl"]
+size = Vector2(0.2, 0.2)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_f4o61"]
 noise_type = 2
@@ -35,8 +81,8 @@ curve = SubResource("Curve_4cjn0")
 lifetime_randomness = 0.4
 direction = Vector3(0, 1, 0)
 spread = 25.0
-initial_velocity_min = 4.0
-initial_velocity_max = 10.0
+initial_velocity_min = 2.0
+initial_velocity_max = 8.0
 scale_min = 0.4
 scale_curve = SubResource("CurveTexture_dei1k")
 color_ramp = SubResource("GradientTexture1D_jlwwy")
@@ -78,6 +124,18 @@ tracks/2/path = NodePath("SplashParticles:emitting")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("WaterDroplet:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -147,6 +205,18 @@ tracks/4/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("WaterDroplet:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_yrxv4"]
 _data = {
@@ -162,6 +232,17 @@ transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 material_override = ExtResource("2_tbwf0")
 mesh = ExtResource("3_hivpj")
 skeleton = NodePath("../..")
+
+[node name="WaterDroplet" type="GPUParticles3D" parent="."]
+material_override = SubResource("ShaderMaterial_77baq")
+emitting = false
+amount = 64
+lifetime = 1.2
+one_shot = true
+explosiveness = 0.9
+transform_align = 3
+process_material = SubResource("ParticleProcessMaterial_0rbj1")
+draw_pass_1 = SubResource("QuadMesh_hoojl")
 
 [node name="SplashParticles" type="GPUParticles3D" parent="."]
 material_override = SubResource("ShaderMaterial_psxkq")
