@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmj5l6xu36itg"]
+
+[ext_resource type="Script" path="res://turner/turner.gd" id="1_id7nv"]
+
+[node name="Turner" type="Node3D"]
+script = ExtResource("1_id7nv")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 0, 0)
+fov = 60.0
