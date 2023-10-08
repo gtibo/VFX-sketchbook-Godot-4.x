@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://btir5gntqbdb4"]
+
+[ext_resource type="Shader" path="res://effects/water_hand/materials/splash.gdshader" id="1_kuya1"]
+[ext_resource type="Texture2D" uid="uid://psoh86gnshe7" path="res://effects/water_hand/textures/splash_mask.png" id="2_xnj3l"]
+
+[resource]
+resource_local_to_scene = true
+render_priority = 2
+shader = ExtResource("1_kuya1")
+shader_parameter/base_color = Color(0, 0.415686, 1, 1)
+shader_parameter/progress = 0.1
+shader_parameter/splash_mask = ExtResource("2_xnj3l")

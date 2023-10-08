@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b48famqpe5dwl"
+path="res://.godot/imported/splash_shell.obj-baef4bf455eac7fe4da4f13f58cc4a55.mesh"
+
+[deps]
+
+files=["res://.godot/imported/splash_shell.obj-baef4bf455eac7fe4da4f13f58cc4a55.mesh"]
+
+source_file="res://effects/water_hand/mesh/splash_shell.obj"
+dest_files=["res://.godot/imported/splash_shell.obj-baef4bf455eac7fe4da4f13f58cc4a55.mesh", "res://.godot/imported/splash_shell.obj-baef4bf455eac7fe4da4f13f58cc4a55.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

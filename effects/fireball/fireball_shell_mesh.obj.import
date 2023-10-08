@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bhma7uxtf5nja"
+path="res://.godot/imported/fireball_shell_mesh.obj-bbca43feeba9ae8be3e9a51a3ce782ee.mesh"
+
+[deps]
+
+files=["res://.godot/imported/fireball_shell_mesh.obj-bbca43feeba9ae8be3e9a51a3ce782ee.mesh"]
+
+source_file="res://effects/fireball/fireball_shell_mesh.obj"
+dest_files=["res://.godot/imported/fireball_shell_mesh.obj-bbca43feeba9ae8be3e9a51a3ce782ee.mesh", "res://.godot/imported/fireball_shell_mesh.obj-bbca43feeba9ae8be3e9a51a3ce782ee.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

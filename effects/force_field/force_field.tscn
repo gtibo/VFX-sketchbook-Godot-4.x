@@ -1,0 +1,150 @@
+[gd_scene load_steps=16 format=3 uid="uid://curc07g3hrmrs"]
+
+[ext_resource type="Material" uid="uid://bn560w5oht3yf" path="res://effects/force_field/force_field_mat.tres" id="2_hcgsd"]
+[ext_resource type="ArrayMesh" uid="uid://dluxu7kw8er3m" path="res://effects/force_field/triangle_mesh.obj" id="4_gt02u"]
+[ext_resource type="Shader" path="res://assets/ground_checkerboard.gdshader" id="4_oe8c0"]
+[ext_resource type="Texture2D" uid="uid://3ro0yvv3roj3" path="res://assets/checkerboard.svg" id="5_ph86h"]
+
+[sub_resource type="Environment" id="Environment_8nrla"]
+background_mode = 1
+background_color = Color(0.14902, 0.14902, 0.14902, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.301961, 0.301961, 0.301961, 1)
+tonemap_mode = 2
+glow_enabled = true
+glow_intensity = 0.4
+glow_strength = 0.4
+
+[sub_resource type="SphereMesh" id="SphereMesh_cubml"]
+radius = 1.0
+height = 2.0
+
+[sub_resource type="Shader" id="Shader_tyd6g"]
+code = "// NOTE: Shader automatically converted from Godot Engine 4.1.1.stable's StandardMaterial3D.
+
+shader_type spatial;
+render_mode blend_mix,depth_draw_opaque,cull_disabled,diffuse_burley,specular_schlick_ggx;
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo : source_color,filter_linear_mipmap,repeat_enable;
+uniform float point_size : hint_range(0,128);
+uniform float roughness : hint_range(0,1);
+uniform sampler2D texture_metallic : hint_default_white,filter_linear_mipmap,repeat_enable;
+uniform vec4 metallic_texture_channel;
+uniform sampler2D texture_roughness : hint_roughness_r,filter_linear_mipmap,repeat_enable;
+uniform float specular;
+uniform float metallic;
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
+
+
+void vertex() {
+	UV=UV*uv1_scale.xy+uv1_offset.xy;
+}
+
+
+
+
+
+
+void fragment() {
+	vec2 base_uv = UV;
+	vec4 albedo_tex = texture(texture_albedo,base_uv);
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+	float metallic_tex = dot(texture(texture_metallic,base_uv),metallic_texture_channel);
+	METALLIC = metallic_tex * metallic;
+	vec4 roughness_texture_channel = vec4(1.0,0.0,0.0,0.0);
+	float roughness_tex = dot(texture(texture_roughness,base_uv),roughness_texture_channel);
+	ROUGHNESS = roughness_tex * roughness;
+	SPECULAR = specular;
+	EMISSION = vec3(2.0);
+	ALPHA *= albedo.a * albedo_tex.a * COLOR.a;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pu3pv"]
+render_priority = 0
+shader = SubResource("Shader_tyd6g")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_47g5v"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_veu78"]
+gradient = SubResource("Gradient_47g5v")
+
+[sub_resource type="Curve" id="Curve_ruke0"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_wfnxj"]
+curve = SubResource("Curve_ruke0")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_c0tjv"]
+lifetime_randomness = 0.5
+emission_shape = 2
+emission_sphere_radius = 1.0
+particle_flag_rotate_y = true
+gravity = Vector3(0, 1, 0)
+angular_velocity_min = -40.0
+angular_velocity_max = 40.0
+damping_min = 0.9
+damping_max = 0.99
+scale_min = 0.01
+scale_max = 0.04
+scale_curve = SubResource("CurveTexture_wfnxj")
+color = Color(1, 1, 1, 0.392157)
+color_ramp = SubResource("GradientTexture1D_veu78")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fg27r"]
+render_priority = -128
+shader = ExtResource("4_oe8c0")
+shader_parameter/albedo_color = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/checkerboard_sampler = ExtResource("5_ph86h")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_7kts5"]
+size = Vector2(20, 20)
+
+[node name="ForceFieldPreview" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8nrla")
+
+[node name="ForceField" type="Node3D" parent="."]
+
+[node name="ForceFieldBody" type="MeshInstance3D" parent="ForceField"]
+material_override = ExtResource("2_hcgsd")
+mesh = SubResource("SphereMesh_cubml")
+skeleton = NodePath("../..")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="ForceField"]
+material_override = SubResource("ShaderMaterial_pu3pv")
+amount = 32
+lifetime = 4.0
+process_material = SubResource("ParticleProcessMaterial_c0tjv")
+draw_pass_1 = ExtResource("4_gt02u")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, -0.5, 0.5, 0, 0.5, 0)
+shadow_enabled = true
+
+[node name="GroundMesh" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_fg27r")
+mesh = SubResource("PlaneMesh_7kts5")
+
+[node name="Anchor" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.6, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Anchor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.5)

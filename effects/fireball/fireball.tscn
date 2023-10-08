@@ -1,0 +1,146 @@
+[gd_scene load_steps=24 format=3 uid="uid://d37wg3mc76fs7"]
+
+[ext_resource type="Material" uid="uid://d1nm3jquvgrb6" path="res://effects/fireball/fireball_mat.tres" id="1_xf3k5"]
+[ext_resource type="ArrayMesh" uid="uid://bhma7uxtf5nja" path="res://effects/fireball/fireball_shell_mesh.obj" id="2_pbxdw"]
+[ext_resource type="Shader" path="res://effects/fireball/fireball_particles.gdshader" id="3_gv6fp"]
+[ext_resource type="Script" path="res://effects/fireball/fireball_shell_deform.gd" id="3_s1eo2"]
+[ext_resource type="Material" uid="uid://cyxfa2tlqgn0k" path="res://effects/fireball/fireball_firetrail_particles_process.tres" id="4_h7ccj"]
+[ext_resource type="Shader" path="res://effects/fireball/fireball_core.gdshader" id="6_lin42"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7vae4"]
+render_priority = 0
+shader = ExtResource("6_lin42")
+
+[sub_resource type="SphereMesh" id="SphereMesh_77e4v"]
+radius = 0.1
+height = 0.2
+
+[sub_resource type="Gradient" id="Gradient_vxs6y"]
+offsets = PackedFloat32Array(0.2, 0.730077)
+colors = PackedColorArray(0.960784, 0.337255, 0.0470588, 1, 1, 0.666667, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5cp4l"]
+gradient = SubResource("Gradient_vxs6y")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_dvc8t"]
+noise_type = 2
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_dsewx"]
+seamless = true
+noise = SubResource("FastNoiseLite_dvc8t")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_afrs2"]
+render_priority = 0
+shader = ExtResource("3_gv6fp")
+shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_dsewx")
+shader_parameter/gradient_sampler = SubResource("GradientTexture1D_5cp4l")
+
+[sub_resource type="QuadMesh" id="QuadMesh_6lh4h"]
+size = Vector2(0.5, 0.5)
+
+[sub_resource type="Shader" id="Shader_q1xb5"]
+code = "shader_type spatial;
+render_mode unshaded, ambient_light_disabled;
+
+uniform sampler2D voronoi_sampler : filter_linear_mipmap, repeat_enable;
+
+varying float id;
+varying vec4 custom;
+
+void vertex() {
+	
+	mat4 mat_world = mat4(normalize(INV_VIEW_MATRIX[0]), normalize(INV_VIEW_MATRIX[1]) ,normalize(INV_VIEW_MATRIX[2]), MODEL_MATRIX[3]);
+	mat_world = mat_world * mat4(vec4(cos(INSTANCE_CUSTOM.x), -sin(INSTANCE_CUSTOM.x), 0.0, 0.0), vec4(sin(INSTANCE_CUSTOM.x), cos(INSTANCE_CUSTOM.x), 0.0, 0.0), vec4(0.0, 0.0, 1.0, 0.0), vec4(0.0, 0.0, 0.0, 1.0));
+	MODELVIEW_MATRIX = VIEW_MATRIX * mat_world;
+	MODELVIEW_MATRIX = MODELVIEW_MATRIX * mat4(vec4(length(MODEL_MATRIX[0].xyz), 0.0, 0.0, 0.0),vec4(0.0, length(MODEL_MATRIX[1].xyz), 0.0, 0.0), vec4(0.0, 0.0, length(MODEL_MATRIX[2].xyz), 0.0), vec4(0.0, 0.0, 0.0, 1.0));
+	MODELVIEW_NORMAL_MATRIX = mat3(MODELVIEW_MATRIX);
+	
+	id = float(INSTANCE_ID);
+	custom = INSTANCE_CUSTOM;
+}
+
+void fragment() {
+	float voronoi = texture(voronoi_sampler, UV * 0.3 + id * 0.1 + custom.b).x;
+	float dist = distance(UV, vec2(0.5));
+	float dist_mask = smoothstep(0.45, 0.0, dist);
+	float mask = max(0.0, dist_mask - voronoi);
+	ALBEDO = COLOR.rgb;
+	ALPHA = custom.y * mask * COLOR.a;
+}
+"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gmm0f"]
+noise_type = 2
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_excd7"]
+seamless = true
+noise = SubResource("FastNoiseLite_gmm0f")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wk0ro"]
+render_priority = 0
+shader = SubResource("Shader_q1xb5")
+shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_excd7")
+
+[sub_resource type="Gradient" id="Gradient_wgv17"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ottve"]
+gradient = SubResource("Gradient_wgv17")
+
+[sub_resource type="Curve" id="Curve_ka18s"]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(0.8, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_078xr"]
+curve = SubResource("Curve_ka18s")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_e8e44"]
+lifetime_randomness = 0.1
+emission_shape = 1
+emission_sphere_radius = 0.15
+direction = Vector3(0, 0, -1)
+spread = 20.0
+gravity = Vector3(0, 1, 0)
+scale_min = 0.8
+scale_max = 1.2
+scale_curve = SubResource("CurveTexture_078xr")
+color = Color(0.780392, 0.780392, 0.780392, 0.470588)
+color_ramp = SubResource("GradientTexture1D_ottve")
+anim_speed_min = 0.01
+anim_speed_max = 0.02
+anim_offset_max = 1.0
+
+[node name="Fireball" type="Node3D"]
+script = ExtResource("3_s1eo2")
+
+[node name="FireballShellMesh" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(0.2, 0, 0, 0, -8.74228e-09, -0.2, 0, 0.2, -8.74228e-09, 0, 0, 0)
+material_override = ExtResource("1_xf3k5")
+mesh = ExtResource("2_pbxdw")
+
+[node name="Core" type="MeshInstance3D" parent="FireballShellMesh"]
+transform = Transform3D(3.33333, 0, 0, 0, -1.45705e-07, 3.33333, 0, -3.33333, -1.45705e-07, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_7vae4")
+cast_shadow = 0
+mesh = SubResource("SphereMesh_77e4v")
+skeleton = NodePath("../..")
+
+[node name="FireTrail" type="GPUParticles3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.13)
+material_override = SubResource("ShaderMaterial_afrs2")
+amount = 16
+lifetime = 0.4
+process_material = ExtResource("4_h7ccj")
+draw_pass_1 = SubResource("QuadMesh_6lh4h")
+
+[node name="FireSmoke" type="GPUParticles3D" parent="."]
+unique_name_in_owner = true
+material_override = SubResource("ShaderMaterial_wk0ro")
+amount = 16
+explosiveness = 0.2
+process_material = SubResource("ParticleProcessMaterial_e8e44")
+draw_pass_1 = SubResource("QuadMesh_6lh4h")
