@@ -11,6 +11,7 @@ uniform float heightmap_scale;
 uniform int heightmap_min_layers;
 uniform int heightmap_max_layers;
 uniform vec2 heightmap_flip;
+uniform float time_offset = 0.0;
 
 vec2 polar_coordinates(vec2 uv, vec2 center, float zoom, float repeat)
 {
@@ -35,14 +36,14 @@ float overlay(float base, float blend){
 
 float get_depth(vec2 depth_uv) {
 	
-	float s = swirl(depth_uv, 8.0, 1,- TIME * 0.4);
+	float s = swirl(depth_uv, 8.0, 1,- time_offset * 0.4);
 	vec2 uv = polar_coordinates(depth_uv, vec2(0.5), 1.0, 1.0);
 	
-	float voronoi = texture(voronoi_sampler, vec2(uv.x + TIME * 0.4, s) * 0.6).x;
+	float voronoi = texture(voronoi_sampler, vec2(uv.x + time_offset * 0.4, s) * 0.6).x;
 	
 	float dist = distance(vec2(0.5), depth_uv) * 2.0;
 	float edge = smoothstep(opening - 0.5, opening, dist);
-	float outter_edge = smoothstep(opening - 0.8, opening, dist);
+	float outter_edge = smoothstep(opening - 0.9, opening, dist);
 	
 	return max(0.0, (1.0 - edge) - voronoi * outter_edge);
 }

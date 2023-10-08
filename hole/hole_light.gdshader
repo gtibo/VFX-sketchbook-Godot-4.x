@@ -8,5 +8,5 @@ uniform sampler2D gradient : source_color, filter_linear;
 void fragment() {
 	vec3 color = texture(gradient, vec2(UV.y, 0.0)).rgb;
 	ALBEDO = color;
-	EMISSION = color * intensity;
+	EMISSION = color * intensity * texture(intensity_gradient, vec2(UV.y, 0.0)).rgb;
 }
