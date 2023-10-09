@@ -1,9 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://curc07g3hrmrs"]
+[gd_scene load_steps=17 format=3 uid="uid://curc07g3hrmrs"]
 
-[ext_resource type="Material" uid="uid://bn560w5oht3yf" path="res://effects/force_field/force_field_mat.tres" id="2_hcgsd"]
-[ext_resource type="ArrayMesh" uid="uid://dluxu7kw8er3m" path="res://effects/force_field/triangle_mesh.obj" id="4_gt02u"]
-[ext_resource type="Shader" path="res://assets/ground_checkerboard.gdshader" id="4_oe8c0"]
-[ext_resource type="Texture2D" uid="uid://3ro0yvv3roj3" path="res://assets/checkerboard.svg" id="5_ph86h"]
+[ext_resource type="Material" uid="uid://bn560w5oht3yf" path="res://effects/force_field/materials/force_field_mat.tres" id="2_hcgsd"]
+[ext_resource type="ArrayMesh" uid="uid://dluxu7kw8er3m" path="res://effects/force_field/mesh/triangle_mesh.obj" id="4_gt02u"]
+[ext_resource type="PackedScene" uid="uid://cmj5l6xu36itg" path="res://turner/turner.tscn" id="5_na51v"]
 
 [sub_resource type="Environment" id="Environment_8nrla"]
 background_mode = 1
@@ -107,11 +106,27 @@ scale_curve = SubResource("CurveTexture_wfnxj")
 color = Color(1, 1, 1, 0.392157)
 color_ramp = SubResource("GradientTexture1D_veu78")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fg27r"]
+[sub_resource type="Shader" id="Shader_dgu8j"]
+code = "shader_type spatial;
+render_mode diffuse_lambert_wrap, specular_disabled, depth_prepass_alpha;
+
+uniform sampler2D checkerboard_sampler : filter_linear_mipmap_anisotropic, repeat_enable;
+uniform vec3 albedo_color : source_color;
+
+void fragment() {
+	ALBEDO = albedo_color * (texture(checkerboard_sampler, UV * 10.0).x * 0.2 + 0.8);
+	ALPHA *= smoothstep(1.0, 0.4, distance(UV, vec2(0.5)) * 2.0);
+}
+"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0h0nd"]
+load_path = "res://.godot/imported/checkerboard.svg-0973abf3172158bed7a934ab70dcdd33.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_slpns"]
 render_priority = -128
-shader = ExtResource("4_oe8c0")
+shader = SubResource("Shader_dgu8j")
 shader_parameter/albedo_color = Color(0.2, 0.2, 0.2, 1)
-shader_parameter/checkerboard_sampler = ExtResource("5_ph86h")
+shader_parameter/checkerboard_sampler = SubResource("CompressedTexture2D_0h0nd")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_7kts5"]
 size = Vector2(20, 20)
@@ -140,11 +155,9 @@ transform = Transform3D(0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, -0
 shadow_enabled = true
 
 [node name="GroundMesh" type="MeshInstance3D" parent="."]
-material_override = SubResource("ShaderMaterial_fg27r")
+material_override = SubResource("ShaderMaterial_slpns")
 mesh = SubResource("PlaneMesh_7kts5")
 
-[node name="Anchor" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.6, 0)
-
-[node name="Camera3D" type="Camera3D" parent="Anchor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.5)
+[node name="Turner" parent="." instance=ExtResource("5_na51v")]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.25, 0)
+_zoom = 2.5

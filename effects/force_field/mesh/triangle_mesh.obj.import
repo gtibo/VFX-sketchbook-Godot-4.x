@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dluxu7kw8er3m"
+path="res://.godot/imported/triangle_mesh.obj-091a236dcfba9c969fc73cc1e28c4c7a.mesh"
+
+[deps]
+
+files=["res://.godot/imported/triangle_mesh.obj-091a236dcfba9c969fc73cc1e28c4c7a.mesh"]
+
+source_file="res://effects/force_field/mesh/triangle_mesh.obj"
+dest_files=["res://.godot/imported/triangle_mesh.obj-091a236dcfba9c969fc73cc1e28c4c7a.mesh", "res://.godot/imported/triangle_mesh.obj-091a236dcfba9c969fc73cc1e28c4c7a.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
