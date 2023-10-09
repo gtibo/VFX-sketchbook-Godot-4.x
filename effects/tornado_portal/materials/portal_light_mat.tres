@@ -1,0 +1,24 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://dcvf6avwqqxhu"]
+
+[ext_resource type="Shader" path="res://effects/tornado_portal/materials/portal_light.gdshader" id="1_kchml"]
+
+[sub_resource type="Gradient" id="Gradient_s4p8s"]
+offsets = PackedFloat32Array(0, 0.2)
+colors = PackedColorArray(0.488667, 0.41, 1, 1, 0.3625, 0.25, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_8b1a0"]
+gradient = SubResource("Gradient_s4p8s")
+
+[sub_resource type="Gradient" id="Gradient_33erq"]
+offsets = PackedFloat32Array(0, 0.25)
+colors = PackedColorArray(0.2, 0.2, 0.2, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_eppqw"]
+gradient = SubResource("Gradient_33erq")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_kchml")
+shader_parameter/intensity = 1.8
+shader_parameter/intensity_gradient = SubResource("GradientTexture1D_eppqw")
+shader_parameter/gradient = SubResource("GradientTexture1D_8b1a0")

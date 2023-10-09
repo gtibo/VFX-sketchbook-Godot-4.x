@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://b73q6qfh1ldan"]
+
+[ext_resource type="Shader" path="res://effects/tornado_portal/materials/halo_light.gdshader" id="1_46s05"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_exjlt"]
+noise_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_m0h28"]
+height = 1
+seamless = true
+noise = SubResource("FastNoiseLite_exjlt")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_46s05")
+shader_parameter/color = Color(0.505882, 0.419608, 1, 1)
+shader_parameter/intensity = 3.0
+shader_parameter/alpha = 0.0
+shader_parameter/halo_sampler = SubResource("NoiseTexture2D_m0h28")

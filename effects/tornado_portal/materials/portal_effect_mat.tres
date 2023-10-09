@@ -1,0 +1,25 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://5dlygf08frjc"]
+
+[ext_resource type="Shader" path="res://effects/tornado_portal/materials/portal_effect.gdshader" id="1_ma5y6"]
+
+[sub_resource type="Gradient" id="Gradient_msmk0"]
+offsets = PackedFloat32Array(0.2, 0.8)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_y6tnf"]
+noise_type = 0
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4v5b4"]
+color_ramp = SubResource("Gradient_msmk0")
+noise = SubResource("FastNoiseLite_y6tnf")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_ma5y6")
+shader_parameter/opening = 0.0
+shader_parameter/heightmap_scale = 32.0
+shader_parameter/heightmap_min_layers = 16
+shader_parameter/heightmap_max_layers = 64
+shader_parameter/heightmap_flip = Vector2(1, 1)
+shader_parameter/time_offset = 0.0
+shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_4v5b4")

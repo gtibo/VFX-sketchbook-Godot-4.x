@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cmsx7fp6tjcbi"]
+
+[ext_resource type="Shader" path="res://effects/tornado_portal/materials/trail_particles.gdshader" id="1_fm8y2"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_fm8y2")
+shader_parameter/color = Color(0.505882, 0.419608, 1, 1)
+shader_parameter/intensity = 4.0

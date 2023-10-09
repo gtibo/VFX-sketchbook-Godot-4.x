@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dq7edc1qpr6ct"]
+
+[ext_resource type="Shader" path="res://effects/tornado_portal/materials/pull_deform.gdshader" id="1_q5iii"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_q5iii")
+shader_parameter/pull_intensity = 0.0
