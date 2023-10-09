@@ -12,6 +12,7 @@ var _is_grabbing = false
 
 func _set_zoom(value : float):
 	_zoom = clamp(value, min_zoom, max_zoom)
+	if !is_inside_tree(): return
 	var t = create_tween().set_trans(Tween.TRANS_LINEAR)
 	t.tween_property(_camera, "position:z", _zoom, 0.2)
 
