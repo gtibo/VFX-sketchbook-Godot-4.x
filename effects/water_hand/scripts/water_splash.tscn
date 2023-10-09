@@ -1,6 +1,6 @@
 [gd_scene load_steps=28 format=3 uid="uid://obrsol71nwet"]
 
-[ext_resource type="Script" path="res://effects/water_hand/water_splash.gd" id="1_ctbb0"]
+[ext_resource type="Script" path="res://effects/water_hand/scripts/water_splash.gd" id="1_ctbb0"]
 [ext_resource type="Shader" path="res://effects/water_hand/materials/water_droplet_particles.gdshader" id="2_7yqw3"]
 [ext_resource type="Material" uid="uid://btir5gntqbdb4" path="res://effects/water_hand/materials/water_splash_mat.tres" id="2_tbwf0"]
 [ext_resource type="ArrayMesh" uid="uid://b48famqpe5dwl" path="res://effects/water_hand/mesh/splash_shell.obj" id="3_hivpj"]
