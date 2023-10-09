@@ -1,0 +1,25 @@
+[gd_scene load_steps=7 format=3 uid="uid://dnjlbwcrsx134"]
+
+[ext_resource type="Script" path="res://effects/fireball/scripts/simple_projectile.gd" id="1_0o0eb"]
+[ext_resource type="PackedScene" uid="uid://d37wg3mc76fs7" path="res://effects/fireball/fireball_core/fireball.tscn" id="2_dqurb"]
+[ext_resource type="PackedScene" uid="uid://c3cpjdmtyyu4m" path="res://effects/fireball/fireball_spawn/fireball_spawn.tscn" id="2_yobfv"]
+[ext_resource type="PackedScene" uid="uid://caxhgud7mger4" path="res://effects/fireball/fireball_impact/fireball_impact.tscn" id="3_jwnlx"]
+[ext_resource type="Script" path="res://resources/hit/hit_zone_3d.gd" id="3_yi0al"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3d6ef"]
+radius = 0.2
+
+[node name="SimpleProjectile" type="Node3D"]
+script = ExtResource("1_0o0eb")
+spawn_scene = ExtResource("2_yobfv")
+impact_scene = ExtResource("3_jwnlx")
+
+[node name="Fireball" parent="." instance=ExtResource("2_dqurb")]
+unique_name_in_owner = true
+
+[node name="HitZone3D" type="Area3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_yi0al")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitZone3D"]
+shape = SubResource("SphereShape3D_3d6ef")

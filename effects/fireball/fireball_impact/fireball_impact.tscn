@@ -1,9 +1,9 @@
 [gd_scene load_steps=40 format=3 uid="uid://caxhgud7mger4"]
 
 [ext_resource type="Script" path="res://effects/fireball/fireball_impact/fireball_impact.gd" id="1_4c58t"]
-[ext_resource type="Shader" path="res://effects/fireball/fireball_impact/fireball_impact_trail.gdshader" id="1_4l8ch"]
-[ext_resource type="Shader" path="res://effects/fireball/fireball_particles.gdshader" id="3_0qcs7"]
-[ext_resource type="Shader" path="res://effects/fireball/fireball_impact/fireball_impact_flash.gdshader" id="4_hv54w"]
+[ext_resource type="Shader" path="res://effects/fireball/materials/fireball_impact_trail.gdshader" id="1_4l8ch"]
+[ext_resource type="Shader" path="res://effects/fireball/materials/fireball_particles.gdshader" id="3_0qcs7"]
+[ext_resource type="Shader" path="res://effects/fireball/materials/fireball_impact_flash.gdshader" id="4_hv54w"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gfrja"]
 render_priority = 0

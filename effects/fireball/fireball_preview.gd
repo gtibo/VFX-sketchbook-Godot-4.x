@@ -4,7 +4,7 @@ extends Node3D
 @onready var output = %Output
 @onready var shot_timeout = $ShotTimeout
 
-var projectile_scene : PackedScene = preload("./simple_projectile.tscn")
+var projectile_scene : PackedScene = preload("./scripts/simple_projectile.tscn")
 
 var last_shot : float = 0.0
 

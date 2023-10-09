@@ -1,0 +1,25 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://bfp1ht8mnqytk"]
+
+[ext_resource type="Shader" path="res://effects/fireball/materials/fireball_impact_flash.gdshader" id="1_a0vyr"]
+
+[sub_resource type="Curve" id="Curve_f3xny"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 4.0, -4.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_mc1kx"]
+_data = [Vector2(0, 0.8), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0.8), 0.0, 0.0, 0, 0, Vector2(0.7, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.8), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_tn2i0"]
+curve_x = SubResource("Curve_f3xny")
+curve_y = SubResource("Curve_mc1kx")
+
+[resource]
+resource_local_to_scene = true
+render_priority = 1
+shader = ExtResource("1_a0vyr")
+shader_parameter/base_color = Color(1, 0.745098, 0.360784, 1)
+shader_parameter/alpha = 1.0
+shader_parameter/intensity = 1.0
+shader_parameter/scale = 1.0
+shader_parameter/gradient_sampler = SubResource("CurveXYZTexture_tn2i0")

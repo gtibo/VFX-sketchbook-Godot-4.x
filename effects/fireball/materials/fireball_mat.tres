@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://d1nm3jquvgrb6"]
 
-[ext_resource type="Shader" path="res://effects/fireball/fireball_shell.gdshader" id="1_8itha"]
+[ext_resource type="Shader" path="res://effects/fireball/materials/fireball_shell.gdshader" id="1_8itha"]
 
 [sub_resource type="Gradient" id="Gradient_vxs6y"]
 offsets = PackedFloat32Array(0.1, 0.9)

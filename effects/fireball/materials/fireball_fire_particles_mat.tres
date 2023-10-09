@@ -1,0 +1,24 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://osm40gk0a5v0"]
+
+[ext_resource type="Shader" path="res://effects/fireball/materials/fireball_particles.gdshader" id="1_xvey3"]
+
+[sub_resource type="Gradient" id="Gradient_vxs6y"]
+offsets = PackedFloat32Array(0.2, 0.730077)
+colors = PackedColorArray(0.960784, 0.337255, 0.0470588, 1, 1, 0.666667, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5cp4l"]
+gradient = SubResource("Gradient_vxs6y")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_dvc8t"]
+noise_type = 2
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_dsewx"]
+seamless = true
+noise = SubResource("FastNoiseLite_dvc8t")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_xvey3")
+shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_dsewx")
+shader_parameter/gradient_sampler = SubResource("GradientTexture1D_5cp4l")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=3 uid="uid://c3cpjdmtyyu4m"]
 
 [ext_resource type="Script" path="res://effects/fireball/fireball_spawn/fireball_spawn.gd" id="1_ecndc"]
-[ext_resource type="Shader" path="res://effects/fireball/fireball_particles.gdshader" id="1_rce85"]
+[ext_resource type="Shader" path="res://effects/fireball/materials/fireball_particles.gdshader" id="1_rce85"]
 
 [sub_resource type="Gradient" id="Gradient_s1un6"]
 offsets = PackedFloat32Array(0.2, 0.730077)

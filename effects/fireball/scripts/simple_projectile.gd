@@ -1,8 +1,8 @@
 class_name SimpleProjectile
 extends Node3D
 
-var spawn_scene = preload("./fireball_spawn/fireball_spawn.tscn")
-var impact_scene = preload("./fireball_impact/fireball_impact.tscn")
+@export var spawn_scene : PackedScene
+@export var impact_scene : PackedScene
 
 @onready var hit_zone_3d = %HitZone3D
 @onready var fireball = %Fireball

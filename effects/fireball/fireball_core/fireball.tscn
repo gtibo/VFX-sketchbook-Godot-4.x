@@ -1,11 +1,11 @@
-[gd_scene load_steps=24 format=3 uid="uid://d37wg3mc76fs7"]
+[gd_scene load_steps=19 format=3 uid="uid://d37wg3mc76fs7"]
 
-[ext_resource type="Material" uid="uid://d1nm3jquvgrb6" path="res://effects/fireball/fireball_mat.tres" id="1_xf3k5"]
-[ext_resource type="ArrayMesh" uid="uid://bhma7uxtf5nja" path="res://effects/fireball/fireball_shell_mesh.obj" id="2_pbxdw"]
-[ext_resource type="Shader" path="res://effects/fireball/fireball_particles.gdshader" id="3_gv6fp"]
-[ext_resource type="Script" path="res://effects/fireball/fireball_shell_deform.gd" id="3_s1eo2"]
-[ext_resource type="Material" uid="uid://cyxfa2tlqgn0k" path="res://effects/fireball/fireball_firetrail_particles_process.tres" id="4_h7ccj"]
-[ext_resource type="Shader" path="res://effects/fireball/fireball_core.gdshader" id="6_lin42"]
+[ext_resource type="Script" path="res://effects/fireball/fireball_core/fireball.gd" id="1_nfli8"]
+[ext_resource type="Material" uid="uid://d1nm3jquvgrb6" path="res://effects/fireball/materials/fireball_mat.tres" id="2_kub5u"]
+[ext_resource type="ArrayMesh" uid="uid://bhma7uxtf5nja" path="res://effects/fireball/mesh/fireball_shell_mesh.obj" id="3_e1dfy"]
+[ext_resource type="Material" uid="uid://osm40gk0a5v0" path="res://effects/fireball/materials/fireball_fire_particles_mat.tres" id="5_11yv5"]
+[ext_resource type="Shader" path="res://effects/fireball/materials/fireball_core.gdshader" id="6_lin42"]
+[ext_resource type="Material" uid="uid://cyxfa2tlqgn0k" path="res://effects/fireball/materials/fireball_firetrail_particles_process.tres" id="6_obgtq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7vae4"]
 render_priority = 0
@@ -14,27 +14,6 @@ shader = ExtResource("6_lin42")
 [sub_resource type="SphereMesh" id="SphereMesh_77e4v"]
 radius = 0.1
 height = 0.2
-
-[sub_resource type="Gradient" id="Gradient_vxs6y"]
-offsets = PackedFloat32Array(0.2, 0.730077)
-colors = PackedColorArray(0.960784, 0.337255, 0.0470588, 1, 1, 0.666667, 0, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_5cp4l"]
-gradient = SubResource("Gradient_vxs6y")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_dvc8t"]
-noise_type = 2
-fractal_octaves = 2
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_dsewx"]
-seamless = true
-noise = SubResource("FastNoiseLite_dvc8t")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_afrs2"]
-render_priority = 0
-shader = ExtResource("3_gv6fp")
-shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_dsewx")
-shader_parameter/gradient_sampler = SubResource("GradientTexture1D_5cp4l")
 
 [sub_resource type="QuadMesh" id="QuadMesh_6lh4h"]
 size = Vector2(0.5, 0.5)
@@ -113,13 +92,13 @@ anim_speed_max = 0.02
 anim_offset_max = 1.0
 
 [node name="Fireball" type="Node3D"]
-script = ExtResource("3_s1eo2")
+script = ExtResource("1_nfli8")
 
 [node name="FireballShellMesh" type="MeshInstance3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(0.2, 0, 0, 0, -8.74228e-09, -0.2, 0, 0.2, -8.74228e-09, 0, 0, 0)
-material_override = ExtResource("1_xf3k5")
-mesh = ExtResource("2_pbxdw")
+material_override = ExtResource("2_kub5u")
+mesh = ExtResource("3_e1dfy")
 
 [node name="Core" type="MeshInstance3D" parent="FireballShellMesh"]
 transform = Transform3D(3.33333, 0, 0, 0, -1.45705e-07, 3.33333, 0, -3.33333, -1.45705e-07, 0, 0, 0)
@@ -131,10 +110,10 @@ skeleton = NodePath("../..")
 [node name="FireTrail" type="GPUParticles3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.13)
-material_override = SubResource("ShaderMaterial_afrs2")
+material_override = ExtResource("5_11yv5")
 amount = 16
 lifetime = 0.4
-process_material = ExtResource("4_h7ccj")
+process_material = ExtResource("6_obgtq")
 draw_pass_1 = SubResource("QuadMesh_6lh4h")
 
 [node name="FireSmoke" type="GPUParticles3D" parent="."]

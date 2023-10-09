@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://bd7nghkrp3ghf"]
+[gd_scene load_steps=13 format=3 uid="uid://bd7nghkrp3ghf"]
 
 [ext_resource type="Script" path="res://effects/fireball/fireball_preview.gd" id="1_ma3af"]
+[ext_resource type="Script" path="res://effects/fireball/scripts/target.gd" id="2_k3ix7"]
 [ext_resource type="Script" path="res://resources/hit/hit_box_3d.gd" id="2_tsyxn"]
-[ext_resource type="Script" path="res://effects/fireball/target.gd" id="2_ws5mw"]
 [ext_resource type="Shader" path="res://assets/ground_checkerboard.gdshader" id="5_xhsg4"]
 [ext_resource type="Texture2D" uid="uid://3ro0yvv3roj3" path="res://assets/checkerboard.svg" id="6_68n23"]
+[ext_resource type="PackedScene" uid="uid://cmj5l6xu36itg" path="res://turner/turner.tscn" id="6_edp4i"]
 
 [sub_resource type="Environment" id="Environment_qgqtj"]
 background_mode = 1
@@ -46,7 +47,7 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 0)
 material_override = SubResource("StandardMaterial3D_fdun6")
 mesh = SubResource("SphereMesh_b80ro")
-script = ExtResource("2_ws5mw")
+script = ExtResource("2_k3ix7")
 metadata/_edit_group_ = true
 
 [node name="HitBox" type="Area3D" parent="Target"]
@@ -72,9 +73,11 @@ one_shot = true
 material_override = SubResource("ShaderMaterial_yakff")
 mesh = SubResource("PlaneMesh_gnh8m")
 
-[node name="Anchor" type="Node3D" parent="."]
+[node name="Turner" parent="." instance=ExtResource("6_edp4i")]
 transform = Transform3D(1, 0, 0, 0, 0.990268, 0.139173, 0, -0.139173, 0.990268, 0, 2, 0)
+min_zoom = 4.0
 
-[node name="Camera3D" type="Camera3D" parent="Anchor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.5)
-fov = 60.0
+[node name="Camera3D" parent="Turner" index="0"]
+current = true
+
+[editable path="Turner"]
