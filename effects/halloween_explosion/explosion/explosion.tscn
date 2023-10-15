@@ -1,0 +1,547 @@
+[gd_scene load_steps=46 format=3 uid="uid://ded773nlri6oa"]
+
+[ext_resource type="Shader" path="res://effects/halloween_explosion/mushroom_cloud.gdshader" id="1_bwjom"]
+[ext_resource type="Texture2D" uid="uid://ckbaraq2mha4c" path="res://effects/halloween_explosion/explosion_face.png" id="2_s5g8r"]
+[ext_resource type="ArrayMesh" uid="uid://ddnx5315i2i1m" path="res://effects/halloween_explosion/mushroom_cloud.obj" id="3_wo6ls"]
+[ext_resource type="Shader" path="res://effects/halloween_explosion/explosion_ring.gdshader" id="4_xlt4k"]
+[ext_resource type="ArrayMesh" uid="uid://cvbjmblmqmf76" path="res://effects/halloween_explosion/explosion_ring.obj" id="5_rwskj"]
+[ext_resource type="Shader" path="res://effects/halloween_explosion/small_amber.gdshader" id="6_cg24o"]
+[ext_resource type="Shader" path="res://effects/halloween_explosion/smoke_particles.gdshader" id="7_k17gp"]
+
+[sub_resource type="Curve" id="Curve_ws3qy"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.9, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_p7iow"]
+_data = [Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_20yrm"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.1, 1), 0.0, 0.0, 0, 0, Vector2(0.7, 0), 0.0, 0.0, 0, 0, Vector2(0.958084, 0.8), 0.0, 0.0, 0, 0, Vector2(0.997006, 0.0105263), -5.62526, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_b77wq"]
+curve_x = SubResource("Curve_ws3qy")
+curve_y = SubResource("Curve_p7iow")
+curve_z = SubResource("Curve_20yrm")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_va4jf"]
+noise_type = 2
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4pwng"]
+seamless = true
+noise = SubResource("FastNoiseLite_va4jf")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n81kn"]
+render_priority = 0
+shader = ExtResource("1_bwjom")
+shader_parameter/face_intensity = 2.0
+shader_parameter/light_color = Color(1, 0.364706, 0.0352941, 1)
+shader_parameter/smoke_color = Color(0.239216, 0.14902, 0.184314, 1)
+shader_parameter/voronoi_offset = 0.0
+shader_parameter/height_curve_sampler = SubResource("CurveXYZTexture_b77wq")
+shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_4pwng")
+shader_parameter/face_sampler = ExtResource("2_s5g8r")
+shader_parameter/deformation_amount = 1.0
+shader_parameter/head_grow = -0.5
+shader_parameter/head_elevation = -0.5
+shader_parameter/light_intensity = 2.0
+shader_parameter/light_progress = 0.0
+shader_parameter/alpha_progress = 0.0
+shader_parameter/smooth_amount = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xywtw"]
+render_priority = 10
+shader = ExtResource("4_xlt4k")
+
+[sub_resource type="Gradient" id="Gradient_ksixu"]
+colors = PackedColorArray(1, 0.25, 0, 1, 1, 0.6, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_70w4v"]
+gradient = SubResource("Gradient_ksixu")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bhcv4"]
+render_priority = 0
+shader = ExtResource("6_cg24o")
+shader_parameter/gradient_sampler = SubResource("GradientTexture1D_70w4v")
+
+[sub_resource type="Gradient" id="Gradient_r2xus"]
+offsets = PackedFloat32Array(0.3, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_omu1y"]
+gradient = SubResource("Gradient_r2xus")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_13iqb"]
+direction = Vector3(0, 1, 0)
+spread = 25.0
+initial_velocity_min = 6.0
+initial_velocity_max = 14.0
+scale_min = 0.4
+color_ramp = SubResource("GradientTexture1D_omu1y")
+
+[sub_resource type="Curve" id="Curve_ukhua"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.5), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_gelv7"]
+shape = 0
+size = 0.1
+sections = 2
+curve = SubResource("Curve_ukhua")
+
+[sub_resource type="Gradient" id="Gradient_fiins"]
+colors = PackedColorArray(1, 0.25, 0, 1, 1, 0.6, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bwj28"]
+gradient = SubResource("Gradient_fiins")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8q34b"]
+render_priority = 0
+shader = ExtResource("6_cg24o")
+shader_parameter/gradient_sampler = SubResource("GradientTexture1D_bwj28")
+
+[sub_resource type="Gradient" id="Gradient_02vq1"]
+offsets = PackedFloat32Array(0.3, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xkh0m"]
+gradient = SubResource("Gradient_02vq1")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2sscx"]
+direction = Vector3(0, 1, 0)
+spread = 30.0
+initial_velocity_min = 16.0
+initial_velocity_max = 24.0
+scale_min = 0.4
+scale_max = 1.2
+color_ramp = SubResource("GradientTexture1D_xkh0m")
+turbulence_enabled = true
+turbulence_noise_scale = 2.0
+turbulence_noise_speed_random = 0.0
+turbulence_influence_min = 0.05
+turbulence_influence_max = 0.2
+
+[sub_resource type="Curve" id="Curve_4qjxv"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.5), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_x3tbe"]
+shape = 0
+size = 0.2
+curve = SubResource("Curve_4qjxv")
+
+[sub_resource type="Gradient" id="Gradient_t40cg"]
+colors = PackedColorArray(1, 1, 1, 1, 0.3, 0.3, 0.3, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_wh7h1"]
+gradient = SubResource("Gradient_t40cg")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4jjs2"]
+noise_type = 2
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kn47l"]
+seamless = true
+noise = SubResource("FastNoiseLite_4jjs2")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ock53"]
+render_priority = 0
+shader = ExtResource("7_k17gp")
+shader_parameter/smoothness = 1.0
+shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_kn47l")
+shader_parameter/gradient_sampler = SubResource("GradientTexture1D_wh7h1")
+
+[sub_resource type="Gradient" id="Gradient_jajki"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_201rd"]
+gradient = SubResource("Gradient_jajki")
+
+[sub_resource type="Curve" id="Curve_cfwas"]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_3k7l6"]
+curve = SubResource("Curve_cfwas")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xc33t"]
+lifetime_randomness = 0.2
+direction = Vector3(0, 0, 0)
+spread = 180.0
+flatness = 0.9
+gravity = Vector3(0, 1, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 4.0
+damping_min = 2.0
+damping_max = 2.0
+scale_min = 0.8
+scale_max = 1.2
+scale_curve = SubResource("CurveTexture_3k7l6")
+color_ramp = SubResource("GradientTexture1D_201rd")
+anim_speed_min = 0.1
+anim_speed_max = 0.2
+anim_offset_max = 1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_heaoi"]
+size = Vector2(6, 6)
+
+[sub_resource type="Animation" id="Animation_jc2b7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/light_intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/light_progress")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/head_elevation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.5]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/head_grow")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.5]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/voronoi_offset")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/deformation_amount")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/alpha_progress")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/face_intensity")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Explosion/MushroomCloud:scale")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Explosion/SmallAmber:emitting")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Explosion/BigAmber:emitting")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Explosion/SmokeParticles:emitting")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_0s4lf"]
+resource_name = "default"
+length = 4.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/light_intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4.5),
+"transitions": PackedFloat32Array(0.8, 1),
+"update": 0,
+"values": [2.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/light_progress")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4.5),
+"transitions": PackedFloat32Array(1.2, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/head_elevation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 4.5),
+"transitions": PackedFloat32Array(0.4, 1),
+"update": 0,
+"values": [-1.0, 0.5]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/head_grow")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 4.5),
+"transitions": PackedFloat32Array(0.4, 1),
+"update": 0,
+"values": [-1.0, 0.5]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/voronoi_offset")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 4.5),
+"transitions": PackedFloat32Array(0.9, 1),
+"update": 0,
+"values": [0.0, 0.4]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/deformation_amount")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 4.5),
+"transitions": PackedFloat32Array(0.8, 1),
+"update": 0,
+"values": [0.8, 1.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/alpha_progress")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(2.5, 4.5),
+"transitions": PackedFloat32Array(1.2, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/face_intensity")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(3, 4.5),
+"transitions": PackedFloat32Array(1.8, 1),
+"update": 0,
+"values": [3.0, 0.0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Explosion/MushroomCloud:scale")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.2, 1),
+"update": 0,
+"values": [Vector3(0.1, 0.4, 0.1), Vector3(1, 1, 1)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Explosion/SmallAmber:emitting")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Explosion/BigAmber:emitting")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Explosion/SmokeParticles:emitting")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_g78rw"]
+_data = {
+"RESET": SubResource("Animation_jc2b7"),
+"default": SubResource("Animation_0s4lf")
+}
+
+[node name="Explosion" type="Node3D"]
+
+[node name="MushroomCloud" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_n81kn")
+mesh = ExtResource("3_wo6ls")
+skeleton = NodePath("../..")
+
+[node name="ExplosionRing" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.26067, 0)
+material_override = SubResource("ShaderMaterial_xywtw")
+mesh = ExtResource("5_rwskj")
+skeleton = NodePath("../..")
+
+[node name="SmallAmber" type="GPUParticles3D" parent="."]
+material_override = SubResource("ShaderMaterial_bhcv4")
+cast_shadow = 0
+emitting = false
+amount = 32
+lifetime = 3.0
+one_shot = true
+explosiveness = 0.98
+visibility_aabb = AABB(-5.67313, -2.62739, -4.18276, 11.6224, 7.72013, 9.81926)
+transform_align = 2
+trail_enabled = true
+process_material = SubResource("ParticleProcessMaterial_13iqb")
+draw_pass_1 = SubResource("RibbonTrailMesh_gelv7")
+
+[node name="BigAmber" type="GPUParticles3D" parent="."]
+material_override = SubResource("ShaderMaterial_8q34b")
+cast_shadow = 0
+emitting = false
+amount = 16
+lifetime = 3.0
+one_shot = true
+preprocess = 0.1
+explosiveness = 0.95
+visibility_aabb = AABB(-5.67313, -2.62739, -4.18276, 11.6224, 7.72013, 9.81926)
+transform_align = 2
+trail_enabled = true
+process_material = SubResource("ParticleProcessMaterial_2sscx")
+draw_pass_1 = SubResource("RibbonTrailMesh_x3tbe")
+
+[node name="SmokeParticles" type="GPUParticles3D" parent="."]
+material_override = SubResource("ShaderMaterial_ock53")
+emitting = false
+amount = 32
+lifetime = 3.0
+one_shot = true
+explosiveness = 0.98
+process_material = SubResource("ParticleProcessMaterial_xc33t")
+draw_pass_1 = SubResource("QuadMesh_heaoi")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_g78rw")
+}
