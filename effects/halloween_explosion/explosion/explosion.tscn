@@ -1,4 +1,4 @@
-[gd_scene load_steps=77 format=3 uid="uid://ded773nlri6oa"]
+[gd_scene load_steps=78 format=3 uid="uid://ded773nlri6oa"]
 
 [ext_resource type="Shader" path="res://effects/halloween_explosion/mushroom_cloud.gdshader" id="1_bwjom"]
 [ext_resource type="Script" path="res://effects/halloween_explosion/explosion/explosion.gd" id="1_j65v5"]
@@ -47,15 +47,15 @@ shader = ExtResource("1_bwjom")
 shader_parameter/face_intensity = 3.0
 shader_parameter/light_color = Color(1, 0.364706, 0.0352941, 1)
 shader_parameter/smoke_color = Color(0.239216, 0.14902, 0.184314, 1)
-shader_parameter/voronoi_offset = 0.0
+shader_parameter/voronoi_offset = 0.209665
 shader_parameter/height_curve_sampler = SubResource("CurveXYZTexture_b77wq")
 shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_4pwng")
 shader_parameter/face_sampler = ExtResource("2_s5g8r")
-shader_parameter/deformation_amount = 0.8
-shader_parameter/head_grow = -1.0
-shader_parameter/head_elevation = -1.0
-shader_parameter/light_intensity = 2.0
-shader_parameter/light_progress = 0.0
+shader_parameter/deformation_amount = 0.91327
+shader_parameter/head_grow = 0.217919
+shader_parameter/head_elevation = 0.217919
+shader_parameter/light_intensity = 0.867303
+shader_parameter/light_progress = 0.422227
 shader_parameter/alpha_progress = 0.0
 shader_parameter/smooth_amount = 0.2
 
@@ -68,6 +68,7 @@ uniform sampler2D flash_sampler : filter_linear_mipmap, repeat_disable;
 uniform float alpha = 1.0;
 uniform float intensity = 1.0;
 uniform float progress : hint_range(0.0, 1.0, 0.1) = 1.0;
+uniform float offset = 0.0;
 
 void vertex() {
 	// NOTE: Shader automatically converted from Godot Engine 4.1.1.stable's StandardMaterial3D.
@@ -79,7 +80,8 @@ void vertex() {
 void fragment() {
 	vec2 flash_data = texture(flash_sampler, UV).rg;
 	float inv_progress = 1.0 - progress;
-	ALPHA *= smoothstep(max(0.0, inv_progress - 0.1), min(1.0, inv_progress + 0.1), (flash_data.r * progress) * flash_data.g) * alpha;
+	float dist = (sin(flash_data.r * progress * 10.0 + offset) + 1.0) * 0.5;
+	ALPHA *= smoothstep(max(0.0, inv_progress - 0.1), min(1.0, inv_progress + 0.1), dist * flash_data.g) * alpha;
 	ALBEDO = base_color;
 	EMISSION = base_color * intensity;
 }
@@ -90,13 +92,14 @@ resource_local_to_scene = true
 render_priority = 0
 shader = SubResource("Shader_xacwy")
 shader_parameter/base_color = Color(1, 0.670588, 0.458824, 1)
-shader_parameter/alpha = 1.0
-shader_parameter/intensity = 8.0
+shader_parameter/alpha = 0.0
+shader_parameter/intensity = 0.0
 shader_parameter/progress = 0.5
+shader_parameter/offset = 0.0
 shader_parameter/flash_sampler = ExtResource("4_ojr4c")
 
 [sub_resource type="QuadMesh" id="QuadMesh_hjugf"]
-center_offset = Vector3(0, 0.4, 0)
+center_offset = Vector3(0, 0.35, 0)
 
 [sub_resource type="Gradient" id="Gradient_h7b52"]
 colors = PackedColorArray(1, 0.283333, 0, 1, 1, 0.633333, 0, 1)
@@ -116,10 +119,10 @@ noise = SubResource("FastNoiseLite_boslw")
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("4_xlt4k")
-shader_parameter/alpha = 0.0
-shader_parameter/intensity = 4.0
-shader_parameter/offset = 0.0
-shader_parameter/dissolve = 0.2
+shader_parameter/alpha = 0.217771
+shader_parameter/intensity = 2.0
+shader_parameter/offset = 0.799991
+shader_parameter/dissolve = 0.845067
 shader_parameter/dissolve_smoothness = 0.04
 shader_parameter/noise_sampler = SubResource("NoiseTexture2D_ehyor")
 shader_parameter/gradient_sampler = SubResource("GradientTexture1D_s1uk8")
@@ -140,10 +143,10 @@ noise = SubResource("FastNoiseLite_qw1y6")
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("4_xlt4k")
-shader_parameter/alpha = 0.0
-shader_parameter/intensity = 4.0
-shader_parameter/offset = 0.0
-shader_parameter/dissolve = 0.2
+shader_parameter/alpha = 0.57402
+shader_parameter/intensity = 2.0
+shader_parameter/offset = 0.797989
+shader_parameter/dissolve = 0.589719
 shader_parameter/dissolve_smoothness = 0.04
 shader_parameter/noise_sampler = SubResource("NoiseTexture2D_csaks")
 shader_parameter/gradient_sampler = SubResource("GradientTexture1D_op0xo")
@@ -161,9 +164,9 @@ noise = SubResource("FastNoiseLite_j4dv8")
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("8_5i77t")
-shader_parameter/alpha = 1.0
-shader_parameter/offset = 0.0
-shader_parameter/dissolve = 0.2
+shader_parameter/alpha = 0.0
+shader_parameter/offset = 1.0
+shader_parameter/dissolve = 1.0
 shader_parameter/dissolve_smoothness = 0.1
 shader_parameter/noise_sampler = SubResource("NoiseTexture2D_ncayl")
 
@@ -188,10 +191,10 @@ noise = SubResource("FastNoiseLite_6dpog")
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("9_6fsvf")
-shader_parameter/alpha = 0.2
-shader_parameter/dissolve = 0.1
+shader_parameter/alpha = 0.0
+shader_parameter/dissolve = 0.5
 shader_parameter/dissolve_smoothness = 0.2
-shader_parameter/offset = 0.0
+shader_parameter/offset = 1.0
 shader_parameter/alpha_curve_sampler = SubResource("CurveTexture_32ak6")
 shader_parameter/noise_sampler = SubResource("NoiseTexture2D_rnob3")
 
@@ -527,10 +530,10 @@ tracks/12/path = NodePath("Flash:scale")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
-"times": PackedFloat32Array(0.1, 0.3),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(10, 10, 1), Vector3(8, 8, 1)]
+"values": [Vector3(4, 4, 1), Vector3(10, 10, 1), Vector3(8, 8, 1)]
 }
 tracks/13/type = "value"
 tracks/13/imported = false
@@ -539,7 +542,7 @@ tracks/13/path = NodePath("Flash:material_override:shader_parameter/alpha")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/keys = {
-"times": PackedFloat32Array(0.1, 0.4),
+"times": PackedFloat32Array(0.1, 0.6),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [1.0, 0.0]
@@ -551,7 +554,7 @@ tracks/14/path = NodePath("Flash:material_override:shader_parameter/intensity")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
-"times": PackedFloat32Array(0, 0.3),
+"times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [8.0, 0.0]
@@ -563,10 +566,10 @@ tracks/15/path = NodePath("Flash:material_override:shader_parameter/progress")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.4),
+"times": PackedFloat32Array(0, 0.1, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [0.5, 1.0, 0.8]
+"values": [0.5, 1.0, 0.5]
 }
 tracks/16/type = "value"
 tracks/16/imported = false
@@ -784,9 +787,37 @@ tracks/33/keys = {
 "update": 0,
 "values": [0.0, 1.0]
 }
+tracks/34/type = "value"
+tracks/34/imported = false
+tracks/34/enabled = true
+tracks/34/path = NodePath("Flash:material_override:shader_parameter/offset")
+tracks/34/interp = 1
+tracks/34/loop_wrap = true
+tracks/34/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(0.8, 1),
+"update": 0,
+"values": [0.0, 10.0]
+}
+
+[sub_resource type="Animation" id="Animation_oe0n2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Flash:material_override:shader_parameter/offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g78rw"]
 _data = {
+"RESET": SubResource("Animation_oe0n2"),
 "default": SubResource("Animation_0s4lf")
 }
 
@@ -794,37 +825,36 @@ _data = {
 script = ExtResource("1_j65v5")
 
 [node name="MushroomCloud" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.01, 0, 0, 0, 0.5, 0, 0, 0, 0.01, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_n81kn")
 mesh = ExtResource("3_wo6ls")
 skeleton = NodePath("../..")
 
 [node name="Flash" type="MeshInstance3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 1, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_dnxui")
 mesh = SubResource("QuadMesh_hjugf")
 
 [node name="ExplosionRing" type="MeshInstance3D" parent="."]
-transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1.26067, 0)
+transform = Transform3D(2.19268, 0, 0, 0, 2.19268, 0, 0, 0, 2.19268, 0, 1.26067, 0)
 material_override = SubResource("ShaderMaterial_xywtw")
 transparency = 1.0
 mesh = ExtResource("5_rwskj")
 skeleton = NodePath("../..")
 
 [node name="ExplosionRing2" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 2.36067, 0)
+transform = Transform3D(2.29973, 0, 0, 0, 2.29973, 0, 0, 0, 2.29973, 0, 2.36067, 0)
 material_override = SubResource("ShaderMaterial_8ut4y")
 transparency = 1.0
 mesh = ExtResource("5_rwskj")
 skeleton = NodePath("../..")
 
 [node name="WindRing" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 0, 0)
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_mysys")
 mesh = ExtResource("7_unrnf")
 
 [node name="WindHalo" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_0rcyk")
 mesh = ExtResource("10_a5hdn")
 
