@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bafknch2m4dmy"
+path="res://.godot/imported/wind_ring.obj-cbd1d900c40fd5198816f6c90c045c8d.mesh"
+
+[deps]
+
+files=["res://.godot/imported/wind_ring.obj-cbd1d900c40fd5198816f6c90c045c8d.mesh"]
+
+source_file="res://effects/halloween_explosion/wind_ring.obj"
+dest_files=["res://.godot/imported/wind_ring.obj-cbd1d900c40fd5198816f6c90c045c8d.mesh", "res://.godot/imported/wind_ring.obj-cbd1d900c40fd5198816f6c90c045c8d.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

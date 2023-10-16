@@ -18,7 +18,7 @@ uniform float head_grow = 0.0;
 uniform float head_elevation = 0.0;
 
 group_uniforms light;
-uniform float light_intensity : hint_range(0.0, 2.0, 0.1) = 1.0;
+uniform float light_intensity = 1.0;
 uniform float light_progress : hint_range(0.0, 1.0, 0.1) = 0.0;
 uniform float alpha_progress : hint_range(0.0, 1.0, 0.1) = 0.0;
 uniform float smooth_amount = 0.2;

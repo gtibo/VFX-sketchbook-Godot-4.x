@@ -35,7 +35,7 @@ void fragment() {
 	float dist = distance(UV, vec2(0.5));
 	float dist_mask = smoothstep(0.45, 0.0, dist);
 	float mask = max(0.0, dist_mask - voronoi);
-	vec4 gradient = texture(gradient_sampler, vec2(voronoi, 0.0));
+	vec4 gradient = texture(gradient_sampler, vec2(mask, 0.0));
 	ALBEDO = gradient.rgb;
 	SPECULAR = 0.0;
 	ALPHA = smoothstep(max(0.0, custom.y - smoothness), min(1.0, custom.y + smoothness), mask) * COLOR.a * edge;

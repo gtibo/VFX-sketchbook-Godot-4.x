@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://cmd0w1rvl6fdf"]
+[gd_scene load_steps=8 format=3 uid="uid://cmd0w1rvl6fdf"]
 
-[ext_resource type="PackedScene" uid="uid://ded773nlri6oa" path="res://effects/halloween_explosion/explosion/explosion.tscn" id="1_63vk7"]
+[ext_resource type="Script" path="res://effects/halloween_explosion/halloween_explosion_preview.gd" id="1_2483p"]
 [ext_resource type="PackedScene" uid="uid://cmj5l6xu36itg" path="res://turner/turner.tscn" id="6_8f17f"]
 
 [sub_resource type="Environment" id="Environment_abe8a"]
@@ -10,32 +10,55 @@ ambient_light_source = 2
 ambient_light_color = Color(0.368627, 0.368627, 0.368627, 1)
 tonemap_mode = 2
 glow_enabled = true
-glow_normalized = true
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o2tde"]
-diffuse_mode = 2
-albedo_color = Color(0.0980392, 0.0980392, 0.0980392, 1)
+[sub_resource type="Shader" id="Shader_8nfir"]
+code = "shader_type spatial;
+render_mode diffuse_lambert_wrap, specular_disabled, depth_prepass_alpha;
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_fxsa3"]
+uniform sampler2D checkerboard_sampler : filter_linear_mipmap_anisotropic, repeat_enable;
+uniform vec3 albedo_color : source_color;
+
+void fragment() {
+	ALBEDO = albedo_color * (texture(checkerboard_sampler, UV * 10.0).x * 0.2 + 0.8);
+	ALPHA *= smoothstep(1.0, 0.4, distance(UV, vec2(0.5)) * 2.0);
+}
+"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jnnmq"]
+load_path = "res://.godot/imported/checkerboard.svg-0973abf3172158bed7a934ab70dcdd33.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jaw6p"]
+render_priority = -128
+shader = SubResource("Shader_8nfir")
+shader_parameter/albedo_color = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/checkerboard_sampler = SubResource("CompressedTexture2D_jnnmq")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_53svq"]
 size = Vector2(20, 20)
 
 [node name="HalloweenExplosionPreview" type="Node3D"]
+script = ExtResource("1_2483p")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_abe8a")
 
 [node name="GroundMesh" type="MeshInstance3D" parent="."]
-material_override = SubResource("StandardMaterial3D_o2tde")
-mesh = SubResource("PlaneMesh_fxsa3")
-
-[node name="Explosion" parent="." instance=ExtResource("1_63vk7")]
+material_override = SubResource("ShaderMaterial_jaw6p")
+mesh = SubResource("PlaneMesh_53svq")
 
 [node name="Turner" parent="." instance=ExtResource("6_8f17f")]
-transform = Transform3D(1, 0, 0, 0, 0.990268, 0.139173, 0, -0.139173, 0.990268, 0, 1.25, 0)
-_zoom = 6.0
-min_zoom = 5.0
+transform = Transform3D(1, 0, 0, 0, 0.990268, 0.139173, 0, -0.139173, 0.990268, 0, 2, 0)
+_zoom = 10.0
+min_zoom = 8.0
+max_zoom = 12.0
+
+[node name="Camera3D" parent="Turner" index="0"]
+fov = 50.0
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.906308, 0.365998, -0.211309, 0, 0.5, 0.866025, 0.422618, -0.784886, 0.453154, 0, 0, 0)
 shadow_enabled = true
 directional_shadow_max_distance = 40.0
+directional_shadow_pancake_size = 10.0
+
+[editable path="Turner"]

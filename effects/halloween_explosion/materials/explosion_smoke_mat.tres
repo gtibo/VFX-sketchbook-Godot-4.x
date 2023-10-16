@@ -1,0 +1,23 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://b4gsnk2ub773i"]
+
+[ext_resource type="Shader" path="res://effects/halloween_explosion/smoke_particles.gdshader" id="1_8157b"]
+
+[sub_resource type="Gradient" id="Gradient_t40cg"]
+colors = PackedColorArray(1, 1, 1, 1, 0.3, 0.3, 0.3, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_wh7h1"]
+gradient = SubResource("Gradient_t40cg")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4jjs2"]
+fractal_octaves = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kn47l"]
+seamless = true
+noise = SubResource("FastNoiseLite_4jjs2")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_8157b")
+shader_parameter/smoothness = 1.0
+shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_kn47l")
+shader_parameter/gradient_sampler = SubResource("GradientTexture1D_wh7h1")

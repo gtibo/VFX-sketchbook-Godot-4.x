@@ -1,12 +1,19 @@
-[gd_scene load_steps=46 format=3 uid="uid://ded773nlri6oa"]
+[gd_scene load_steps=77 format=3 uid="uid://ded773nlri6oa"]
 
 [ext_resource type="Shader" path="res://effects/halloween_explosion/mushroom_cloud.gdshader" id="1_bwjom"]
+[ext_resource type="Script" path="res://effects/halloween_explosion/explosion/explosion.gd" id="1_j65v5"]
 [ext_resource type="Texture2D" uid="uid://ckbaraq2mha4c" path="res://effects/halloween_explosion/explosion_face.png" id="2_s5g8r"]
 [ext_resource type="ArrayMesh" uid="uid://ddnx5315i2i1m" path="res://effects/halloween_explosion/mushroom_cloud.obj" id="3_wo6ls"]
+[ext_resource type="Texture2D" uid="uid://d0fu57qcy18r5" path="res://effects/halloween_explosion/flash_shape_atlas.png" id="4_ojr4c"]
 [ext_resource type="Shader" path="res://effects/halloween_explosion/explosion_ring.gdshader" id="4_xlt4k"]
 [ext_resource type="ArrayMesh" uid="uid://cvbjmblmqmf76" path="res://effects/halloween_explosion/explosion_ring.obj" id="5_rwskj"]
 [ext_resource type="Shader" path="res://effects/halloween_explosion/small_amber.gdshader" id="6_cg24o"]
-[ext_resource type="Shader" path="res://effects/halloween_explosion/smoke_particles.gdshader" id="7_k17gp"]
+[ext_resource type="ArrayMesh" uid="uid://bafknch2m4dmy" path="res://effects/halloween_explosion/wind_ring.obj" id="7_unrnf"]
+[ext_resource type="Shader" path="res://effects/halloween_explosion/explosion/wind_ring.gdshader" id="8_5i77t"]
+[ext_resource type="Shader" path="res://effects/halloween_explosion/materials/wind_halo.gdshader" id="9_6fsvf"]
+[ext_resource type="ArrayMesh" uid="uid://bi5h5leket31d" path="res://effects/halloween_explosion/half_sphere.obj" id="10_a5hdn"]
+[ext_resource type="Material" uid="uid://b4gsnk2ub773i" path="res://effects/halloween_explosion/materials/explosion_smoke_mat.tres" id="10_b1uvi"]
+[ext_resource type="Shader" path="res://effects/halloween_explosion/smoke_particles.gdshader" id="14_l5ovb"]
 
 [sub_resource type="Curve" id="Curve_ws3qy"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.9, 0), 0.0, 0.0, 0, 0]
@@ -34,29 +41,162 @@ seamless = true
 noise = SubResource("FastNoiseLite_va4jf")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_n81kn"]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("1_bwjom")
-shader_parameter/face_intensity = 2.0
+shader_parameter/face_intensity = 3.0
 shader_parameter/light_color = Color(1, 0.364706, 0.0352941, 1)
 shader_parameter/smoke_color = Color(0.239216, 0.14902, 0.184314, 1)
 shader_parameter/voronoi_offset = 0.0
 shader_parameter/height_curve_sampler = SubResource("CurveXYZTexture_b77wq")
 shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_4pwng")
 shader_parameter/face_sampler = ExtResource("2_s5g8r")
-shader_parameter/deformation_amount = 1.0
-shader_parameter/head_grow = -0.5
-shader_parameter/head_elevation = -0.5
+shader_parameter/deformation_amount = 0.8
+shader_parameter/head_grow = -1.0
+shader_parameter/head_elevation = -1.0
 shader_parameter/light_intensity = 2.0
 shader_parameter/light_progress = 0.0
 shader_parameter/alpha_progress = 0.0
-shader_parameter/smooth_amount = 0.5
+shader_parameter/smooth_amount = 0.2
+
+[sub_resource type="Shader" id="Shader_xacwy"]
+code = "shader_type spatial;
+
+uniform vec3 base_color : source_color;
+uniform sampler2D flash_sampler : filter_linear_mipmap, repeat_disable;
+
+uniform float alpha = 1.0;
+uniform float intensity = 1.0;
+uniform float progress : hint_range(0.0, 1.0, 0.1) = 1.0;
+
+void vertex() {
+	// NOTE: Shader automatically converted from Godot Engine 4.1.1.stable's StandardMaterial3D.
+	MODELVIEW_MATRIX = VIEW_MATRIX * mat4(vec4(normalize(cross(vec3(0.0, 1.0, 0.0), INV_VIEW_MATRIX[2].xyz)), 0.0), vec4(0.0, 1.0, 0.0, 0.0), vec4(normalize(cross(INV_VIEW_MATRIX[0].xyz, vec3(0.0, 1.0, 0.0))), 0.0), MODEL_MATRIX[3]);
+	MODELVIEW_MATRIX = MODELVIEW_MATRIX * mat4(vec4(length(MODEL_MATRIX[0].xyz), 0.0, 0.0, 0.0),vec4(0.0, length(MODEL_MATRIX[1].xyz), 0.0, 0.0), vec4(0.0, 0.0, length(MODEL_MATRIX[2].xyz), 0.0), vec4(0.0, 0.0, 0.0, 1.0));
+	MODELVIEW_NORMAL_MATRIX = mat3(MODELVIEW_MATRIX);
+}
+
+void fragment() {
+	vec2 flash_data = texture(flash_sampler, UV).rg;
+	float inv_progress = 1.0 - progress;
+	ALPHA *= smoothstep(max(0.0, inv_progress - 0.1), min(1.0, inv_progress + 0.1), (flash_data.r * progress) * flash_data.g) * alpha;
+	ALBEDO = base_color;
+	EMISSION = base_color * intensity;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dnxui"]
+resource_local_to_scene = true
+render_priority = 0
+shader = SubResource("Shader_xacwy")
+shader_parameter/base_color = Color(1, 0.670588, 0.458824, 1)
+shader_parameter/alpha = 1.0
+shader_parameter/intensity = 8.0
+shader_parameter/progress = 0.5
+shader_parameter/flash_sampler = ExtResource("4_ojr4c")
+
+[sub_resource type="QuadMesh" id="QuadMesh_hjugf"]
+center_offset = Vector3(0, 0.4, 0)
+
+[sub_resource type="Gradient" id="Gradient_h7b52"]
+colors = PackedColorArray(1, 0.283333, 0, 1, 1, 0.633333, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_s1uk8"]
+gradient = SubResource("Gradient_h7b52")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_boslw"]
+noise_type = 2
+fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ehyor"]
+seamless = true
+noise = SubResource("FastNoiseLite_boslw")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xywtw"]
-render_priority = 10
+resource_local_to_scene = true
+render_priority = 0
 shader = ExtResource("4_xlt4k")
+shader_parameter/alpha = 0.0
+shader_parameter/intensity = 4.0
+shader_parameter/offset = 0.0
+shader_parameter/dissolve = 0.2
+shader_parameter/dissolve_smoothness = 0.04
+shader_parameter/noise_sampler = SubResource("NoiseTexture2D_ehyor")
+shader_parameter/gradient_sampler = SubResource("GradientTexture1D_s1uk8")
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_op0xo"]
+gradient = SubResource("Gradient_h7b52")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qw1y6"]
+noise_type = 2
+seed = 10
+fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_csaks"]
+seamless = true
+noise = SubResource("FastNoiseLite_qw1y6")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8ut4y"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("4_xlt4k")
+shader_parameter/alpha = 0.0
+shader_parameter/intensity = 4.0
+shader_parameter/offset = 0.0
+shader_parameter/dissolve = 0.2
+shader_parameter/dissolve_smoothness = 0.04
+shader_parameter/noise_sampler = SubResource("NoiseTexture2D_csaks")
+shader_parameter/gradient_sampler = SubResource("GradientTexture1D_op0xo")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_j4dv8"]
+noise_type = 2
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ncayl"]
+height = 256
+seamless = true
+noise = SubResource("FastNoiseLite_j4dv8")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mysys"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("8_5i77t")
+shader_parameter/alpha = 1.0
+shader_parameter/offset = 0.0
+shader_parameter/dissolve = 0.2
+shader_parameter/dissolve_smoothness = 0.1
+shader_parameter/noise_sampler = SubResource("NoiseTexture2D_ncayl")
+
+[sub_resource type="Curve" id="Curve_uhvus"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.8, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_32ak6"]
+texture_mode = 1
+curve = SubResource("Curve_uhvus")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6dpog"]
+noise_type = 2
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rnob3"]
+width = 256
+seamless = true
+noise = SubResource("FastNoiseLite_6dpog")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0rcyk"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("9_6fsvf")
+shader_parameter/alpha = 0.2
+shader_parameter/dissolve = 0.1
+shader_parameter/dissolve_smoothness = 0.2
+shader_parameter/offset = 0.0
+shader_parameter/alpha_curve_sampler = SubResource("CurveTexture_32ak6")
+shader_parameter/noise_sampler = SubResource("NoiseTexture2D_rnob3")
 
 [sub_resource type="Gradient" id="Gradient_ksixu"]
-colors = PackedColorArray(1, 0.25, 0, 1, 1, 0.6, 0, 1)
+colors = PackedColorArray(1, 0.466667, 0, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_70w4v"]
 gradient = SubResource("Gradient_ksixu")
@@ -67,61 +207,74 @@ shader = ExtResource("6_cg24o")
 shader_parameter/gradient_sampler = SubResource("GradientTexture1D_70w4v")
 
 [sub_resource type="Gradient" id="Gradient_r2xus"]
-offsets = PackedFloat32Array(0.3, 1)
+offsets = PackedFloat32Array(0.8, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_omu1y"]
 gradient = SubResource("Gradient_r2xus")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_13iqb"]
+lifetime_randomness = 0.2
 direction = Vector3(0, 1, 0)
 spread = 25.0
-initial_velocity_min = 6.0
-initial_velocity_max = 14.0
-scale_min = 0.4
+initial_velocity_min = 8.0
+initial_velocity_max = 16.0
+scale_min = 0.2
 color_ramp = SubResource("GradientTexture1D_omu1y")
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.4
 
-[sub_resource type="Curve" id="Curve_ukhua"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.5), 0.0, 0.0, 0, 0]
-point_count = 2
+[sub_resource type="QuadMesh" id="QuadMesh_4ail6"]
+size = Vector2(0.1, 0.4)
+center_offset = Vector3(0, -0.2, 0)
 
-[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_gelv7"]
-shape = 0
-size = 0.1
-sections = 2
-curve = SubResource("Curve_ukhua")
+[sub_resource type="Shader" id="Shader_hpbno"]
+code = "shader_type spatial;
+render_mode cull_disabled, particle_trails;
 
-[sub_resource type="Gradient" id="Gradient_fiins"]
-colors = PackedColorArray(1, 0.25, 0, 1, 1, 0.6, 0, 1)
+uniform sampler2D gradient_sampler : filter_linear;
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_bwj28"]
-gradient = SubResource("Gradient_fiins")
+void fragment() {
+	vec3 gradient = texture(gradient_sampler, vec2(UV.y, 0.0)).rgb;
+	float mask = (1.0 - UV.y);
+	ALBEDO = gradient;
+	EMISSION = gradient * 2.5 * mask * COLOR.a;
+	ALPHA = step(0.2, sin(UV.x * PI) * sin(UV.y * PI)) * mask * COLOR.a;
+}
+"
+
+[sub_resource type="Gradient" id="Gradient_l7hrn"]
+colors = PackedColorArray(1, 0.466667, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2yx4m"]
+gradient = SubResource("Gradient_l7hrn")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8q34b"]
 render_priority = 0
-shader = ExtResource("6_cg24o")
-shader_parameter/gradient_sampler = SubResource("GradientTexture1D_bwj28")
+shader = SubResource("Shader_hpbno")
+shader_parameter/gradient_sampler = SubResource("GradientTexture1D_2yx4m")
 
-[sub_resource type="Gradient" id="Gradient_02vq1"]
-offsets = PackedFloat32Array(0.3, 1)
+[sub_resource type="Gradient" id="Gradient_n6qs0"]
+offsets = PackedFloat32Array(0.8, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_xkh0m"]
-gradient = SubResource("Gradient_02vq1")
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_r6soh"]
+gradient = SubResource("Gradient_n6qs0")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2sscx"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0b3yh"]
 direction = Vector3(0, 1, 0)
-spread = 30.0
-initial_velocity_min = 16.0
-initial_velocity_max = 24.0
-scale_min = 0.4
+spread = 15.0
+initial_velocity_min = 8.0
+initial_velocity_max = 16.0
+scale_min = 0.8
 scale_max = 1.2
-color_ramp = SubResource("GradientTexture1D_xkh0m")
-turbulence_enabled = true
-turbulence_noise_scale = 2.0
+color_ramp = SubResource("GradientTexture1D_r6soh")
+turbulence_noise_scale = 4.0
 turbulence_noise_speed_random = 0.0
-turbulence_influence_min = 0.05
-turbulence_influence_max = 0.2
+turbulence_influence_max = 0.4
+sub_emitter_mode = 1
+sub_emitter_frequency = 30.0
 
 [sub_resource type="Curve" id="Curve_4qjxv"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.5), 0.0, 0.0, 0, 0]
@@ -133,28 +286,60 @@ size = 0.2
 curve = SubResource("Curve_4qjxv")
 
 [sub_resource type="Gradient" id="Gradient_t40cg"]
-colors = PackedColorArray(1, 1, 1, 1, 0.3, 0.3, 0.3, 1)
+colors = PackedColorArray(0.3, 0.3, 0.3, 1, 0.1, 0.1, 0.1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_wh7h1"]
 gradient = SubResource("Gradient_t40cg")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_4jjs2"]
-noise_type = 2
-fractal_octaves = 2
+fractal_octaves = 3
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kn47l"]
 seamless = true
 noise = SubResource("FastNoiseLite_4jjs2")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ock53"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xhkwm"]
+resource_local_to_scene = true
 render_priority = 0
-shader = ExtResource("7_k17gp")
-shader_parameter/smoothness = 1.0
+shader = ExtResource("14_l5ovb")
+shader_parameter/smoothness = 0.1
 shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_kn47l")
 shader_parameter/gradient_sampler = SubResource("GradientTexture1D_wh7h1")
 
+[sub_resource type="Gradient" id="Gradient_kbouw"]
+offsets = PackedFloat32Array(0, 0.1, 0.9, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5yikv"]
+gradient = SubResource("Gradient_kbouw")
+
+[sub_resource type="Curve" id="Curve_aeg7p"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.4, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_d8kky"]
+curve = SubResource("Curve_aeg7p")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wrmgc"]
+lifetime_randomness = 0.2
+spread = 180.0
+gravity = Vector3(0, -1, 0)
+initial_velocity_min = 0.1
+initial_velocity_max = 1.0
+damping_min = 1.0
+damping_max = 1.0
+scale_min = 0.8
+scale_max = 1.2
+scale_curve = SubResource("CurveTexture_d8kky")
+color_ramp = SubResource("GradientTexture1D_5yikv")
+anim_speed_min = 0.01
+anim_speed_max = 0.1
+
+[sub_resource type="QuadMesh" id="QuadMesh_ucjo8"]
+
 [sub_resource type="Gradient" id="Gradient_jajki"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+offsets = PackedFloat32Array(0, 0.9967, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.0264027, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_201rd"]
 gradient = SubResource("Gradient_jajki")
@@ -179,172 +364,26 @@ damping_max = 2.0
 scale_min = 0.8
 scale_max = 1.2
 scale_curve = SubResource("CurveTexture_3k7l6")
+color = Color(1, 1, 1, 0.156863)
 color_ramp = SubResource("GradientTexture1D_201rd")
 anim_speed_min = 0.1
 anim_speed_max = 0.2
 anim_offset_max = 1.0
 
-[sub_resource type="QuadMesh" id="QuadMesh_heaoi"]
-size = Vector2(6, 6)
-
-[sub_resource type="Animation" id="Animation_jc2b7"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/light_intensity")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [2.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/light_progress")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/head_elevation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-0.5]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/head_grow")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-0.5]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/voronoi_offset")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/deformation_amount")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.0]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/alpha_progress")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/face_intensity")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [2.0]
-}
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("Explosion/MushroomCloud:scale")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(1, 1, 1)]
-}
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("Explosion/SmallAmber:emitting")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/10/type = "value"
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/path = NodePath("Explosion/BigAmber:emitting")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/11/type = "value"
-tracks/11/imported = false
-tracks/11/enabled = true
-tracks/11/path = NodePath("Explosion/SmokeParticles:emitting")
-tracks/11/interp = 1
-tracks/11/loop_wrap = true
-tracks/11/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
+[sub_resource type="QuadMesh" id="QuadMesh_4y0pq"]
+size = Vector2(4, 4)
 
 [sub_resource type="Animation" id="Animation_0s4lf"]
 resource_name = "default"
-length = 4.5
+length = 5.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/light_intensity")
+tracks/0/path = NodePath("MushroomCloud:material_override:shader_parameter/light_intensity")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 4.5),
+"times": PackedFloat32Array(0.1, 4.5),
 "transitions": PackedFloat32Array(0.8, 1),
 "update": 0,
 "values": [2.0, 0.0]
@@ -352,11 +391,11 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/light_progress")
+tracks/1/path = NodePath("MushroomCloud:material_override:shader_parameter/light_progress")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 4.5),
+"times": PackedFloat32Array(0.1, 4.5),
 "transitions": PackedFloat32Array(1.2, 1),
 "update": 0,
 "values": [0.0, 1.0]
@@ -364,11 +403,11 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/head_elevation")
+tracks/2/path = NodePath("MushroomCloud:material_override:shader_parameter/head_elevation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 4.5),
+"times": PackedFloat32Array(0.1, 4.5),
 "transitions": PackedFloat32Array(0.4, 1),
 "update": 0,
 "values": [-1.0, 0.5]
@@ -376,11 +415,11 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/head_grow")
+tracks/3/path = NodePath("MushroomCloud:material_override:shader_parameter/head_grow")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 4.5),
+"times": PackedFloat32Array(0.1, 4.5),
 "transitions": PackedFloat32Array(0.4, 1),
 "update": 0,
 "values": [-1.0, 0.5]
@@ -388,11 +427,11 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/voronoi_offset")
+tracks/4/path = NodePath("MushroomCloud:material_override:shader_parameter/voronoi_offset")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 4.5),
+"times": PackedFloat32Array(0.1, 4.5),
 "transitions": PackedFloat32Array(0.9, 1),
 "update": 0,
 "values": [0.0, 0.4]
@@ -400,11 +439,11 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/deformation_amount")
+tracks/5/path = NodePath("MushroomCloud:material_override:shader_parameter/deformation_amount")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 4.5),
+"times": PackedFloat32Array(0.1, 4.5),
 "transitions": PackedFloat32Array(0.8, 1),
 "update": 0,
 "values": [0.8, 1.0]
@@ -412,11 +451,11 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/alpha_progress")
+tracks/6/path = NodePath("MushroomCloud:material_override:shader_parameter/alpha_progress")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(2.5, 4.5),
+"times": PackedFloat32Array(3.5, 4.5),
 "transitions": PackedFloat32Array(1.2, 1),
 "update": 0,
 "values": [0.0, 1.0]
@@ -424,31 +463,31 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Explosion/MushroomCloud:material_override:shader_parameter/face_intensity")
+tracks/7/path = NodePath("MushroomCloud:material_override:shader_parameter/face_intensity")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PackedFloat32Array(3, 4.5),
-"transitions": PackedFloat32Array(1.8, 1),
+"times": PackedFloat32Array(2.5, 4.5),
+"transitions": PackedFloat32Array(0.2, 1),
 "update": 0,
 "values": [3.0, 0.0]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("Explosion/MushroomCloud:scale")
+tracks/8/path = NodePath("MushroomCloud:scale")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(0.2, 1),
+"times": PackedFloat32Array(0.1, 1),
+"transitions": PackedFloat32Array(0.4, 1),
 "update": 0,
-"values": [Vector3(0.1, 0.4, 0.1), Vector3(1, 1, 1)]
+"values": [Vector3(0.01, 0.5, 0.01), Vector3(1, 1, 1)]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Explosion/SmallAmber:emitting")
+tracks/9/path = NodePath("SmallAmber:emitting")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -460,7 +499,7 @@ tracks/9/keys = {
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("Explosion/BigAmber:emitting")
+tracks/10/path = NodePath("BigAmber:emitting")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
@@ -472,7 +511,7 @@ tracks/10/keys = {
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("Explosion/SmokeParticles:emitting")
+tracks/11/path = NodePath("SmokeParticles:emitting")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
@@ -481,67 +520,370 @@ tracks/11/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Flash:scale")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(10, 10, 1), Vector3(8, 8, 1)]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("Flash:material_override:shader_parameter/alpha")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("Flash:material_override:shader_parameter/intensity")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [8.0, 0.0]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("Flash:material_override:shader_parameter/progress")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.5, 1.0, 0.8]
+}
+tracks/16/type = "value"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("ExplosionRing:scale")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(0, 2.5),
+"transitions": PackedFloat32Array(0.4, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(2.2, 2.2, 2.2)]
+}
+tracks/17/type = "value"
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/path = NodePath("ExplosionRing:material_override:shader_parameter/alpha")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = {
+"times": PackedFloat32Array(0, 0.5, 2.5),
+"transitions": PackedFloat32Array(1.8, 1.8, 1),
+"update": 0,
+"values": [0.0, 1.0, 0.0]
+}
+tracks/18/type = "value"
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/path = NodePath("ExplosionRing:material_override:shader_parameter/dissolve")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = {
+"times": PackedFloat32Array(0, 2.5),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [0.2, 1.0]
+}
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("ExplosionRing:material_override:shader_parameter/offset")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
+"times": PackedFloat32Array(0, 2.5),
+"transitions": PackedFloat32Array(0.2, 1),
+"update": 0,
+"values": [0.0, 0.8]
+}
+tracks/20/type = "value"
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/path = NodePath("ExplosionRing2:scale")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = {
+"times": PackedFloat32Array(0.5, 3),
+"transitions": PackedFloat32Array(0.4, 1),
+"update": 0,
+"values": [Vector3(0.4, 0.4, 0.4), Vector3(2.4, 2.4, 2.4)]
+}
+tracks/21/type = "value"
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/path = NodePath("ExplosionRing2:material_override:shader_parameter/alpha")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/keys = {
+"times": PackedFloat32Array(0.5, 1, 3),
+"transitions": PackedFloat32Array(1.8, 1.8, 1),
+"update": 0,
+"values": [0.0, 1.0, 0.0]
+}
+tracks/22/type = "value"
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/path = NodePath("ExplosionRing2:material_override:shader_parameter/dissolve")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/keys = {
+"times": PackedFloat32Array(0.5, 3),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [0.2, 1.0]
+}
+tracks/23/type = "value"
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/path = NodePath("ExplosionRing2:material_override:shader_parameter/offset")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/keys = {
+"times": PackedFloat32Array(0.5, 3),
+"transitions": PackedFloat32Array(0.2, 1),
+"update": 0,
+"values": [0.0, 0.8]
+}
+tracks/24/type = "value"
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/path = NodePath("ExplosionRing:material_override:shader_parameter/intensity")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/keys = {
+"times": PackedFloat32Array(0.5, 1.5),
+"transitions": PackedFloat32Array(0.4, 0.4),
+"update": 0,
+"values": [4.0, 2.0]
+}
+tracks/25/type = "value"
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/path = NodePath("ExplosionRing2:material_override:shader_parameter/intensity")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/keys = {
+"times": PackedFloat32Array(1, 2),
+"transitions": PackedFloat32Array(0.4, 0.4),
+"update": 0,
+"values": [4.0, 2.0]
+}
+tracks/26/type = "value"
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/path = NodePath("WindRing:material_override:shader_parameter/alpha")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/keys = {
+"times": PackedFloat32Array(0.8, 1.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+tracks/27/type = "value"
+tracks/27/imported = false
+tracks/27/enabled = true
+tracks/27/path = NodePath("WindRing:scale")
+tracks/27/interp = 1
+tracks/27/loop_wrap = true
+tracks/27/keys = {
+"times": PackedFloat32Array(0, 1.4),
+"transitions": PackedFloat32Array(0.8, 1),
+"update": 0,
+"values": [Vector3(0.1, 1, 0.1), Vector3(2, 1, 2)]
+}
+tracks/28/type = "value"
+tracks/28/imported = false
+tracks/28/enabled = true
+tracks/28/path = NodePath("WindRing:material_override:shader_parameter/offset")
+tracks/28/interp = 1
+tracks/28/loop_wrap = true
+tracks/28/keys = {
+"times": PackedFloat32Array(0, 1.4),
+"transitions": PackedFloat32Array(0.8, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/29/type = "value"
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/path = NodePath("WindRing:material_override:shader_parameter/dissolve")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/keys = {
+"times": PackedFloat32Array(0.8, 1.4),
+"transitions": PackedFloat32Array(1.8, 1),
+"update": 0,
+"values": [0.2, 1.0]
+}
+tracks/30/type = "value"
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/path = NodePath("WindHalo:scale")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.4, 1),
+"update": 0,
+"values": [Vector3(0.2, 0.2, 0.2), Vector3(4, 4, 4)]
+}
+tracks/31/type = "value"
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/path = NodePath("WindHalo:material_override:shader_parameter/dissolve")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1.2, 1),
+"update": 0,
+"values": [0.1, 0.5]
+}
+tracks/32/type = "value"
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/path = NodePath("WindHalo:material_override:shader_parameter/alpha")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/keys = {
+"times": PackedFloat32Array(0.4, 1),
+"transitions": PackedFloat32Array(1.2, 1),
+"update": 0,
+"values": [0.2, 0.0]
+}
+tracks/33/type = "value"
+tracks/33/imported = false
+tracks/33/enabled = true
+tracks/33/path = NodePath("WindHalo:material_override:shader_parameter/offset")
+tracks/33/interp = 1
+tracks/33/loop_wrap = true
+tracks/33/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(0.8, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g78rw"]
 _data = {
-"RESET": SubResource("Animation_jc2b7"),
 "default": SubResource("Animation_0s4lf")
 }
 
 [node name="Explosion" type="Node3D"]
+script = ExtResource("1_j65v5")
 
 [node name="MushroomCloud" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.01, 0, 0, 0, 0.5, 0, 0, 0, 0.01, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_n81kn")
 mesh = ExtResource("3_wo6ls")
 skeleton = NodePath("../..")
 
+[node name="Flash" type="MeshInstance3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 1, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_dnxui")
+mesh = SubResource("QuadMesh_hjugf")
+
 [node name="ExplosionRing" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.26067, 0)
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1.26067, 0)
 material_override = SubResource("ShaderMaterial_xywtw")
+transparency = 1.0
 mesh = ExtResource("5_rwskj")
 skeleton = NodePath("../..")
 
+[node name="ExplosionRing2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 2.36067, 0)
+material_override = SubResource("ShaderMaterial_8ut4y")
+transparency = 1.0
+mesh = ExtResource("5_rwskj")
+skeleton = NodePath("../..")
+
+[node name="WindRing" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_mysys")
+mesh = ExtResource("7_unrnf")
+
+[node name="WindHalo" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_0rcyk")
+mesh = ExtResource("10_a5hdn")
+
 [node name="SmallAmber" type="GPUParticles3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
 material_override = SubResource("ShaderMaterial_bhcv4")
 cast_shadow = 0
 emitting = false
-amount = 32
+amount = 64
 lifetime = 3.0
 one_shot = true
 explosiveness = 0.98
-visibility_aabb = AABB(-5.67313, -2.62739, -4.18276, 11.6224, 7.72013, 9.81926)
+visibility_aabb = AABB(-14.023, -18.7237, -17.0081, 30.0982, 32.1906, 31.8265)
 transform_align = 2
-trail_enabled = true
+trail_lifetime = 0.1
 process_material = SubResource("ParticleProcessMaterial_13iqb")
-draw_pass_1 = SubResource("RibbonTrailMesh_gelv7")
+draw_pass_1 = SubResource("QuadMesh_4ail6")
 
 [node name="BigAmber" type="GPUParticles3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
 material_override = SubResource("ShaderMaterial_8q34b")
 cast_shadow = 0
 emitting = false
-amount = 16
-lifetime = 3.0
+amount = 12
+sub_emitter = NodePath("../AmberSmoke")
+lifetime = 2.8
 one_shot = true
-preprocess = 0.1
-explosiveness = 0.95
-visibility_aabb = AABB(-5.67313, -2.62739, -4.18276, 11.6224, 7.72013, 9.81926)
-transform_align = 2
+explosiveness = 1.0
+visibility_aabb = AABB(-7.10894, -16.8838, -8.29671, 18.5304, 29.9743, 19.0983)
+transform_align = 3
 trail_enabled = true
-process_material = SubResource("ParticleProcessMaterial_2sscx")
+process_material = SubResource("ParticleProcessMaterial_0b3yh")
 draw_pass_1 = SubResource("RibbonTrailMesh_x3tbe")
 
-[node name="SmokeParticles" type="GPUParticles3D" parent="."]
-material_override = SubResource("ShaderMaterial_ock53")
+[node name="AmberSmoke" type="GPUParticles3D" parent="."]
+unique_name_in_owner = true
+material_override = SubResource("ShaderMaterial_xhkwm")
+cast_shadow = 0
 emitting = false
-amount = 32
-lifetime = 3.0
+amount = 1024
+lifetime = 0.8
+visibility_aabb = AABB(-8.31646, -12.0898, -8.33608, 17.4123, 25.8087, 15.9261)
+process_material = SubResource("ParticleProcessMaterial_wrmgc")
+draw_pass_1 = SubResource("QuadMesh_ucjo8")
+
+[node name="SmokeParticles" type="GPUParticles3D" parent="."]
+material_override = ExtResource("10_b1uvi")
+emitting = false
+amount = 128
+lifetime = 4.0
 one_shot = true
 explosiveness = 0.98
 process_material = SubResource("ParticleProcessMaterial_xc33t")
-draw_pass_1 = SubResource("QuadMesh_heaoi")
+draw_pass_1 = SubResource("QuadMesh_4y0pq")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("../..")
+unique_name_in_owner = true
 libraries = {
 "": SubResource("AnimationLibrary_g78rw")
 }
