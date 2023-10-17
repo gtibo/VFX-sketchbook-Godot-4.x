@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://cmd0w1rvl6fdf"]
+[gd_scene load_steps=9 format=3 uid="uid://cmd0w1rvl6fdf"]
 
 [ext_resource type="Script" path="res://effects/halloween_explosion/halloween_explosion_preview.gd" id="1_2483p"]
+[ext_resource type="PackedScene" uid="uid://ldem8o2w0156" path="res://effects/halloween_explosion/jack_o_lantern.tscn" id="3_eyjss"]
 [ext_resource type="PackedScene" uid="uid://cmj5l6xu36itg" path="res://turner/turner.tscn" id="6_8f17f"]
 
 [sub_resource type="Environment" id="Environment_abe8a"]
@@ -60,5 +61,8 @@ transform = Transform3D(0.906308, 0.365998, -0.211309, 0, 0.5, 0.866025, 0.42261
 shadow_enabled = true
 directional_shadow_max_distance = 40.0
 directional_shadow_pancake_size = 10.0
+
+[node name="JackOLantern" parent="." instance=ExtResource("3_eyjss")]
+unique_name_in_owner = true
 
 [editable path="Turner"]
