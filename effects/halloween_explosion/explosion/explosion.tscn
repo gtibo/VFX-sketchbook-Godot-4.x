@@ -1,4 +1,4 @@
-[gd_scene load_steps=82 format=3 uid="uid://ded773nlri6oa"]
+[gd_scene load_steps=86 format=3 uid="uid://ded773nlri6oa"]
 
 [ext_resource type="Shader" path="res://effects/halloween_explosion/mushroom_cloud.gdshader" id="1_bwjom"]
 [ext_resource type="Script" path="res://effects/halloween_explosion/explosion/explosion.gd" id="1_j65v5"]
@@ -13,16 +13,17 @@
 [ext_resource type="Shader" path="res://effects/halloween_explosion/materials/wind_halo.gdshader" id="9_6fsvf"]
 [ext_resource type="ArrayMesh" uid="uid://bi5h5leket31d" path="res://effects/halloween_explosion/half_sphere.obj" id="10_a5hdn"]
 [ext_resource type="Material" uid="uid://b4gsnk2ub773i" path="res://effects/halloween_explosion/materials/explosion_smoke_mat.tres" id="10_b1uvi"]
+[ext_resource type="Shader" path="res://effects/halloween_explosion/explosion/fire_ring.gdshader" id="10_w5rm5"]
 [ext_resource type="Shader" path="res://effects/halloween_explosion/materials/ground_cracks.gdshader" id="12_io2pk"]
 [ext_resource type="Texture2D" uid="uid://cndbqos5215b8" path="res://effects/halloween_explosion/materials/ground_cracks.png" id="13_dpotr"]
 [ext_resource type="Shader" path="res://effects/halloween_explosion/smoke_particles.gdshader" id="14_l5ovb"]
 
 [sub_resource type="Curve" id="Curve_ws3qy"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.9, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Curve" id="Curve_p7iow"]
-_data = [Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.9, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Curve" id="Curve_20yrm"]
@@ -46,18 +47,18 @@ noise = SubResource("FastNoiseLite_va4jf")
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("1_bwjom")
-shader_parameter/face_intensity = 0.706326
+shader_parameter/face_intensity = 3.0
 shader_parameter/light_color = Color(1, 0.364706, 0.0352941, 1)
 shader_parameter/smoke_color = Color(0.239216, 0.14902, 0.184314, 1)
-shader_parameter/voronoi_offset = 0.279216
+shader_parameter/voronoi_offset = 0.0501749
 shader_parameter/height_curve_sampler = SubResource("CurveXYZTexture_b77wq")
 shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_4pwng")
 shader_parameter/face_sampler = ExtResource("2_s5g8r")
-shader_parameter/deformation_amount = 0.948004
-shader_parameter/head_grow = 0.398614
-shader_parameter/head_elevation = 0.398614
-shader_parameter/light_intensity = 0.519963
-shader_parameter/light_progress = 0.606958
+shader_parameter/deformation_amount = 0.827994
+shader_parameter/head_grow = -0.609484
+shader_parameter/head_elevation = -0.609484
+shader_parameter/light_intensity = 1.72007
+shader_parameter/light_progress = 0.0735564
 shader_parameter/alpha_progress = 0.0
 shader_parameter/smooth_amount = 0.2
 
@@ -121,10 +122,10 @@ noise = SubResource("FastNoiseLite_boslw")
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("4_xlt4k")
-shader_parameter/alpha = 0.0
-shader_parameter/intensity = 2.0
-shader_parameter/offset = 0.8
-shader_parameter/dissolve = 1.0
+shader_parameter/alpha = 0.995449
+shader_parameter/intensity = 3.53687
+shader_parameter/offset = 0.597158
+shader_parameter/dissolve = 0.24608
 shader_parameter/dissolve_smoothness = 0.04
 shader_parameter/noise_sampler = SubResource("NoiseTexture2D_ehyor")
 shader_parameter/gradient_sampler = SubResource("GradientTexture1D_s1uk8")
@@ -145,10 +146,10 @@ noise = SubResource("FastNoiseLite_qw1y6")
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("4_xlt4k")
-shader_parameter/alpha = 0.0
-shader_parameter/intensity = 2.0
-shader_parameter/offset = 0.8
-shader_parameter/dissolve = 1.0
+shader_parameter/alpha = 0.0551892
+shader_parameter/intensity = 4.0
+shader_parameter/offset = 0.147702
+shader_parameter/dissolve = 0.20128
 shader_parameter/dissolve_smoothness = 0.04
 shader_parameter/noise_sampler = SubResource("NoiseTexture2D_csaks")
 shader_parameter/gradient_sampler = SubResource("GradientTexture1D_op0xo")
@@ -166,14 +167,35 @@ noise = SubResource("FastNoiseLite_j4dv8")
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("8_5i77t")
-shader_parameter/alpha = 0.0
-shader_parameter/offset = 1.0
-shader_parameter/dissolve = 1.0
+shader_parameter/alpha = 1.0
+shader_parameter/offset = 0.503176
+shader_parameter/dissolve = 0.2
 shader_parameter/dissolve_smoothness = 0.1
 shader_parameter/noise_sampler = SubResource("NoiseTexture2D_ncayl")
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_u0gyt"]
+noise_type = 2
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vjptn"]
+width = 1024
+seamless = true
+noise = SubResource("FastNoiseLite_u0gyt")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bdxtj"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("10_w5rm5")
+shader_parameter/alpha = 1.0
+shader_parameter/intensity = 3.0
+shader_parameter/offset = 0.0
+shader_parameter/dissolve = 0.5
+shader_parameter/dissolve_smoothness = 0.04
+shader_parameter/noise_sampler = SubResource("NoiseTexture2D_vjptn")
+shader_parameter/gradient_sampler = SubResource("GradientTexture1D_s1uk8")
+
 [sub_resource type="Curve" id="Curve_uhvus"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.8, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.8, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 10.3333, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="CurveTexture" id="CurveTexture_32ak6"]
@@ -193,10 +215,10 @@ noise = SubResource("FastNoiseLite_6dpog")
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("9_6fsvf")
-shader_parameter/alpha = 0.0
-shader_parameter/dissolve = 0.5
+shader_parameter/alpha = 0.146484
+shader_parameter/dissolve = 0.316691
 shader_parameter/dissolve_smoothness = 0.2
-shader_parameter/offset = 1.0
+shader_parameter/offset = 0.579552
 shader_parameter/alpha_curve_sampler = SubResource("CurveTexture_32ak6")
 shader_parameter/noise_sampler = SubResource("NoiseTexture2D_rnob3")
 
@@ -204,6 +226,7 @@ shader_parameter/noise_sampler = SubResource("NoiseTexture2D_rnob3")
 render_priority = 0
 shader = ExtResource("12_io2pk")
 shader_parameter/light_color = Color(1, 0.34902, 0, 1)
+shader_parameter/intensity = 3.0
 shader_parameter/progress = 1.0
 shader_parameter/alpha = 1.0
 shader_parameter/cracks_sampler = ExtResource("13_dpotr")
@@ -255,13 +278,13 @@ void fragment() {
 	vec3 gradient = texture(gradient_sampler, vec2(UV.y, 0.0)).rgb;
 	float mask = (1.0 - UV.y);
 	ALBEDO = gradient;
-	EMISSION = gradient * 2.5 * mask * COLOR.a;
+	EMISSION = gradient * 2.0 * mask * COLOR.a;
 	ALPHA = step(0.2, sin(UV.x * PI) * sin(UV.y * PI)) * mask * COLOR.a;
 }
 "
 
 [sub_resource type="Gradient" id="Gradient_l7hrn"]
-colors = PackedColorArray(1, 0.466667, 0, 1, 0, 0, 0, 1)
+colors = PackedColorArray(1, 0.216667, 0, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_2yx4m"]
 gradient = SubResource("Gradient_l7hrn")
@@ -426,6 +449,66 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("FireRing:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 0.624, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("FireRing:material_override:shader_parameter/dissolve")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("FireRing:material_override:shader_parameter/offset")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("FireRing:material_override:shader_parameter/intensity")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("GroundCracks:material_override:shader_parameter/intensity")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.0]
 }
 
 [sub_resource type="Animation" id="Animation_0s4lf"]
@@ -681,7 +764,7 @@ tracks/20/keys = {
 "times": PackedFloat32Array(0.5, 3),
 "transitions": PackedFloat32Array(0.4, 1),
 "update": 0,
-"values": [Vector3(0.4, 0.4, 0.4), Vector3(2.4, 2.4, 2.4)]
+"values": [Vector3(0.4, 0.4, 0.4), Vector3(2.6, 2.6, 2.6)]
 }
 tracks/21/type = "value"
 tracks/21/imported = false
@@ -746,26 +829,26 @@ tracks/25/keys = {
 tracks/26/type = "value"
 tracks/26/imported = false
 tracks/26/enabled = true
-tracks/26/path = NodePath("WindRing:material_override:shader_parameter/alpha")
+tracks/26/path = NodePath("WindRing:scale")
 tracks/26/interp = 1
 tracks/26/loop_wrap = true
 tracks/26/keys = {
-"times": PackedFloat32Array(0.8, 1.4),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [1.0, 0.0]
-}
-tracks/27/type = "value"
-tracks/27/imported = false
-tracks/27/enabled = true
-tracks/27/path = NodePath("WindRing:scale")
-tracks/27/interp = 1
-tracks/27/loop_wrap = true
-tracks/27/keys = {
 "times": PackedFloat32Array(0, 1.4),
 "transitions": PackedFloat32Array(0.8, 1),
 "update": 0,
 "values": [Vector3(0.1, 1, 0.1), Vector3(2, 1, 2)]
+}
+tracks/27/type = "value"
+tracks/27/imported = false
+tracks/27/enabled = true
+tracks/27/path = NodePath("WindRing:material_override:shader_parameter/alpha")
+tracks/27/interp = 1
+tracks/27/loop_wrap = true
+tracks/27/keys = {
+"times": PackedFloat32Array(0.8, 1.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
 }
 tracks/28/type = "value"
 tracks/28/imported = false
@@ -858,10 +941,10 @@ tracks/35/path = NodePath("GroundCracks:material_override:shader_parameter/progr
 tracks/35/interp = 1
 tracks/35/loop_wrap = true
 tracks/35/keys = {
-"times": PackedFloat32Array(0, 0.5, 4),
-"transitions": PackedFloat32Array(0.4, 1.6, 1),
+"times": PackedFloat32Array(0, 0.4, 2, 4),
+"transitions": PackedFloat32Array(0.4, 1.6, 1.6, 1),
 "update": 0,
-"values": [0.5, 1.0, 0.5]
+"values": [0.5, 1.0, 1.0, 0.5]
 }
 tracks/36/type = "value"
 tracks/36/imported = false
@@ -875,6 +958,66 @@ tracks/36/keys = {
 "update": 0,
 "values": [1.0, 0.0]
 }
+tracks/37/type = "value"
+tracks/37/imported = false
+tracks/37/enabled = true
+tracks/37/path = NodePath("FireRing:scale")
+tracks/37/interp = 1
+tracks/37/loop_wrap = true
+tracks/37/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.8, 1),
+"update": 0,
+"values": [Vector3(0.1, 1, 0.1), Vector3(3, 2, 3)]
+}
+tracks/38/type = "value"
+tracks/38/imported = false
+tracks/38/enabled = true
+tracks/38/path = NodePath("FireRing:material_override:shader_parameter/dissolve")
+tracks/38/interp = 1
+tracks/38/loop_wrap = true
+tracks/38/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1.8, 1),
+"update": 0,
+"values": [0.1, 1.0]
+}
+tracks/39/type = "value"
+tracks/39/imported = false
+tracks/39/enabled = true
+tracks/39/path = NodePath("FireRing:material_override:shader_parameter/offset")
+tracks/39/interp = 1
+tracks/39/loop_wrap = true
+tracks/39/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.8, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/40/type = "value"
+tracks/40/imported = false
+tracks/40/enabled = true
+tracks/40/path = NodePath("FireRing:material_override:shader_parameter/intensity")
+tracks/40/interp = 1
+tracks/40/loop_wrap = true
+tracks/40/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [4.0, 3.0]
+}
+tracks/41/type = "value"
+tracks/41/imported = false
+tracks/41/enabled = true
+tracks/41/path = NodePath("GroundCracks:material_override:shader_parameter/intensity")
+tracks/41/interp = 1
+tracks/41/loop_wrap = true
+tracks/41/keys = {
+"times": PackedFloat32Array(0, 0.4, 2),
+"transitions": PackedFloat32Array(0.4, 1.4, 1),
+"update": 0,
+"values": [1.0, 3.0, 1.0]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g78rw"]
 _data = {
@@ -886,6 +1029,7 @@ _data = {
 script = ExtResource("1_j65v5")
 
 [node name="MushroomCloud" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.86963, 0, 0, 0, 0.934156, 0, 0, 0, 0.86963, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_n81kn")
 mesh = ExtResource("3_wo6ls")
 skeleton = NodePath("../..")
@@ -896,31 +1040,36 @@ material_override = SubResource("ShaderMaterial_dnxui")
 mesh = SubResource("QuadMesh_hjugf")
 
 [node name="ExplosionRing" type="MeshInstance3D" parent="."]
-transform = Transform3D(2.2, 0, 0, 0, 2.2, 0, 0, 0, 2.2, 0, 1.26067, 0)
+transform = Transform3D(1.09221, 0, 0, 0, 1.09221, 0, 0, 0, 1.09221, 0, 1.35, 0)
 material_override = SubResource("ShaderMaterial_xywtw")
 transparency = 1.0
 mesh = ExtResource("5_rwskj")
 skeleton = NodePath("../..")
 
 [node name="ExplosionRing2" type="MeshInstance3D" parent="."]
-transform = Transform3D(2.4, 0, 0, 0, 2.4, 0, 0, 0, 2.4, 0, 2.36067, 0)
+transform = Transform3D(0.613444, 0, 0, 0, 0.613444, 0, 0, 0, 0.613444, 0, 2.8, 0)
 material_override = SubResource("ShaderMaterial_8ut4y")
 transparency = 1.0
 mesh = ExtResource("5_rwskj")
 skeleton = NodePath("../..")
 
 [node name="WindRing" type="MeshInstance3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0)
+transform = Transform3D(1.05603, 0, 0, 0, 1, 0, 0, 0, 1.05603, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_mysys")
 mesh = ExtResource("7_unrnf")
 
+[node name="FireRing" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.624, 0, 0, 0, 1, 0, -0.25, 0)
+material_override = SubResource("ShaderMaterial_bdxtj")
+mesh = ExtResource("7_unrnf")
+
 [node name="WindHalo" type="MeshInstance3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+transform = Transform3D(3.61547, 0, 0, 0, 3.61547, 0, 0, 0, 3.61547, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_0rcyk")
 mesh = ExtResource("10_a5hdn")
 
 [node name="GroundCracks" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.01, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.001, 0)
 material_override = SubResource("ShaderMaterial_g8yfq")
 mesh = SubResource("QuadMesh_4h3hr")
 
