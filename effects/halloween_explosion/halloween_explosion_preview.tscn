@@ -54,6 +54,7 @@ min_zoom = 8.0
 max_zoom = 12.0
 
 [node name="Camera3D" parent="Turner" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 fov = 50.0
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]

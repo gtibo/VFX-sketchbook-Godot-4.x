@@ -1,6 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://cmj5l6xu36itg"]
+[gd_scene load_steps=5 format=3 uid="uid://cmj5l6xu36itg"]
 
 [ext_resource type="Script" path="res://turner/turner.gd" id="1_id7nv"]
+[ext_resource type="Script" path="res://turner/camera.gd" id="2_0tjld"]
+
+[sub_resource type="Curve" id="Curve_8fej1"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_b4ja4"]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="Turner" type="Node3D"]
 script = ExtResource("1_id7nv")
@@ -9,3 +18,6 @@ script = ExtResource("1_id7nv")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 0, 0)
 fov = 60.0
+script = ExtResource("2_0tjld")
+shake_amount = SubResource("Curve_8fej1")
+shake_duration = SubResource("Curve_b4ja4")

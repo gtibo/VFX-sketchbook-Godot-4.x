@@ -6,7 +6,7 @@
 [ext_resource type="Material" uid="uid://btc57c1fm5im1" path="res://effects/water_hand/materials/water_hand_mat.tres" id="2_nopph"]
 [ext_resource type="Script" path="res://effects/water_hand/mesh/water_hand.gd" id="3_f3c4c"]
 [ext_resource type="Texture2D" uid="uid://3ro0yvv3roj3" path="res://assets/checkerboard.svg" id="3_ky0hy"]
-[ext_resource type="Script" path="res://effects/water_hand/scripts/camera.gd" id="6_lw2pg"]
+[ext_resource type="Script" path="res://turner/camera.gd" id="6_lw2pg"]
 [ext_resource type="Script" path="res://effects/water_hand/scripts/target.gd" id="8_o6qfi"]
 [ext_resource type="PackedScene" uid="uid://obrsol71nwet" path="res://effects/water_hand/scripts/water_splash.tscn" id="8_qiyem"]
 [ext_resource type="Shader" path="res://effects/water_hand/materials/wet_spot.gdshader" id="9_428na"]

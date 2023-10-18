@@ -1,6 +1,7 @@
 extends Node3D
 
 @onready var jack_o_lantern = %JackOLantern
+@onready var camera : Camera3D = $Turner/Camera3D
 var explosion_scene : PackedScene = preload("./explosion/explosion.tscn")
 
 func _ready():
@@ -16,4 +17,5 @@ func explode():
 	await get_tree().process_frame
 	var explosion = explosion_scene.instantiate()
 	add_child(explosion)
+	camera.shake()
 	explosion.tree_exited.connect(jack_o_lantern.idle)
