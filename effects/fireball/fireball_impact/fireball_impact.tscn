@@ -17,20 +17,21 @@ colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
 gradient = SubResource("Gradient_cw14b")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8awvl"]
-lifetime_randomness = 0.2
+lifetime_randomness = 0.25
 direction = Vector3(0, 1, 0)
-spread = 60.0
-gravity = Vector3(0, -4, 0)
-initial_velocity_min = 4.0
-initial_velocity_max = 6.0
+spread = 35.0
+initial_velocity_min = 6.0
+initial_velocity_max = 16.0
 damping_min = 4.0
 damping_max = 6.0
-scale_min = 0.8
-scale_max = 1.4
+scale_min = 0.4
 color = Color(1, 0.435294, 0, 1)
 color_ramp = SubResource("GradientTexture1D_n3swa")
 sub_emitter_mode = 1
 sub_emitter_frequency = 60.0
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.45
 
 [sub_resource type="Curve" id="Curve_8pxu3"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -39,6 +40,7 @@ point_count = 2
 [sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_dkwft"]
 shape = 0
 size = 0.1
+section_length = 0.06
 curve = SubResource("Curve_8pxu3")
 
 [sub_resource type="Shader" id="Shader_hecxx"]
@@ -199,81 +201,6 @@ shader_parameter/gradient_sampler = SubResource("CurveXYZTexture_tn2i0")
 
 [sub_resource type="QuadMesh" id="QuadMesh_cr0ao"]
 
-[sub_resource type="Animation" id="Animation_y511v"]
-resource_name = "default"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Anchor/FireTrail:emitting")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Anchor/FireSmoke:emitting")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Anchor/FireAmber:emitting")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Flash:material_override:shader_parameter/intensity")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.075),
-"transitions": PackedFloat32Array(-2, -2, -2),
-"update": 0,
-"values": [3.0, 4.0, 0.0]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Flash:material_override:shader_parameter/scale")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.075),
-"transitions": PackedFloat32Array(-2, -2, -2),
-"update": 0,
-"values": [0.4, 1.25, 0.4]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Flash:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.075),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, false]
-}
-
 [sub_resource type="Animation" id="Animation_y434m"]
 length = 0.001
 tracks/0/type = "value"
@@ -349,6 +276,81 @@ tracks/5/keys = {
 "values": [true]
 }
 
+[sub_resource type="Animation" id="Animation_y511v"]
+resource_name = "default"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Anchor/FireTrail:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Anchor/FireSmoke:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Anchor/FireAmber:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Flash:material_override:shader_parameter/intensity")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.075),
+"transitions": PackedFloat32Array(-2, -2, -2),
+"update": 0,
+"values": [3.0, 4.0, 0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Flash:material_override:shader_parameter/scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.075),
+"transitions": PackedFloat32Array(-2, -2, -2),
+"update": 0,
+"values": [0.4, 1.25, 0.4]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Flash:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.075),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_6b8kc"]
 _data = {
 "RESET": SubResource("Animation_y434m"),
@@ -364,11 +366,14 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 
 [node name="FireTrail" type="GPUParticles3D" parent="Anchor"]
 material_override = SubResource("ShaderMaterial_gfrja")
 emitting = false
+amount = 4
 lifetime = 0.6
 one_shot = true
-explosiveness = 0.9
-transform_align = 2
+preprocess = 0.03
+explosiveness = 0.95
+transform_align = 3
 trail_enabled = true
+trail_lifetime = 0.2
 process_material = SubResource("ParticleProcessMaterial_8awvl")
 draw_pass_1 = SubResource("RibbonTrailMesh_dkwft")
 

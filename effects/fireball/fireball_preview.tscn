@@ -80,4 +80,8 @@ min_zoom = 4.0
 [node name="Camera3D" parent="Turner" index="0"]
 current = true
 
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+size = Vector3(20, 1, 20)
+
 [editable path="Turner"]
