@@ -1,6 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://bd7nghkrp3ghf"]
+[gd_scene load_steps=12 format=3 uid="uid://bd7nghkrp3ghf"]
 
 [ext_resource type="Script" path="res://effects/fireball/fireball_preview.gd" id="1_ma3af"]
+[ext_resource type="PackedScene" uid="uid://ddjouhm76gjbx" path="res://assets/dummy/dummy_skin.tscn" id="2_0f8y6"]
 [ext_resource type="Script" path="res://effects/fireball/scripts/target.gd" id="2_k3ix7"]
 [ext_resource type="Script" path="res://resources/hit/hit_box_3d.gd" id="2_tsyxn"]
 [ext_resource type="Shader" path="res://assets/ground_checkerboard.gdshader" id="5_xhsg4"]
@@ -16,16 +17,8 @@ tonemap_mode = 2
 glow_enabled = true
 glow_strength = 0.9
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fdun6"]
-albedo_color = Color(0.18, 0.18, 0.18, 1)
-emission_enabled = true
-emission = Color(0.960784, 0.192157, 0, 1)
-emission_energy_multiplier = 0.0
-rim_tint = 1.0
-
-[sub_resource type="SphereMesh" id="SphereMesh_b80ro"]
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_2qin4"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_v5hsk"]
+height = 1.4
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yakff"]
 render_priority = -128
@@ -42,11 +35,16 @@ script = ExtResource("1_ma3af")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_qgqtj")
 
-[node name="Target" type="MeshInstance3D" parent="."]
+[node name="DummyAnchor" type="Node3D" parent="."]
+transform = Transform3D(1.20741, 0, -0.323524, 0, 1.25, 0, 0.323524, 0, 1.20741, 4, 0, 0)
+
+[node name="DummySkin" parent="DummyAnchor" instance=ExtResource("2_0f8y6")]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 0)
-material_override = SubResource("StandardMaterial3D_fdun6")
-mesh = SubResource("SphereMesh_b80ro")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Target" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.8, 0)
 script = ExtResource("2_k3ix7")
 metadata/_edit_group_ = true
 
@@ -55,7 +53,7 @@ unique_name_in_owner = true
 script = ExtResource("2_tsyxn")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Target/HitBox"]
-shape = SubResource("SphereShape3D_2qin4")
+shape = SubResource("CapsuleShape3D_v5hsk")
 
 [node name="Output" type="Marker3D" parent="."]
 unique_name_in_owner = true
@@ -64,6 +62,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 0)
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.906308, 0.298836, -0.298836, 0, 0.707107, 0.707107, 0.422618, -0.640856, 0.640856, 0, 0, 0)
 shadow_enabled = true
+directional_shadow_max_distance = 40.0
+directional_shadow_pancake_size = 10.0
 
 [node name="ShotTimeout" type="Timer" parent="."]
 wait_time = 0.1

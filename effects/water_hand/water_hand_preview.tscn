@@ -1,8 +1,7 @@
-[gd_scene load_steps=55 format=3 uid="uid://dsv6r37ingeaf"]
+[gd_scene load_steps=56 format=3 uid="uid://dsv6r37ingeaf"]
 
 [ext_resource type="Script" path="res://effects/water_hand/water_hand_preview.gd" id="1_ocyw3"]
 [ext_resource type="PackedScene" uid="uid://dfha3vt2clmfq" path="res://effects/water_hand/mesh/water_hand.glb" id="1_ul5tc"]
-[ext_resource type="Shader" path="res://assets/ground_checkerboard.gdshader" id="2_cvyox"]
 [ext_resource type="Material" uid="uid://btc57c1fm5im1" path="res://effects/water_hand/materials/water_hand_mat.tres" id="2_nopph"]
 [ext_resource type="Script" path="res://effects/water_hand/mesh/water_hand.gd" id="3_f3c4c"]
 [ext_resource type="Texture2D" uid="uid://3ro0yvv3roj3" path="res://assets/checkerboard.svg" id="3_ky0hy"]
@@ -10,6 +9,7 @@
 [ext_resource type="Script" path="res://effects/water_hand/scripts/target.gd" id="8_o6qfi"]
 [ext_resource type="PackedScene" uid="uid://obrsol71nwet" path="res://effects/water_hand/scripts/water_splash.tscn" id="8_qiyem"]
 [ext_resource type="Shader" path="res://effects/water_hand/materials/wet_spot.gdshader" id="9_428na"]
+[ext_resource type="PackedScene" uid="uid://ddjouhm76gjbx" path="res://assets/dummy/dummy_skin.tscn" id="9_hx6do"]
 [ext_resource type="Shader" path="res://effects/water_hand/materials/water_droplet_particles.gdshader" id="11_tcead"]
 [ext_resource type="Texture2D" uid="uid://dgetus6yvt1hi" path="res://effects/water_hand/textures/water_particles_shape.png" id="12_6715a"]
 [ext_resource type="Shader" path="res://effects/water_hand/materials/whirlpool.gdshader" id="13_bmyef"]
@@ -534,9 +534,22 @@ nodes/Transition/position = Vector2(0, 200)
 nodes/output/position = Vector2(200, 200)
 node_connections = [&"output", 0, &"Transition", &"Add2", 0, &"Animation", &"Add2", 1, &"Animation 2", &"Transition", 1, &"Add2"]
 
+[sub_resource type="Shader" id="Shader_bgck0"]
+code = "shader_type spatial;
+render_mode diffuse_lambert_wrap, specular_disabled, depth_prepass_alpha;
+
+uniform sampler2D checkerboard_sampler : filter_linear_mipmap_anisotropic, repeat_enable;
+uniform vec3 albedo_color : source_color;
+
+void fragment() {
+	ALBEDO = albedo_color * (texture(checkerboard_sampler, UV * 10.0).x * 0.2 + 0.8);
+	ALPHA *= smoothstep(1.0, 0.4, distance(UV, vec2(0.5)) * 2.0);
+}
+"
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ax0qd"]
 render_priority = -128
-shader = ExtResource("2_cvyox")
+shader = SubResource("Shader_bgck0")
 shader_parameter/albedo_color = Color(0.2, 0.2, 0.2, 1)
 shader_parameter/checkerboard_sampler = ExtResource("3_ky0hy")
 
@@ -904,11 +917,14 @@ script = ExtResource("8_o6qfi")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Target"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+visible = false
 mesh = SubResource("CapsuleMesh_5qwpf")
 
-[node name="Caster" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.9, 0)
-mesh = SubResource("CapsuleMesh_5qwpf")
+[node name="DummySkin" parent="Target" instance=ExtResource("9_hx6do")]
+transform = Transform3D(-5.46392e-08, 0, -1.25, 0, 1.25, 0, 1.25, 0, -5.46392e-08, 0, 0, 0)
+
+[node name="DummySkin2" parent="." instance=ExtResource("9_hx6do")]
+transform = Transform3D(0, 0, 1.25, 0, 1.25, 0, -1.25, 0, 0, -7, 0, 0)
 
 [node name="ImpactSplash" parent="." instance=ExtResource("8_qiyem")]
 unique_name_in_owner = true
