@@ -2,13 +2,12 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://77ew7sgp8vtb"
+uid="uid://dun4w5y08xrn3"
 path.s3tc="res://.godot/imported/dummy_normal.png-2813f2b310d02ef6c3da116fb22759d4.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={}
 
 [deps]
 

@@ -1,9 +1,9 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://je1p01igsoee"]
 
 [ext_resource type="Shader" path="res://assets/dummy/dummy.gdshader" id="1_es3yn"]
-[ext_resource type="Texture2D" uid="uid://iprsc07r5k8b" path="res://assets/dummy/dummy_diffuse.png" id="2_38umc"]
-[ext_resource type="Texture2D" uid="uid://77ew7sgp8vtb" path="res://assets/dummy/dummy_normal.png" id="3_eet0m"]
-[ext_resource type="Texture2D" uid="uid://bgh1xu0i8jy2q" path="res://assets/dummy/dummy_roughness.png" id="4_dbu0y"]
+[ext_resource type="Texture2D" uid="uid://bi0o8ccvuiej4" path="res://assets/dummy/dummy_diffuse.png" id="2_38umc"]
+[ext_resource type="Texture2D" uid="uid://dun4w5y08xrn3" path="res://assets/dummy/dummy_normal.png" id="3_eet0m"]
+[ext_resource type="Texture2D" uid="uid://dv0sajpiuwfv7" path="res://assets/dummy/dummy_roughness.png" id="4_dbu0y"]
 
 [resource]
 render_priority = 0
