@@ -40,7 +40,6 @@ transform = Transform3D(1.20741, 0, -0.323524, 0, 1.25, 0, 0.323524, 0, 1.20741,
 
 [node name="DummySkin" parent="DummyAnchor" instance=ExtResource("2_0f8y6")]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="Target" type="Node3D" parent="."]
 unique_name_in_owner = true

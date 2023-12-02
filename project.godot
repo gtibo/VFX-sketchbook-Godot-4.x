@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="VFX notebook"
-config/features=PackedStringArray("4.1", "Forward Plus")
+config/features=PackedStringArray("4.2", "Forward Plus")
 run/max_fps=60
 config/icon="res://sketchbook_icon.png"
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 
 [rendering]
 

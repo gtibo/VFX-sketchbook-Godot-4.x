@@ -1988,7 +1988,7 @@ nodes/OneShot/position = Vector2(40, 0)
 nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_nkngq")
 nodes/StateMachine/position = Vector2(-160, -40)
 nodes/output/position = Vector2(200, 0)
-node_connections = [&"output", 0, &"OneShot", &"Add2", 0, &"Animation 2", &"Add2", 1, &"Animation", &"OneShot", 0, &"StateMachine", &"OneShot", 1, &"Add2"]
+node_connections = [&"Add2", 0, &"Animation 2", &"Add2", 1, &"Animation", &"OneShot", 0, &"StateMachine", &"OneShot", 1, &"Add2", &"output", 0, &"OneShot"]
 
 [sub_resource type="Shader" id="Shader_afw7j"]
 code = "shader_type spatial;

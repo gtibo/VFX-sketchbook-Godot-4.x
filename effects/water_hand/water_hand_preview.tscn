@@ -532,7 +532,7 @@ nodes/Animation/position = Vector2(-420, 280)
 nodes/Transition/node = SubResource("AnimationNodeTransition_4f8kt")
 nodes/Transition/position = Vector2(0, 200)
 nodes/output/position = Vector2(200, 200)
-node_connections = [&"output", 0, &"Transition", &"Add2", 0, &"Animation", &"Add2", 1, &"Animation 2", &"Transition", 1, &"Add2"]
+node_connections = [&"Add2", 0, &"Animation", &"Add2", 1, &"Animation 2", &"Transition", 1, &"Add2", &"output", 0, &"Transition"]
 
 [sub_resource type="Shader" id="Shader_bgck0"]
 code = "shader_type spatial;
@@ -881,9 +881,13 @@ libraries = {
 
 [node name="AnimationTree" type="AnimationTree" parent="WaterHand"]
 unique_name_in_owner = true
+root_node = NodePath("%AnimationTree/..")
+libraries = {
+"": SubResource("AnimationLibrary_vclnt"),
+"custom": SubResource("AnimationLibrary_kjkoj")
+}
 tree_root = SubResource("AnimationNodeBlendTree_wejts")
 anim_player = NodePath("../AnimationPlayer")
-active = true
 parameters/Add2/add_amount = 1.0
 parameters/Transition/current_state = "none"
 parameters/Transition/transition_request = ""
@@ -891,6 +895,7 @@ parameters/Transition/current_index = 0
 
 [node name="GroundMesh" type="MeshInstance3D" parent="."]
 material_override = SubResource("ShaderMaterial_ax0qd")
+cast_shadow = 0
 mesh = SubResource("PlaneMesh_xw368")
 
 [node name="CameraAnchor" type="Node3D" parent="."]

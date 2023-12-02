@@ -102,6 +102,7 @@ mesh = ExtResource("3_e1dfy")
 
 [node name="Core" type="MeshInstance3D" parent="FireballShellMesh"]
 transform = Transform3D(3.33333, 0, 0, 0, -1.45705e-07, 3.33333, 0, -3.33333, -1.45705e-07, 0, 0, 0)
+visible = false
 material_override = SubResource("ShaderMaterial_7vae4")
 cast_shadow = 0
 mesh = SubResource("SphereMesh_77e4v")

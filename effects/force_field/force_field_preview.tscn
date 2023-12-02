@@ -92,12 +92,12 @@ curve = SubResource("Curve_ruke0")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_c0tjv"]
 lifetime_randomness = 0.5
+particle_flag_rotate_y = true
 emission_shape = 2
 emission_sphere_radius = 1.0
-particle_flag_rotate_y = true
-gravity = Vector3(0, 1, 0)
 angular_velocity_min = -40.0
 angular_velocity_max = 40.0
+gravity = Vector3(0, 1, 0)
 damping_min = 0.9
 damping_max = 0.99
 scale_min = 0.01
