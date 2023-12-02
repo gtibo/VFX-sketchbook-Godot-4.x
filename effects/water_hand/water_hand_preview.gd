@@ -3,7 +3,7 @@ extends Node3D
 @onready var water_hand = %WaterHand
 @onready var wet_player = %WetPlayer
 @onready var target = %Target
-@onready var camera_3d = %Camera3D
+@onready var camera : Camera3D = $Turner/Camera3D
 @onready var impact_splash = %ImpactSplash
 @onready var arm_impact_droplet = %ArmImpactDroplet
 @onready var hand_splash = %HandSplash
@@ -27,6 +27,6 @@ func _ready():
 	water_hand.slaped.connect(func():
 		target.hit()
 		impact_splash.splash()
-		camera_3d.shake()
+		camera.shake()
 		arm_impact_droplet.emitting = true
 		)

@@ -1,5 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://curc07g3hrmrs"]
+[gd_scene load_steps=20 format=3 uid="uid://curc07g3hrmrs"]
 
+[ext_resource type="Shader" path="res://assets/ground_checkerboard.gdshader" id="1_4q7nc"]
+[ext_resource type="Texture2D" uid="uid://3ro0yvv3roj3" path="res://assets/checkerboard.svg" id="2_gmft6"]
 [ext_resource type="Material" uid="uid://bn560w5oht3yf" path="res://effects/force_field/materials/force_field_mat.tres" id="2_hcgsd"]
 [ext_resource type="ArrayMesh" uid="uid://dluxu7kw8er3m" path="res://effects/force_field/mesh/triangle_mesh.obj" id="4_gt02u"]
 [ext_resource type="PackedScene" uid="uid://cmj5l6xu36itg" path="res://turner/turner.tscn" id="5_na51v"]
@@ -13,6 +15,44 @@ tonemap_mode = 2
 glow_enabled = true
 glow_intensity = 0.4
 glow_strength = 0.4
+
+[sub_resource type="Shader" id="Shader_uyckp"]
+code = "shader_type spatial;
+render_mode depth_draw_opaque,cull_back,unshaded;
+
+uniform vec3 albedo : source_color;
+uniform float proximity_fade_distance;
+uniform sampler2D depth_texture : hint_depth_texture, repeat_disable, filter_nearest;
+
+void fragment() {
+	ALBEDO = albedo;
+	float depth_tex = textureLod(depth_texture,SCREEN_UV,0.0).r;
+	vec4 world_pos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV*2.0-1.0,depth_tex,1.0);
+	world_pos.xyz/=world_pos.w;
+	ALPHA*=clamp(1.0-smoothstep(world_pos.z+proximity_fade_distance,world_pos.z,VERTEX.z),0.0,1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ng1c4"]
+render_priority = -128
+shader = SubResource("Shader_uyckp")
+shader_parameter/albedo = Color(0.14902, 0.14902, 0.14902, 1)
+shader_parameter/proximity_fade_distance = 8.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_najup"]
+flip_faces = true
+radius = 1.0
+is_hemisphere = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d3nsg"]
+render_priority = 0
+shader = ExtResource("1_4q7nc")
+shader_parameter/albedo_color = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/uv_scale = 20.0
+shader_parameter/checkerboard_sampler = ExtResource("2_gmft6")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_271ii"]
+size = Vector2(40, 40)
 
 [sub_resource type="SphereMesh" id="SphereMesh_cubml"]
 radius = 1.0
@@ -106,35 +146,22 @@ scale_curve = SubResource("CurveTexture_wfnxj")
 color = Color(1, 1, 1, 0.392157)
 color_ramp = SubResource("GradientTexture1D_veu78")
 
-[sub_resource type="Shader" id="Shader_dgu8j"]
-code = "shader_type spatial;
-render_mode diffuse_lambert_wrap, specular_disabled, depth_prepass_alpha;
-
-uniform sampler2D checkerboard_sampler : filter_linear_mipmap_anisotropic, repeat_enable;
-uniform vec3 albedo_color : source_color;
-
-void fragment() {
-	ALBEDO = albedo_color * (texture(checkerboard_sampler, UV * 10.0).x * 0.2 + 0.8);
-	ALPHA *= smoothstep(1.0, 0.4, distance(UV, vec2(0.5)) * 2.0);
-}
-"
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0h0nd"]
-load_path = "res://.godot/imported/checkerboard.svg-0973abf3172158bed7a934ab70dcdd33.s3tc.ctex"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_slpns"]
-render_priority = -128
-shader = SubResource("Shader_dgu8j")
-shader_parameter/albedo_color = Color(0.2, 0.2, 0.2, 1)
-shader_parameter/checkerboard_sampler = SubResource("CompressedTexture2D_0h0nd")
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_7kts5"]
-size = Vector2(20, 20)
-
 [node name="ForceFieldPreview" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_8nrla")
+
+[node name="DomeFade" type="MeshInstance3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_ng1c4")
+cast_shadow = 0
+mesh = SubResource("SphereMesh_najup")
+metadata/_edit_lock_ = true
+
+[node name="GroundMesh" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_d3nsg")
+mesh = SubResource("PlaneMesh_271ii")
+metadata/_edit_lock_ = true
 
 [node name="ForceField" type="Node3D" parent="."]
 
@@ -153,10 +180,6 @@ draw_pass_1 = ExtResource("4_gt02u")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, -0.5, 0.5, 0, 0.5, 0)
 shadow_enabled = true
-
-[node name="GroundMesh" type="MeshInstance3D" parent="."]
-material_override = SubResource("ShaderMaterial_slpns")
-mesh = SubResource("PlaneMesh_7kts5")
 
 [node name="Turner" parent="." instance=ExtResource("5_na51v")]
 transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.25, 0)

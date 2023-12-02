@@ -1,6 +1,5 @@
 [gd_scene load_steps=32 format=3 uid="uid://clqfhoslbs2f"]
 
-[ext_resource type="Shader" path="res://assets/ground_checkerboard.gdshader" id="1_7ek8f"]
 [ext_resource type="Script" path="res://effects/tornado_portal/portal_preview.gd" id="1_uniox"]
 [ext_resource type="Texture2D" uid="uid://3ro0yvv3roj3" path="res://assets/checkerboard.svg" id="2_yf5rq"]
 [ext_resource type="Material" uid="uid://5dlygf08frjc" path="res://effects/tornado_portal/materials/portal_effect_mat.tres" id="4_8vccs"]
@@ -27,14 +26,29 @@ glow_strength = 1.2
 frustum_focus_distance = 5.5
 frustum_focal_length = 60.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fiw02"]
+[sub_resource type="Shader" id="Shader_7gwc1"]
+code = "shader_type spatial;
+render_mode diffuse_lambert_wrap, specular_disabled, depth_draw_always;
+
+uniform sampler2D checkerboard_sampler : filter_linear_mipmap_anisotropic, repeat_enable;
+uniform vec3 albedo_color : source_color;
+uniform float uv_scale = 20.0;
+
+void fragment() {
+	ALBEDO = albedo_color * (texture(checkerboard_sampler, UV * uv_scale).x * 0.2 + 0.8);
+	ALPHA = smoothstep(0.5, 0.25, length(UV - vec2(0.5)));
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t058v"]
 render_priority = -128
-shader = ExtResource("1_7ek8f")
+shader = SubResource("Shader_7gwc1")
 shader_parameter/albedo_color = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/uv_scale = 20.0
 shader_parameter/checkerboard_sampler = ExtResource("2_yf5rq")
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_5j36o"]
-size = Vector2(20, 20)
+[sub_resource type="PlaneMesh" id="PlaneMesh_aq72j"]
+size = Vector2(40, 40)
 
 [sub_resource type="QuadMesh" id="QuadMesh_end5x"]
 size = Vector2(4, 4)
@@ -403,8 +417,9 @@ environment = SubResource("Environment_2m44q")
 camera_attributes = SubResource("CameraAttributesPhysical_ubj2o")
 
 [node name="GroundMesh" type="MeshInstance3D" parent="."]
-material_override = SubResource("ShaderMaterial_fiw02")
-mesh = SubResource("PlaneMesh_5j36o")
+material_override = SubResource("ShaderMaterial_t058v")
+mesh = SubResource("PlaneMesh_aq72j")
+metadata/_edit_lock_ = true
 
 [node name="Hole" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.001, 0)
@@ -413,7 +428,7 @@ cast_shadow = 0
 mesh = SubResource("QuadMesh_end5x")
 
 [node name="HoleBody" type="MeshInstance3D" parent="Hole"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 2.72213e-14, -2.025)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -2.025)
 material_override = ExtResource("5_oiel3")
 mesh = SubResource("CylinderMesh_ku4rn")
 skeleton = NodePath("../..")
