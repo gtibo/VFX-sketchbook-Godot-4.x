@@ -12,8 +12,8 @@ render_priority = 0
 shader = ExtResource("6_lin42")
 
 [sub_resource type="SphereMesh" id="SphereMesh_77e4v"]
-radius = 0.1
-height = 0.2
+radius = 0.4
+height = 0.8
 
 [sub_resource type="QuadMesh" id="QuadMesh_6lh4h"]
 size = Vector2(0.5, 0.5)
@@ -101,8 +101,7 @@ material_override = ExtResource("2_kub5u")
 mesh = ExtResource("3_e1dfy")
 
 [node name="Core" type="MeshInstance3D" parent="FireballShellMesh"]
-transform = Transform3D(3.33333, 0, 0, 0, -1.45705e-07, 3.33333, 0, -3.33333, -1.45705e-07, 0, 0, 0)
-visible = false
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_7vae4")
 cast_shadow = 0
 mesh = SubResource("SphereMesh_77e4v")
