@@ -1,4 +1,4 @@
-# FVX sketchbook
+# VFX sketchbook
 
 ### Credits
 
