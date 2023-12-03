@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EffectData" load_steps=3 format=3 uid="uid://dw3hdj03cfdv7"]
+
+[ext_resource type="Script" path="res://resources/effect_data/effect_data_builder.gd" id="1_i2ex6"]
+[ext_resource type="Texture2D" uid="uid://p3tno1p0fk7q" path="res://effects/halloween_explosion/halloween_explosion_thumbnail.png" id="2_ysj2j"]
+
+[resource]
+script = ExtResource("1_i2ex6")
+title = "Pumpkin Explosion"
+thumbnail = ExtResource("2_ysj2j")
+scene_path = "res://effects/halloween_explosion/halloween_explosion_preview.tscn"

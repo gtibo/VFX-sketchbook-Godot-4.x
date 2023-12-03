@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://b51qc3dyo62jr"]
+
+[ext_resource type="Script" path="res://viewer/scene_button.gd" id="1_nt0sp"]
+[ext_resource type="Texture2D" uid="uid://db2sbyywaj6cg" path="res://assets/thumbnail_placeholder.png" id="1_ywdea"]
+
+[node name="SceneButton" type="VBoxContainer"]
+custom_minimum_size = Vector2(128, 128)
+offset_right = 218.0
+offset_bottom = 128.0
+script = ExtResource("1_nt0sp")
+
+[node name="ThumbnailTexture" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("1_ywdea")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="TitleLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Title"

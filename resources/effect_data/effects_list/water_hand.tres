@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EffectData" load_steps=3 format=3 uid="uid://bryv8vutmf80g"]
+
+[ext_resource type="Script" path="res://resources/effect_data/effect_data_builder.gd" id="1_g5y7d"]
+[ext_resource type="Texture2D" uid="uid://cm58m0soawuk7" path="res://effects/water_hand/water_hand_thumbnail.png" id="2_3uub8"]
+
+[resource]
+script = ExtResource("1_g5y7d")
+title = "Water Slap"
+thumbnail = ExtResource("2_3uub8")
+scene_path = "res://effects/water_hand/water_hand_preview.tscn"

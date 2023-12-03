@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EffectData" load_steps=3 format=3 uid="uid://qxume2dovxqc"]
+
+[ext_resource type="Script" path="res://resources/effect_data/effect_data_builder.gd" id="1_clhpd"]
+[ext_resource type="Texture2D" uid="uid://pq5qml7jpv57" path="res://effects/fireball/fireball_thumbnail.png" id="2_imf3h"]
+
+[resource]
+script = ExtResource("1_clhpd")
+title = "Fireball"
+thumbnail = ExtResource("2_imf3h")
+scene_path = "res://effects/fireball/fireball_preview.tscn"
