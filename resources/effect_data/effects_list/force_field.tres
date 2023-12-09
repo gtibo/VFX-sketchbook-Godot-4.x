@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="EffectData" load_steps=2 format=3 uid="uid://dv6crutag6cgk"]
+[gd_resource type="Resource" script_class="EffectData" load_steps=3 format=3 uid="uid://dv6crutag6cgk"]
 
 [ext_resource type="Script" path="res://resources/effect_data/effect_data_builder.gd" id="1_uyfo2"]
+[ext_resource type="Texture2D" uid="uid://dh7ykey7jm1ub" path="res://effects/force_field/forcefield_thumbnail.png" id="2_t4k4a"]
 
 [resource]
 script = ExtResource("1_uyfo2")
 title = "Force Field"
+thumbnail = ExtResource("2_t4k4a")
 scene_path = "res://effects/force_field/force_field_preview.tscn"

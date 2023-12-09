@@ -17,7 +17,11 @@ func _ready():
 		btn.set_title(scene_data.title)
 		if scene_data.thumbnail: 
 			btn.set_thumbnail(scene_data.thumbnail)
-
+	
+	if scene_data_list.is_empty(): return
+	# Load default scene
+	set_scene_preview(scene_data_list[0].scene_path)
+	
 func set_scene_preview(scene_path : String):
 	if loading: return
 	loading = true

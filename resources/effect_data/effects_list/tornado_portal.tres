@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EffectData" load_steps=3 format=3 uid="uid://bs7y6tuct8goy"]
+
+[ext_resource type="Script" path="res://resources/effect_data/effect_data_builder.gd" id="1_e3me4"]
+[ext_resource type="Texture2D" uid="uid://bqmr2n7ym3yqh" path="res://effects/tornado_portal/portal_thumbnail.png" id="2_cvctq"]
+
+[resource]
+script = ExtResource("1_e3me4")
+title = "Portal"
+thumbnail = ExtResource("2_cvctq")
+scene_path = "res://effects/tornado_portal/portal_preview.tscn"

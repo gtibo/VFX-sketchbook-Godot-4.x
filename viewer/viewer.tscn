@@ -1,15 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://ch335r23kc467"]
+[gd_scene load_steps=8 format=3 uid="uid://ch335r23kc467"]
 
 [ext_resource type="Script" path="res://viewer/viewer.gd" id="1_5q4lv"]
 [ext_resource type="Resource" uid="uid://qxume2dovxqc" path="res://resources/effect_data/effects_list/fireball.tres" id="2_p76a1"]
 [ext_resource type="Resource" uid="uid://dv6crutag6cgk" path="res://resources/effect_data/effects_list/force_field.tres" id="3_hbqpy"]
 [ext_resource type="Resource" uid="uid://dw3hdj03cfdv7" path="res://resources/effect_data/effects_list/halloween_explosion.tres" id="4_3nvx8"]
 [ext_resource type="Resource" uid="uid://bryv8vutmf80g" path="res://resources/effect_data/effects_list/water_hand.tres" id="5_5ksw4"]
+[ext_resource type="Resource" uid="uid://bs7y6tuct8goy" path="res://resources/effect_data/effects_list/tornado_portal.tres" id="6_2f0w4"]
 [ext_resource type="Script" path="res://viewer/transition.gd" id="6_b6283"]
 
 [node name="Viewer" type="Node"]
 script = ExtResource("1_5q4lv")
-scene_data_list = Array[Resource("res://resources/effect_data/effect_data_builder.gd")]([ExtResource("2_p76a1"), ExtResource("3_hbqpy"), ExtResource("4_3nvx8"), ExtResource("5_5ksw4")])
+scene_data_list = Array[Resource("res://resources/effect_data/effect_data_builder.gd")]([ExtResource("2_p76a1"), ExtResource("3_hbqpy"), ExtResource("4_3nvx8"), ExtResource("5_5ksw4"), ExtResource("6_2f0w4")])
 
 [node name="SceneHolder" type="Node" parent="."]
 unique_name_in_owner = true

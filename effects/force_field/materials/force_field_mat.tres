@@ -6,5 +6,5 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_cs5c8")
-shader_parameter/base_color = Color(1, 0.556863, 0.0509804, 1)
+shader_parameter/base_color = Color(0, 0.776471, 0.333333, 1)
 shader_parameter/grid_sampler = ExtResource("2_rljlx")
