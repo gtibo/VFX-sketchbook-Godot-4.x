@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://srpbxp7drj0y"]
+
+[ext_resource type="Shader" path="res://effects/fireworks/firework_rocket/firework_rocket.gdshader" id="1_5cnis"]
+[ext_resource type="Script" path="res://effects/fireworks/firework_rocket/firework_rocket.gd" id="2_xex82"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5dx7r"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_5cnis")
+shader_parameter/intensity = 1.5
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/lifetime = 0.5
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_su6tl"]
+shape = 0
+size = 0.1
+
+[node name="FireworkRocket" type="MeshInstance3D"]
+material_override = SubResource("ShaderMaterial_5dx7r")
+mesh = SubResource("RibbonTrailMesh_su6tl")
+script = ExtResource("2_xex82")
