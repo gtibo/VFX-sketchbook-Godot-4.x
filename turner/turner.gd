@@ -3,9 +3,9 @@ extends Node3D
 @onready var _camera = %Camera3D
 @export var low_angle : float = -5.0
 @export var high_angle : float = -50.0
-@export var _zoom = 5.5 : set = _set_zoom
 @export var min_zoom : float = 2.0
 @export var max_zoom : float = 10.0
+@export var _zoom = 5.5 : set = _set_zoom
 @export var lock_x : bool = false
 
 var _is_grabbing = false
