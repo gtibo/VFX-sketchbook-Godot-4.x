@@ -10,5 +10,5 @@ This project is licensed under the [MIT License](https://opensource.org/license/
 
 ### Credits
 
-Sky shader: [Gdquest’s Stylized Sky](https://github.com/gdquest-demos/godot-4-stylized-sky)
+Sky shader: [Gdquest’s Stylized Sky](https://github.com/gdquest-demos/godot-4-stylized-sky)\
 Shader utility methods: [Godot shaders’s snippet page](https://godotshaders.com/snippet/useful-code-snippets/)
