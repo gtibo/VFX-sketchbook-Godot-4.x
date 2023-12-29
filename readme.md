@@ -6,7 +6,7 @@ A collection of VFX created with Godot 4.x, exploring the software’s visual ca
 
 This project is licensed under the [MIT License](https://opensource.org/license/mit/), a clear credit to the author of the source material is welcomed.
 
-> "VFX name" from [VFX sketchbook](https://github.com/gtibo/VFX-sketchbook) by Thibaud Goiffon
+`"VFX name" from [VFX sketchbook](https://github.com/gtibo/VFX-sketchbook) by Thibaud Goiffon`
 
 ### Credits
 
