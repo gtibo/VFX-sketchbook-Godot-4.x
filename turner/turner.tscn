@@ -21,3 +21,8 @@ fov = 60.0
 script = ExtResource("2_0tjld")
 shake_amount = SubResource("Curve_8fej1")
 shake_duration = SubResource("Curve_b4ja4")
+
+[node name="SpinTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 2.0
+one_shot = true

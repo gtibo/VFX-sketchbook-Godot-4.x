@@ -44,6 +44,7 @@ low_angle = 50.0
 min_zoom = 20.0
 max_zoom = 35.0
 _zoom = 30.0
+auto_spin = true
 
 [node name="SpawnTimer" type="Timer" parent="."]
 unique_name_in_owner = true

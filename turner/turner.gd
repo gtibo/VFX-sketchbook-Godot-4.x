@@ -8,6 +8,10 @@ extends Node3D
 @export var _zoom = 5.5 : set = _set_zoom
 @export var lock_x : bool = false
 
+@export var auto_spin : bool = false
+var _is_spinning : bool = false
+@onready var _spin_timer = %SpinTimer
+
 var _is_grabbing = false
 
 func _set_zoom(value : float):
@@ -18,6 +22,11 @@ func _set_zoom(value : float):
 
 func _ready():
 	_camera.position.z = _zoom
+	_is_spinning = auto_spin
+	_spin_timer.timeout.connect(func(): _is_spinning = true)
+
+func _process(delta):
+	if _is_spinning: rotation.y += 0.05 * delta
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
@@ -27,8 +36,10 @@ func _unhandled_input(event):
 		var wheel_direction = float(wheel_down) - float(wheel_up)
 		if wheel_direction != 0: _zoom += wheel_direction * 0.25
 		return
-
+	
 	if event is InputEventMouseMotion and _is_grabbing:
+		_is_spinning = false
+		if auto_spin: _spin_timer.start()
 		rotation.y += -event.relative.x * 0.004
 		if !lock_x:
 			rotation.x += -event.relative.y * 0.004
