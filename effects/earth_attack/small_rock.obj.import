@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://c24cf3cve6hoc"
+path="res://.godot/imported/small_rock.obj-090c7041c15b393300b9311e5ff5fd05.mesh"
+
+[deps]
+
+files=["res://.godot/imported/small_rock.obj-090c7041c15b393300b9311e5ff5fd05.mesh"]
+
+source_file="res://effects/earth_attack/small_rock.obj"
+dest_files=["res://.godot/imported/small_rock.obj-090c7041c15b393300b9311e5ff5fd05.mesh", "res://.godot/imported/small_rock.obj-090c7041c15b393300b9311e5ff5fd05.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

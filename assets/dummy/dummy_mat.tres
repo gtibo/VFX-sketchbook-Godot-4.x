@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dv0sajpiuwfv7" path="res://assets/dummy/dummy_roughness.png" id="4_dbu0y"]
 
 [resource]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("1_es3yn")
 shader_parameter/emission_color = Color(0.956863, 0.329412, 0, 1)

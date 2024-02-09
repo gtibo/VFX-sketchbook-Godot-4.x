@@ -1,0 +1,105 @@
+[gd_scene load_steps=13 format=3 uid="uid://bpo6dhiiee4bt"]
+
+[ext_resource type="Script" path="res://effects/earth_attack/earth_attack_preview.gd" id="1_xreg4"]
+[ext_resource type="PackedScene" uid="uid://bb1l0ikt63vfa" path="res://effects/earth_attack/punch_dummy/punch_dummy.tscn" id="5_kokeo"]
+[ext_resource type="Shader" path="res://assets/ground_checkerboard.gdshader" id="10_40nut"]
+[ext_resource type="Texture2D" uid="uid://3ro0yvv3roj3" path="res://assets/checkerboard.svg" id="11_otvvl"]
+[ext_resource type="PackedScene" uid="uid://cmj5l6xu36itg" path="res://turner/turner.tscn" id="12_n70p2"]
+
+[sub_resource type="Environment" id="Environment_lybpq"]
+background_mode = 1
+background_color = Color(0.14902, 0.14902, 0.14902, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.368627, 0.368627, 0.368627, 1)
+tonemap_mode = 2
+glow_enabled = true
+glow_strength = 0.9
+fog_light_color = Color(0.14902, 0.14902, 0.14902, 1)
+fog_density = 0.04
+
+[sub_resource type="Shader" id="Shader_65jlc"]
+code = "shader_type spatial;
+render_mode depth_draw_opaque, cull_back, unshaded;
+
+uniform vec3 albedo : source_color;
+uniform float proximity_fade_distance;
+uniform sampler2D depth_texture : hint_depth_texture, repeat_disable, filter_nearest;
+
+void fragment() {
+	ALBEDO = albedo;
+	float depth_tex = textureLod(depth_texture,SCREEN_UV,0.0).r;
+	vec4 world_pos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV*2.0-1.0,depth_tex,1.0);
+	world_pos.xyz/=world_pos.w;
+	ALPHA*=clamp(1.0-smoothstep(world_pos.z+proximity_fade_distance,world_pos.z,VERTEX.z),0.0,1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lj26p"]
+render_priority = -128
+shader = SubResource("Shader_65jlc")
+shader_parameter/albedo = Color(0.14902, 0.14902, 0.14902, 1)
+shader_parameter/proximity_fade_distance = 8.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_2kicx"]
+flip_faces = true
+radius = 1.0
+is_hemisphere = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lpvx1"]
+render_priority = 0
+shader = ExtResource("10_40nut")
+shader_parameter/albedo_color = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/uv_scale = 20.0
+shader_parameter/checkerboard_sampler = ExtResource("11_otvvl")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_p8d3h"]
+size = Vector2(40, 40)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_fi0t5"]
+
+[node name="EarthAttack" type="Node3D"]
+script = ExtResource("1_xreg4")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_lybpq")
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0)
+size = Vector3(40, 2, 40)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.906308, -0.346189, 0.242404, 0, 0.573576, 0.819152, -0.422618, -0.742404, 0.519837, 0, 0, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 20.0
+
+[node name="DomeFade" type="MeshInstance3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_lj26p")
+cast_shadow = 0
+mesh = SubResource("SphereMesh_2kicx")
+metadata/_edit_lock_ = true
+
+[node name="GroundMesh" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_lpvx1")
+mesh = SubResource("PlaneMesh_p8d3h")
+metadata/_edit_lock_ = true
+
+[node name="Turner" parent="." instance=ExtResource("12_n70p2")]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.965926, -0.258819)
+min_zoom = 8.0
+max_zoom = 12.0
+_zoom = 10.0
+
+[node name="PunchDummy2" parent="." instance=ExtResource("5_kokeo")]
+transform = Transform3D(0.954984, 0, 0.296658, 0, 1, 0, -0.296658, 0, 0.954984, 0.498892, 0, -0.471862)
+
+[node name="PunchDummy3" parent="." instance=ExtResource("5_kokeo")]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 3.80423, 0, 0.632429)
+
+[node name="PunchDummy" parent="." instance=ExtResource("5_kokeo")]
+transform = Transform3D(0.876761, 0, -0.480928, 0, 1, 0, 0.480928, 0, 0.876761, 2.50118, 0, -0.987695)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_fi0t5")

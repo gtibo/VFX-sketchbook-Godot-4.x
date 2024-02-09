@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dg22nbxgh0eph"
+path="res://.godot/imported/rock.obj-37166ac05953b356477ca389e747a697.mesh"
+
+[deps]
+
+files=["res://.godot/imported/rock.obj-37166ac05953b356477ca389e747a697.mesh"]
+
+source_file="res://effects/earth_attack/rock.obj"
+dest_files=["res://.godot/imported/rock.obj-37166ac05953b356477ca389e747a697.mesh", "res://.godot/imported/rock.obj-37166ac05953b356477ca389e747a697.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://bb1l0ikt63vfa"]
+
+[ext_resource type="Script" path="res://effects/earth_attack/punch_dummy/punch_dummy.gd" id="1_xjxpa"]
+[ext_resource type="PackedScene" uid="uid://ddjouhm76gjbx" path="res://assets/dummy/dummy_skin.tscn" id="1_yxroa"]
+[ext_resource type="Script" path="res://resources/hit/hit_box_3d.gd" id="3_cjrkn"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qwqf7"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7imld"]
+radius = 0.453389
+height = 1.4
+
+[node name="PunchDummy" type="CharacterBody3D"]
+collision_layer = 0
+script = ExtResource("1_xjxpa")
+
+[node name="DummySkin" parent="." instance=ExtResource("1_yxroa")]
+unique_name_in_owner = true
+
+[node name="HitBox" type="Area3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+script = ExtResource("3_cjrkn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
+shape = SubResource("SphereShape3D_qwqf7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("CapsuleShape3D_7imld")

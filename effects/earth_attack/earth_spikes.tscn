@@ -1,0 +1,160 @@
+[gd_scene load_steps=30 format=3 uid="uid://ch4xt7oqxcj48"]
+
+[ext_resource type="Material" uid="uid://o82atqn4jxuw" path="res://effects/earth_attack/materials/rock_spikes.tres" id="1_cg12o"]
+[ext_resource type="Script" path="res://effects/earth_attack/earth_spikes.gd" id="1_fj1ad"]
+[ext_resource type="Shader" path="res://effects/earth_attack/materials/earth_attack.gdshader" id="2_4hk2k"]
+[ext_resource type="ArrayMesh" uid="uid://dg22nbxgh0eph" path="res://effects/earth_attack/rock.obj" id="3_gli5x"]
+[ext_resource type="Texture2D" uid="uid://da7r1g06y8ka1" path="res://effects/earth_attack/textures/small_rock_diffuse.png" id="4_llira"]
+[ext_resource type="Texture2D" uid="uid://db2ubfcggijr" path="res://effects/earth_attack/textures/small_rock_normal.png" id="5_t6eab"]
+[ext_resource type="ArrayMesh" uid="uid://c24cf3cve6hoc" path="res://effects/earth_attack/small_rock.obj" id="6_joee7"]
+[ext_resource type="Shader" path="res://effects/earth_attack/materials/dust_particles_mat.gdshader" id="7_mbjfq"]
+[ext_resource type="Shader" path="res://effects/earth_attack/materials/dust.gdshader" id="8_ctw5t"]
+[ext_resource type="Script" path="res://resources/hit/hit_zone_3d.gd" id="10_6qvlp"]
+
+[sub_resource type="Curve" id="Curve_koag1"]
+max_value = 1.2
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.05, 1.2), 0.0, 0.0, 0, 0, Vector2(0.1, 0.96), 0.0, 0.0, 0, 0, Vector2(0.6, 0.96), 0.0, 0.0, 0, 0, Vector2(0.7, 1.08), 0.0, 0.0, 0, 0, Vector2(0.9, 0.6), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="Curve" id="Curve_kjm4x"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_y5lgt"]
+_data = [Vector2(0, 0.3), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_ljthj"]
+curve_x = SubResource("Curve_koag1")
+curve_y = SubResource("Curve_kjm4x")
+curve_z = SubResource("Curve_y5lgt")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_svjyx"]
+resource_local_to_scene = true
+shader = ExtResource("2_4hk2k")
+shader_parameter/particles_count = 12
+shader_parameter/tilt = 0.8
+shader_parameter/curve_sampler = SubResource("CurveXYZTexture_ljthj")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4s2aq"]
+albedo_texture = ExtResource("4_llira")
+roughness = 0.8
+normal_enabled = true
+normal_texture = ExtResource("5_t6eab")
+
+[sub_resource type="Curve" id="Curve_so3ia"]
+_data = [Vector2(1e-05, 0), 0.0, 0.0, 0, 0, Vector2(0.1, 1), 0.0, 0.0, 0, 0, Vector2(0.8, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_2t01b"]
+curve = SubResource("Curve_so3ia")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cj3sg"]
+particle_flag_rotate_y = true
+angle_max = 360.0
+direction = Vector3(0.5, 0.5, 0)
+spread = 25.0
+initial_velocity_min = 2.0
+initial_velocity_max = 8.0
+gravity = Vector3(0, -20, 0)
+scale_min = 0.2
+scale_max = 0.8
+scale_curve = SubResource("CurveTexture_2t01b")
+collision_mode = 1
+collision_friction = 0.35
+collision_bounce = 0.15
+collision_use_scale = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5433j"]
+noise_type = 2
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mclex"]
+seamless = true
+noise = SubResource("FastNoiseLite_5433j")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uy2dn"]
+render_priority = 0
+shader = ExtResource("7_mbjfq")
+shader_parameter/albedo = Color(0.882353, 0.839216, 0.8, 1)
+shader_parameter/noise_sampler = SubResource("NoiseTexture2D_mclex")
+
+[sub_resource type="Curve" id="Curve_ax3qm"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 0.2), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_lrxxg"]
+_data = [Vector2(0, 0.5), 0.0, 1.29765, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_vv7bx"]
+_data = [Vector2(0, 0), 0.0, 2.83328, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_nw8yj"]
+curve_x = SubResource("Curve_ax3qm")
+curve_y = SubResource("Curve_lrxxg")
+curve_z = SubResource("Curve_vv7bx")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6r7vr"]
+resource_local_to_scene = true
+shader = ExtResource("8_ctw5t")
+shader_parameter/min_scale = 1.2
+shader_parameter/max_scale = 2.2
+shader_parameter/particles_count = 128
+shader_parameter/zone_length = 10.0
+shader_parameter/curve_sampler = SubResource("CurveXYZTexture_nw8yj")
+
+[sub_resource type="QuadMesh" id="QuadMesh_t0we4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kme4v"]
+size = Vector3(1, 1.5, 4)
+
+[node name="EarthSpikes" type="Node3D"]
+script = ExtResource("1_fj1ad")
+
+[node name="RocksParticles" type="GPUParticles3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
+material_override = ExtResource("1_cg12o")
+emitting = false
+amount = 12
+sub_emitter = NodePath("../SmallRocks")
+lifetime = 3.0
+one_shot = true
+explosiveness = 0.5
+visibility_aabb = AABB(-2, -4, -4, 14, 8, 8)
+process_material = SubResource("ShaderMaterial_svjyx")
+draw_pass_1 = ExtResource("3_gli5x")
+
+[node name="SmallRocks" type="GPUParticles3D" parent="."]
+unique_name_in_owner = true
+material_override = SubResource("StandardMaterial3D_4s2aq")
+emitting = false
+amount = 64
+lifetime = 4.0
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_cj3sg")
+draw_pass_1 = ExtResource("6_joee7")
+
+[node name="DustParticles" type="GPUParticles3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
+material_override = SubResource("ShaderMaterial_uy2dn")
+emitting = false
+amount = 128
+lifetime = 4.0
+one_shot = true
+explosiveness = 0.75
+process_material = SubResource("ShaderMaterial_6r7vr")
+draw_pass_1 = SubResource("QuadMesh_t0we4")
+
+[node name="HitZone" type="Area3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
+script = ExtResource("10_6qvlp")
+
+[node name="HitZoneCollision" type="CollisionShape3D" parent="HitZone"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+shape = SubResource("BoxShape3D_kme4v")
