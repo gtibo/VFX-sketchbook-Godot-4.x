@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EffectData" load_steps=3 format=3 uid="uid://cuw4p2ui0wwe"]
+
+[ext_resource type="Script" path="res://resources/effect_data/effect_data_builder.gd" id="1_yinvd"]
+[ext_resource type="Texture2D" uid="uid://28rh2dy2mke5" path="res://effects/earth_attack/thumbnail_earth_spikes.png" id="2_m4tr6"]
+
+[resource]
+script = ExtResource("1_yinvd")
+title = "Earth Spikes"
+thumbnail = ExtResource("2_m4tr6")
+scene_path = "res://effects/earth_attack/earth_attack_preview.tscn"

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dh7ykey7jm1ub"
-path="res://.godot/imported/forcefield_thumbnail.png-cec610a981e6865e1210b2818110b1b5.ctex"
+uid="uid://dyi1gd7fbd11x"
+path="res://.godot/imported/left_arrow_icon.png-8f3c37a849c7c924228e3ecef89fb9d2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://effects/force_field/forcefield_thumbnail.png"
-dest_files=["res://.godot/imported/forcefield_thumbnail.png-cec610a981e6865e1210b2818110b1b5.ctex"]
+source_file="res://assets/left_arrow_icon.png"
+dest_files=["res://.godot/imported/left_arrow_icon.png-8f3c37a849c7c924228e3ecef89fb9d2.ctex"]
 
 [params]
 
@@ -21,7 +21,7 @@ compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

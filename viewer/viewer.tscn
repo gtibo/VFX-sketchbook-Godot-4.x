@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ch335r23kc467"]
+[gd_scene load_steps=15 format=3 uid="uid://ch335r23kc467"]
 
 [ext_resource type="Script" path="res://viewer/viewer.gd" id="1_5q4lv"]
 [ext_resource type="Resource" uid="uid://qxume2dovxqc" path="res://resources/effect_data/effects_list/fireball.tres" id="2_p76a1"]
@@ -8,10 +8,26 @@
 [ext_resource type="Resource" uid="uid://bs7y6tuct8goy" path="res://resources/effect_data/effects_list/tornado_portal.tres" id="6_2f0w4"]
 [ext_resource type="Script" path="res://viewer/transition.gd" id="6_b6283"]
 [ext_resource type="Resource" uid="uid://ds2nvv0t7wypj" path="res://resources/effect_data/effects_list/fireworks.tres" id="7_yvbor"]
+[ext_resource type="Resource" uid="uid://cuw4p2ui0wwe" path="res://resources/effect_data/effects_list/earth_spikes.tres" id="8_pucgf"]
+[ext_resource type="Texture2D" uid="uid://dyi1gd7fbd11x" path="res://assets/left_arrow_icon.png" id="10_lnen5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rj56n"]
+bg_color = Color(0, 0, 0, 0.5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_semo7"]
+bg_color = Color(0.356863, 0.356863, 0.356863, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3qj6h"]
+content_margin_left = 3.0
+bg_color = Color(0.454902, 0.454902, 0.454902, 1)
+
+[sub_resource type="Theme" id="Theme_gmqpx"]
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_semo7")
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_3qj6h")
 
 [node name="Viewer" type="Node"]
 script = ExtResource("1_5q4lv")
-scene_data_list = Array[Resource("res://resources/effect_data/effect_data_builder.gd")]([ExtResource("2_p76a1"), ExtResource("3_hbqpy"), ExtResource("4_3nvx8"), ExtResource("5_5ksw4"), ExtResource("6_2f0w4"), ExtResource("7_yvbor")])
+scene_data_list = Array[Resource("res://resources/effect_data/effect_data_builder.gd")]([ExtResource("2_p76a1"), ExtResource("3_hbqpy"), ExtResource("4_3nvx8"), ExtResource("5_5ksw4"), ExtResource("6_2f0w4"), ExtResource("7_yvbor"), ExtResource("8_pucgf")])
 
 [node name="SceneHolder" type="Node" parent="."]
 unique_name_in_owner = true
@@ -28,10 +44,41 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 script = ExtResource("6_b6283")
 
-[node name="SceneList" type="VBoxContainer" parent="UI"]
+[node name="PanelContainer" type="PanelContainer" parent="UI"]
 unique_name_in_owner = true
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 210.0
+offset_right = 32.0
 grow_vertical = 2
+size_flags_horizontal = 0
+mouse_force_pass_scroll_events = false
+theme_override_styles/panel = SubResource("StyleBoxFlat_rj56n")
+
+[node name="Control" type="HBoxContainer" parent="UI/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/PanelContainer/Control"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
 size_flags_horizontal = 3
+theme = SubResource("Theme_gmqpx")
+
+[node name="SceneList" type="VBoxContainer" parent="UI/PanelContainer/Control/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="ToggleButton" type="Button" parent="UI/PanelContainer/Control"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.8)
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+button_pressed = true
+icon = ExtResource("10_lnen5")
+flat = true
+icon_alignment = 1

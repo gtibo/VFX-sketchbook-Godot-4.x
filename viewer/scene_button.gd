@@ -1,19 +1,16 @@
-extends VBoxContainer
+extends TextureButton
 
 @onready var title_label = %TitleLabel
-@onready var thumbnail_texture = %ThumbnailTexture
 
-signal pressed
+func _ready():
+	toggled.connect(_on_toggle)
+	_on_toggle(button_pressed)
+	
+func _on_toggle(state : bool):
+	material.set_shader_parameter("greyscale", float(!state))
 
 func set_title(title : String):
 	title_label.text = title
 
 func set_thumbnail(texture : Texture2D):
-	thumbnail_texture.texture = texture
-
-func _gui_input(event):
-	if !(event is InputEventMouseButton): return
-	if event.button_index != 1: return
-	if event.is_pressed(): 
-		pressed.emit()
-		get_viewport().set_input_as_handled()
+	texture_normal = texture

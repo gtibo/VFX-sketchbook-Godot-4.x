@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dh7ykey7jm1ub"
-path="res://.godot/imported/forcefield_thumbnail.png-cec610a981e6865e1210b2818110b1b5.ctex"
+uid="uid://28rh2dy2mke5"
+path="res://.godot/imported/thumbnail_earth_spikes.png-ea51fc13415fdc9a863da6b1b2346560.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://effects/force_field/forcefield_thumbnail.png"
-dest_files=["res://.godot/imported/forcefield_thumbnail.png-cec610a981e6865e1210b2818110b1b5.ctex"]
+source_file="res://effects/earth_attack/thumbnail_earth_spikes.png"
+dest_files=["res://.godot/imported/thumbnail_earth_spikes.png-ea51fc13415fdc9a863da6b1b2346560.ctex"]
 
 [params]
 
