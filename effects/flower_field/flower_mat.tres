@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://dgs0461eh8sgu"]
+
+[ext_resource type="Shader" path="res://effects/flower_field/waving_mesh.gdshader" id="1_o14cb"]
+[ext_resource type="Texture2D" uid="uid://cm4yel55b7rrd" path="res://effects/flower_field/flower_color.tres" id="2_q4u8v"]
+[ext_resource type="Texture2D" uid="uid://x4ivau1nfq23" path="res://effects/flower_field/wind_noise_texture.tres" id="2_qlpmd"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_o14cb")
+shader_parameter/intensity = 0.45
+shader_parameter/waviness = 0.8
+shader_parameter/wind_speed = 0.1
+shader_parameter/wind_sampler = ExtResource("2_qlpmd")
+shader_parameter/albedo_sampler = ExtResource("2_q4u8v")

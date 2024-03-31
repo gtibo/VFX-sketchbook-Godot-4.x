@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b8gdvtxwmlmhm"
+path="res://.godot/imported/tall_grass.obj-b7e99e32badcfd661a5efb947e16ecc0.mesh"
+
+[deps]
+
+files=["res://.godot/imported/tall_grass.obj-b7e99e32badcfd661a5efb947e16ecc0.mesh"]
+
+source_file="res://effects/flower_field/assets/tall_grass.obj"
+dest_files=["res://.godot/imported/tall_grass.obj-b7e99e32badcfd661a5efb947e16ecc0.mesh", "res://.godot/imported/tall_grass.obj-b7e99e32badcfd661a5efb947e16ecc0.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

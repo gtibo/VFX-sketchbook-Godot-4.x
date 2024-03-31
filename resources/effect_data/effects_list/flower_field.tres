@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EffectData" load_steps=3 format=3 uid="uid://stnxnfiu0m7a"]
+
+[ext_resource type="Script" path="res://resources/effect_data/effect_data_builder.gd" id="1_sjpj8"]
+[ext_resource type="Texture2D" uid="uid://c6qu5qoc8yb6s" path="res://effects/flower_field/thumbnail_flower_field.png" id="2_mq508"]
+
+[resource]
+script = ExtResource("1_sjpj8")
+title = "Flower Field"
+thumbnail = ExtResource("2_mq508")
+scene_path = "res://effects/flower_field/flower_field.tscn"

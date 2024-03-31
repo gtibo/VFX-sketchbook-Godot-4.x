@@ -26,6 +26,9 @@ func _on_toggle(value : bool):
 func _ready():
 	toggle_button.toggled.connect(_on_toggle)
 	
+	# Sort by name
+	# scene_data_list.sort_custom(func(a, b): return a.title < b.title)
+	
 	for scene_data in scene_data_list:
 		var btn = SCENE_BUTTON.instantiate()
 		scene_list.add_child(btn)

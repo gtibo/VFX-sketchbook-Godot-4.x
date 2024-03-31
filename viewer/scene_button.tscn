@@ -22,6 +22,7 @@ focus_mode = 0
 toggle_mode = true
 button_group = SubResource("ButtonGroup_rlixp")
 texture_normal = ExtResource("1_ywdea")
+ignore_texture_size = true
 stretch_mode = 6
 script = ExtResource("1_nt0sp")
 

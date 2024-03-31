@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://ckl81j1dcsvc3"
+path="res://.godot/imported/butterfly.obj-9a3ed61548db8429eee9f02918b6e739.mesh"
+
+[deps]
+
+files=["res://.godot/imported/butterfly.obj-9a3ed61548db8429eee9f02918b6e739.mesh"]
+
+source_file="res://effects/flower_field/butterfly.obj"
+dest_files=["res://.godot/imported/butterfly.obj-9a3ed61548db8429eee9f02918b6e739.mesh", "res://.godot/imported/butterfly.obj-9a3ed61548db8429eee9f02918b6e739.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false
