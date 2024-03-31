@@ -10,6 +10,8 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7vae4"]
 render_priority = 0
 shader = ExtResource("6_lin42")
+shader_parameter/albedo = Color(0.305882, 0.14902, 0.113725, 1)
+shader_parameter/emission = Color(0.984314, 0.301961, 0, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_77e4v"]
 radius = 0.4
@@ -112,7 +114,7 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.13)
 material_override = ExtResource("5_11yv5")
 amount = 16
-lifetime = 0.4
+lifetime = 0.5
 process_material = ExtResource("6_obgtq")
 draw_pass_1 = SubResource("QuadMesh_6lh4h")
 

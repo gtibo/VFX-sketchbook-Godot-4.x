@@ -19,7 +19,7 @@ glow_strength = 0.9
 fog_light_color = Color(0.14902, 0.14902, 0.14902, 1)
 fog_density = 0.04
 
-[sub_resource type="Shader" id="Shader_65jlc"]
+[sub_resource type="Shader" id="Shader_y87bm"]
 code = "shader_type spatial;
 render_mode depth_draw_opaque, cull_back, unshaded;
 
@@ -38,7 +38,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s1lip"]
 render_priority = -128
-shader = SubResource("Shader_65jlc")
+shader = SubResource("Shader_y87bm")
 shader_parameter/albedo = Color(0.14902, 0.14902, 0.14902, 1)
 shader_parameter/proximity_fade_distance = 8.0
 
@@ -80,8 +80,8 @@ metadata/_edit_lock_ = true
 
 [node name="Turner" parent="." instance=ExtResource("6_edp4i")]
 transform = Transform3D(1, 0, 0, 0, 0.990268, 0.139173, 0, -0.139173, 0.990268, 0, 2, 0)
-_zoom = 7.0
 min_zoom = 6.0
+_zoom = 7.0
 
 [node name="Camera3D" parent="Turner" index="0"]
 current = true

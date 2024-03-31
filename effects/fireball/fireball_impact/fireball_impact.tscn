@@ -1,8 +1,9 @@
-[gd_scene load_steps=40 format=3 uid="uid://caxhgud7mger4"]
+[gd_scene load_steps=39 format=3 uid="uid://caxhgud7mger4"]
 
 [ext_resource type="Script" path="res://effects/fireball/fireball_impact/fireball_impact.gd" id="1_4c58t"]
 [ext_resource type="Shader" path="res://effects/fireball/materials/fireball_impact_trail.gdshader" id="1_4l8ch"]
 [ext_resource type="Shader" path="res://effects/fireball/materials/fireball_particles.gdshader" id="3_0qcs7"]
+[ext_resource type="Texture2D" uid="uid://dblv3xi87exyb" path="res://effects/fireball/materials/fire_particles_gradient.tres" id="4_a87mk"]
 [ext_resource type="Shader" path="res://effects/fireball/materials/fireball_impact_flash.gdshader" id="4_hv54w"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gfrja"]
@@ -120,13 +121,6 @@ anim_offset_max = 1.0
 [sub_resource type="QuadMesh" id="QuadMesh_o3qba"]
 size = Vector2(0.5, 0.5)
 
-[sub_resource type="Gradient" id="Gradient_m7c1w"]
-offsets = PackedFloat32Array(0.2, 0.730077)
-colors = PackedColorArray(0.960784, 0.337255, 0.0470588, 1, 1, 0.666667, 0, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_t4xnk"]
-gradient = SubResource("Gradient_m7c1w")
-
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_07f82"]
 noise_type = 2
 fractal_octaves = 2
@@ -138,8 +132,9 @@ noise = SubResource("FastNoiseLite_07f82")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4lgfn"]
 render_priority = 0
 shader = ExtResource("3_0qcs7")
+shader_parameter/uv_scale = 0.3
 shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_ltcio")
-shader_parameter/gradient_sampler = SubResource("GradientTexture1D_t4xnk")
+shader_parameter/gradient_sampler = ExtResource("4_a87mk")
 
 [sub_resource type="Gradient" id="Gradient_imfg0"]
 offsets = PackedFloat32Array(0, 0.2, 1)

@@ -1,8 +1,13 @@
 shader_type spatial;
 
+uniform vec3 albedo : source_color;
+uniform vec3 emission : source_color;
+
+#include "res://shared/shaders/fresnel.gdshaderinc"
+
 void fragment() {
-	SPECULAR = 0.0;
-	ALBEDO = vec3(0.1);
-	EMISSION = vec3(0.0);
-	//ALPHA = step(0.5, 1.0 - distance(UV, vec2(0.5)));
+	float f = fresnel(1.0, NORMAL, VIEW);
+	float light_mask = step(0.4, f);
+	ALBEDO = mix(albedo, emission, light_mask);
+	EMISSION = ALBEDO * 2.0 * f;
 }
