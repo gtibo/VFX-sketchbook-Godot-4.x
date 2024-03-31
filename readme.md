@@ -1,3 +1,4 @@
+![Project screenshot](./project_screenshot.png)
 # VFX sketchbook
 
 A collection of VFX created with Godot 4.x, exploring the software’s visual capabilities. Please note that this project gathers quick visual ideations, code and shaders may not be optimal.
