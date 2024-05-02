@@ -1,0 +1,51 @@
+[gd_resource type="ShaderMaterial" load_steps=12 format=3 uid="uid://civ7bvs0o31tn"]
+
+[ext_resource type="Shader" path="res://effects/fur/fur.gdshader" id="1_2c4p2"]
+[ext_resource type="Texture2D" uid="uid://c60751yjm8mjb" path="res://effects/fur/cat_albedo.png" id="2_wc1s8"]
+[ext_resource type="Texture2D" uid="uid://dhlggnd0j3tg4" path="res://effects/fur/fur_flowmap.png" id="3_2fd4d"]
+
+[sub_resource type="Curve" id="Curve_pxcy4"]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_57lyu"]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_rpll2"]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_podhq"]
+curve_x = SubResource("Curve_pxcy4")
+curve_y = SubResource("Curve_57lyu")
+curve_z = SubResource("Curve_rpll2")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ddvao"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_cbt7g"]
+seamless = true
+noise = SubResource("FastNoiseLite_ddvao")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0crga"]
+noise_type = 2
+frequency = 0.03
+fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1e86w"]
+invert = true
+seamless = true
+noise = SubResource("FastNoiseLite_0crga")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_2c4p2")
+shader_parameter/_glossiness = 0.45
+shader_parameter/_fur_length = 0.03
+shader_parameter/_fur_deformation = 0.0
+shader_parameter/_fur_gravity = 0.0
+shader_parameter/noise_deformation_sampler = SubResource("NoiseTexture2D_cbt7g")
+shader_parameter/noise_sampler = SubResource("NoiseTexture2D_1e86w")
+shader_parameter/curve = SubResource("CurveXYZTexture_podhq")
+shader_parameter/albedo_sampler = ExtResource("2_wc1s8")
+shader_parameter/fur_flow_map = ExtResource("3_2fd4d")
