@@ -1,9 +1,0 @@
-[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://b2ind7j6p5xtg"]
-
-[ext_resource type="Shader" path="res://effects/fur/cat_skin.gdshader" id="1_4mp6p"]
-[ext_resource type="Texture2D" uid="uid://c60751yjm8mjb" path="res://effects/fur/cat_albedo.png" id="2_tg2di"]
-
-[resource]
-render_priority = 0
-shader = ExtResource("1_4mp6p")
-shader_parameter/albedo_sampler = ExtResource("2_tg2di")

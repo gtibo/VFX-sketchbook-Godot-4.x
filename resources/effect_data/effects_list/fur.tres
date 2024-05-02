@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EffectData" load_steps=3 format=3 uid="uid://dcp80g7lxvb5h"]
+
+[ext_resource type="Script" path="res://resources/effect_data/effect_data_builder.gd" id="1_26uce"]
+[ext_resource type="Texture2D" uid="uid://brlg01xrd3dsw" path="res://effects/fur/fur_thumbnail.png" id="2_ybd7v"]
+
+[resource]
+script = ExtResource("1_26uce")
+title = "Fur"
+thumbnail = ExtResource("2_ybd7v")
+scene_path = "res://effects/fur/fur_preview.tscn"
