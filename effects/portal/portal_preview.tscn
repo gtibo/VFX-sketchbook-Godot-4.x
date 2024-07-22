@@ -1,0 +1,116 @@
+[gd_scene load_steps=14 format=3 uid="uid://bikjvpb1cleel"]
+
+[ext_resource type="Shader" path="res://assets/ground_checkerboard.gdshader" id="1_auw3v"]
+[ext_resource type="Texture2D" uid="uid://3ro0yvv3roj3" path="res://assets/checkerboard.svg" id="2_j510k"]
+[ext_resource type="PackedScene" uid="uid://cmj5l6xu36itg" path="res://turner/turner.tscn" id="3_8d5m4"]
+[ext_resource type="PackedScene" uid="uid://ck7jc3h5tfgi" path="res://effects/portal/portal/portal.tscn" id="4_iv3mi"]
+[ext_resource type="PackedScene" uid="uid://ddjouhm76gjbx" path="res://assets/dummy/dummy_skin.tscn" id="5_qw72d"]
+
+[sub_resource type="Environment" id="Environment_urjej"]
+background_mode = 1
+background_color = Color(0.14902, 0.14902, 0.14902, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.368627, 0.368627, 0.368627, 1)
+tonemap_mode = 2
+glow_enabled = true
+glow_strength = 0.9
+fog_light_color = Color(0.14902, 0.14902, 0.14902, 1)
+fog_density = 0.04
+
+[sub_resource type="Shader" id="Shader_y87bm"]
+code = "shader_type spatial;
+render_mode depth_draw_opaque, cull_back, unshaded;
+
+uniform vec3 albedo : source_color;
+uniform float proximity_fade_distance;
+uniform sampler2D depth_texture : hint_depth_texture, repeat_disable, filter_nearest;
+
+void fragment() {
+	ALBEDO = albedo;
+	float depth_tex = textureLod(depth_texture,SCREEN_UV,0.0).r;
+	vec4 world_pos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV*2.0-1.0,depth_tex,1.0);
+	world_pos.xyz/=world_pos.w;
+	ALPHA*=clamp(1.0-smoothstep(world_pos.z+proximity_fade_distance,world_pos.z,VERTEX.z),0.0,1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_36qy6"]
+render_priority = -128
+shader = SubResource("Shader_y87bm")
+shader_parameter/albedo = Color(0.14902, 0.14902, 0.14902, 1)
+shader_parameter/proximity_fade_distance = 8.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_v1qk5"]
+flip_faces = true
+radius = 1.0
+is_hemisphere = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lk8b7"]
+render_priority = 0
+shader = ExtResource("1_auw3v")
+shader_parameter/albedo_color = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/uv_scale = 20.0
+shader_parameter/checkerboard_sampler = ExtResource("2_j510k")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_tetr0"]
+size = Vector2(40, 40)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hplul"]
+albedo_color = Color(0.0807833, 0.0807833, 0.0807833, 1)
+albedo_texture = ExtResource("2_j510k")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_3hsvv"]
+size = Vector3(4, 4, 2)
+
+[node name="PortalPreview" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_urjej")
+
+[node name="DomeFade" type="MeshInstance3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_36qy6")
+cast_shadow = 0
+mesh = SubResource("SphereMesh_v1qk5")
+metadata/_edit_lock_ = true
+
+[node name="GroundMesh" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_lk8b7")
+mesh = SubResource("PlaneMesh_tetr0")
+metadata/_edit_lock_ = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.906308, 0.298836, -0.298836, 0, 0.707107, 0.707107, 0.422618, -0.640856, 0.640856, 0, 0, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 40.0
+directional_shadow_pancake_size = 10.0
+
+[node name="Turner" parent="." instance=ExtResource("3_8d5m4")]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 1, 0)
+
+[node name="PortalA" parent="." node_paths=PackedStringArray("other_portal") instance=ExtResource("4_iv3mi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 1)
+other_portal = NodePath("../SecondPlane/PortalB")
+
+[node name="Wall" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+material_override = SubResource("StandardMaterial3D_hplul")
+mesh = SubResource("BoxMesh_3hsvv")
+
+[node name="SecondPlane" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -100, 0)
+
+[node name="PortalB" parent="SecondPlane" node_paths=PackedStringArray("other_portal") instance=ExtResource("4_iv3mi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+other_portal = NodePath("../../PortalA")
+
+[node name="GroundMesh2" type="MeshInstance3D" parent="SecondPlane"]
+material_override = SubResource("ShaderMaterial_lk8b7")
+mesh = SubResource("PlaneMesh_tetr0")
+skeleton = NodePath("../..")
+metadata/_edit_lock_ = true
+
+[node name="DummySkin" parent="SecondPlane" instance=ExtResource("5_qw72d")]
+transform = Transform3D(-1.5, 0, -1.31134e-07, 0, 1.5, 0, 1.31134e-07, 0, -1.5, 0, 0, 2)

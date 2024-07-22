@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EffectData" load_steps=3 format=3 uid="uid://wre23wi37dmb"]
+
+[ext_resource type="Script" path="res://resources/effect_data/effect_data_builder.gd" id="1_qbdvs"]
+[ext_resource type="Texture2D" uid="uid://bj8hfrjip32xk" path="res://effects/portal/portal_thumbnail.png" id="2_ku1wu"]
+
+[resource]
+script = ExtResource("1_qbdvs")
+title = "Portal"
+thumbnail = ExtResource("2_ku1wu")
+scene_path = "res://effects/portal/portal_preview.tscn"

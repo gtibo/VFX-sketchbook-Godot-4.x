@@ -1,0 +1,184 @@
+[gd_scene load_steps=21 format=3 uid="uid://ck7jc3h5tfgi"]
+
+[ext_resource type="Script" path="res://effects/portal/portal/portal.gd" id="1_0p2fo"]
+[ext_resource type="Shader" path="res://effects/portal/portal/mat/portal.gdshader" id="2_0mcvt"]
+[ext_resource type="Material" uid="uid://drxqgegcf2dml" path="res://effects/portal/portal/mat/portal_deformation_mat.tres" id="2_0used"]
+[ext_resource type="Material" uid="uid://c4l216wujmnu0" path="res://effects/portal/portal/mat/outer_edge_mat.tres" id="3_ew0ub"]
+[ext_resource type="Material" uid="uid://ykdyx4anwwhq" path="res://effects/portal/portal/mat/inner_edge_mat.tres" id="4_bp3gq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k8cij"]
+size = Vector3(3, 3, 2)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_nti3e"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6ayiw"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_0mcvt")
+shader_parameter/viewport_sampler = SubResource("ViewportTexture_nti3e")
+
+[sub_resource type="QuadMesh" id="QuadMesh_1xjnr"]
+size = Vector2(2.4, 2.4)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_7d7lr"]
+top_radius = 2.8
+bottom_radius = 1.0
+height = 0.001
+cap_top = false
+cap_bottom = false
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_2q7ni"]
+top_radius = 2.25
+bottom_radius = 1.0
+height = 0.2
+cap_top = false
+cap_bottom = false
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_stdh7"]
+top_radius = 1.8
+bottom_radius = 0.98
+height = 0.4
+cap_top = false
+cap_bottom = false
+
+[sub_resource type="Shader" id="Shader_3mkkr"]
+code = "shader_type spatial;
+render_mode particle_trails;
+
+
+//void vertex() {
+	//// Billboard Mode: Particles
+	//mat4 mat_world = mat4(
+			//normalize(INV_VIEW_MATRIX[0]),
+			//normalize(INV_VIEW_MATRIX[1]),
+			//normalize(INV_VIEW_MATRIX[2]),
+			//MODEL_MATRIX[3]);
+	//mat_world = mat_world * mat4(
+			//vec4(cos(INSTANCE_CUSTOM.x), -sin(INSTANCE_CUSTOM.x), 0.0, 0.0),
+			//vec4(sin(INSTANCE_CUSTOM.x), cos(INSTANCE_CUSTOM.x), 0.0, 0.0),
+			//vec4(0.0, 0.0, 1.0, 0.0),
+			//vec4(0.0, 0.0, 0.0, 1.0));
+	//MODELVIEW_MATRIX = VIEW_MATRIX * mat_world;
+//
+	//// Billboard Keep Scale: Enabled
+	//MODELVIEW_MATRIX = MODELVIEW_MATRIX * mat4(
+			//vec4(length(MODEL_MATRIX[0].xyz), 0.0, 0.0, 0.0),
+			//vec4(0.0, length(MODEL_MATRIX[1].xyz), 0.0, 0.0),
+			//vec4(0.0, 0.0, length(MODEL_MATRIX[2].xyz), 0.0),
+			//vec4(0.0, 0.0, 0.0, 1.0));
+//
+	//MODELVIEW_NORMAL_MATRIX = mat3(MODELVIEW_MATRIX);
+//}
+
+void fragment() {
+	float dist = 1.0 - distance(UV, vec2(0.5)) * 2.0;
+	ALPHA = clamp(dist, 0.0, 1.0) * COLOR.a;
+	ALBEDO = COLOR.rgb;
+	EMISSION = ALBEDO * 2.0;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0clwf"]
+render_priority = 0
+shader = SubResource("Shader_3mkkr")
+
+[sub_resource type="Curve" id="Curve_svvck"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_thf5x"]
+curve = SubResource("Curve_svvck")
+
+[sub_resource type="Curve" id="Curve_qdt7j"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_8soah"]
+curve = SubResource("Curve_qdt7j")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r6hfh"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 0.0
+emission_ring_radius = 1.2
+emission_ring_inner_radius = 1.0
+direction = Vector3(0, 0, 1)
+spread = 0.0
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+gravity = Vector3(0, 0.1, 0)
+scale_min = 0.1
+scale_max = 0.25
+scale_curve = SubResource("CurveTexture_8soah")
+color = Color(0.5875, 0.55, 1, 1)
+alpha_curve = SubResource("CurveTexture_thf5x")
+turbulence_enabled = true
+turbulence_noise_scale = 2.0
+turbulence_noise_speed_random = 0.0
+turbulence_influence_min = 0.01
+turbulence_initial_displacement_min = 1.49012e-06
+turbulence_initial_displacement_max = 1.49012e-06
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_xis8v"]
+shape = 0
+size = 0.1
+
+[node name="Portal" type="Area3D"]
+script = ExtResource("1_0p2fo")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_k8cij")
+
+[node name="PortalMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.11022e-16, 0.001)
+material_override = SubResource("ShaderMaterial_6ayiw")
+cast_shadow = 0
+mesh = SubResource("QuadMesh_1xjnr")
+
+[node name="Deform" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.0272212)
+material_override = ExtResource("2_0used")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_7d7lr")
+
+[node name="OuterEdge" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.1)
+material_override = ExtResource("3_ew0ub")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_2q7ni")
+
+[node name="InnerEdge" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.2)
+material_override = ExtResource("4_bp3gq")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_stdh7")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+material_override = SubResource("ShaderMaterial_0clwf")
+cast_shadow = 0
+amount = 16
+lifetime = 2.0
+randomness = 0.25
+transform_align = 3
+trail_enabled = true
+process_material = SubResource("ParticleProcessMaterial_r6hfh")
+draw_pass_1 = SubResource("RibbonTrailMesh_xis8v")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+msaa_3d = 2
+size = Vector2i(1280, 720)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport"]
+unique_name_in_owner = true
+top_level = true
+current = true
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(-1, 0, -8.9407e-08, 0, 1, 0, 8.9407e-08, 0, -1, 0, 0, 0)
+light_color = Color(0.617333, 0.59, 1, 1)
+light_energy = 5.0
+spot_angle = 90.0
+spot_angle_attenuation = 2.0

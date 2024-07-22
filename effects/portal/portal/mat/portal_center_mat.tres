@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://670oxa4f5q6u"]
+
+[ext_resource type="Shader" path="res://effects/portal/portal/mat/portal.gdshader" id="1_awb1b"]
+
+[resource]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_awb1b")

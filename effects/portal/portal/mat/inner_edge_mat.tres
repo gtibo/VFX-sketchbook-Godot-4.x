@@ -1,0 +1,49 @@
+[gd_resource type="ShaderMaterial" load_steps=11 format=3 uid="uid://ykdyx4anwwhq"]
+
+[ext_resource type="Shader" path="res://effects/portal/portal/mat/portal_edge.gdshader" id="1_sva16"]
+[ext_resource type="Texture2D" uid="uid://duoxqyy7qju2d" path="res://effects/portal/portal/portal_gradient.tres" id="2_icgcf"]
+
+[sub_resource type="Curve" id="Curve_cchdt"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.4, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_5ahap"]
+curve = SubResource("Curve_cchdt")
+
+[sub_resource type="Curve" id="Curve_ihx5h"]
+_data = [Vector2(0, 0), 0.0, 5.67534, 0, 0, Vector2(0.4, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_18us8"]
+max_value = 4.0
+_data = [Vector2(0, 0.8), 0.0, 0.0, 0, 0, Vector2(0.4, 2), 0.0, 0.0, 0, 0, Vector2(0.447977, 4), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_hfxi4"]
+_data = [Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0.2), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_x5kcy"]
+curve_x = SubResource("Curve_ihx5h")
+curve_y = SubResource("Curve_18us8")
+curve_z = SubResource("Curve_hfxi4")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_q6n02"]
+fractal_type = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_yaf2t"]
+width = 1024
+seamless = true
+noise = SubResource("FastNoiseLite_q6n02")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_sva16")
+shader_parameter/uv_offset = Vector2(0.5, 0.25)
+shader_parameter/uv_scale = Vector2(1, 0.5)
+shader_parameter/swirl_scale = 0.6
+shader_parameter/time_scale = 0.2
+shader_parameter/noise_sampler = SubResource("NoiseTexture2D_yaf2t")
+shader_parameter/noise_edge = SubResource("CurveXYZTexture_x5kcy")
+shader_parameter/alpha_curve = SubResource("CurveTexture_5ahap")
+shader_parameter/albedo_gradient = ExtResource("2_icgcf")
