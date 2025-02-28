@@ -19,6 +19,6 @@ gradient = SubResource("Gradient_33erq")
 [resource]
 render_priority = 0
 shader = ExtResource("1_kchml")
-shader_parameter/intensity = 1.8
+shader_parameter/intensity = 3.5
 shader_parameter/intensity_gradient = SubResource("GradientTexture1D_eppqw")
 shader_parameter/gradient = SubResource("GradientTexture1D_8b1a0")

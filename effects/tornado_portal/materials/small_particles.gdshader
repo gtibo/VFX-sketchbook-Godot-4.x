@@ -1,4 +1,5 @@
 shader_type spatial;
+render_mode unshaded;
 
 uniform vec3 color : source_color;
 uniform float intensity = 1.0;
@@ -10,7 +11,6 @@ void vertex() {
 
 void fragment() {
 	float offset = (sin(custom.z) + 1.0) * 0.8;
-	ALBEDO = color;
-	EMISSION = color * intensity * offset;
+	ALBEDO = color * intensity * offset;
 	ALPHA = smoothstep(0.5, 0.0, distance(UV, vec2(0.5))) * COLOR.a;
 }
