@@ -191,7 +191,7 @@ void sky() {
 	// Stars
 	
 	if(stars_intensity > 0.0){
-		vec2 stars = voronoi(EYEDIR * 25.0).xz;
+		vec2 stars = voronoi(EYEDIR * 45.0).xz;
 		sky_color += smoothstep(0.025 + ((1.0 + sin(TIME + stars.y)) / 2.0) * 0.05, 0.0, stars.x) * stars_intensity;
 	}
 	

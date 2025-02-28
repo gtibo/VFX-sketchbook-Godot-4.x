@@ -1,15 +1,14 @@
-[gd_scene load_steps=20 format=3 uid="uid://b7rb1o1j7yh60"]
+[gd_scene load_steps=21 format=3 uid="uid://b7rb1o1j7yh60"]
 
 [ext_resource type="Script" path="res://effects/fireworks/firework_explosion/firework_explosion.gd" id="1_vrfg4"]
 [ext_resource type="Shader" path="res://effects/fireworks/firework_explosion/firework_trails.gdshader" id="2_vbcpr"]
 [ext_resource type="Shader" path="res://effects/fireworks/firework_explosion/sparks.gdshader" id="3_3he2u"]
-[ext_resource type="Texture2D" uid="uid://c8nvpeycw60tf" path="res://effects/fireworks/firework_explosion/star_particles_sampler.png" id="4_dmxjf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ixr1m"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_vbcpr")
-shader_parameter/intensity = 2.0
+shader_parameter/intensity = 3.0
 
 [sub_resource type="Curve" id="Curve_72bwn"]
 _data = [Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -53,12 +52,22 @@ shape = 0
 size = 0.1
 curve = SubResource("Curve_87cpt")
 
+[sub_resource type="Gradient" id="Gradient_0wo1v"]
+offsets = PackedFloat32Array(0, 0.2, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.514545, 0.514545, 0.514545, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_s3n2e"]
+gradient = SubResource("Gradient_0wo1v")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iuev8"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_3he2u")
-shader_parameter/intensity = 1.5
-shader_parameter/spark_sampler = ExtResource("4_dmxjf")
+shader_parameter/intensity = 3.0
+shader_parameter/spark_sampler = SubResource("GradientTexture2D_s3n2e")
 
 [sub_resource type="Curve" id="Curve_jk44o"]
 _data = [Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -68,8 +77,8 @@ point_count = 2
 curve = SubResource("Curve_jk44o")
 
 [sub_resource type="Curve" id="Curve_0ct1v"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="CurveTexture" id="CurveTexture_pb7ni"]
 curve = SubResource("Curve_0ct1v")
@@ -87,7 +96,7 @@ scale_curve = SubResource("CurveTexture_pb7ni")
 alpha_curve = SubResource("CurveTexture_ybhw1")
 
 [sub_resource type="QuadMesh" id="QuadMesh_vvecv"]
-size = Vector2(0.04, 0.04)
+size = Vector2(0.06, 0.06)
 
 [node name="Firework" type="Node3D"]
 script = ExtResource("1_vrfg4")
@@ -107,7 +116,7 @@ draw_pass_1 = SubResource("RibbonTrailMesh_4lrmr")
 [node name="Sparks" type="GPUParticles3D" parent="."]
 unique_name_in_owner = true
 material_override = SubResource("ShaderMaterial_iuev8")
-amount = 256
+amount = 128
 lifetime = 0.25
 transform_align = 2
 process_material = SubResource("ParticleProcessMaterial_m7wyx")

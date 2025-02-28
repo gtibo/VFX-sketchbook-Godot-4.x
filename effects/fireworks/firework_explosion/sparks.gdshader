@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode shadows_disabled;
+render_mode unshaded, shadows_disabled;
 
 uniform sampler2D spark_sampler : filter_linear_mipmap, repeat_disable;
 uniform float intensity = 1.0;
@@ -16,8 +16,7 @@ void vertex() {
 
 
 void fragment() {
-	ALBEDO = vec3(1.0);
-	EMISSION = COLOR.rgb * intensity;
+	ALBEDO = COLOR.rgb * intensity;
 	float mask = texture(spark_sampler, UV).x;
 	ALPHA = mask * COLOR.a;
 }

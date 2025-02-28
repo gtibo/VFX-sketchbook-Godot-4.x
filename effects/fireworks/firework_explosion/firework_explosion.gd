@@ -15,7 +15,7 @@ func _ready():
 
 # Size 
 func setup(base_color : Color, base_velocity : float = 6.0, trails_count : int = 18):
-	var small_sparks = 64
+	var small_sparks = 8
 	trails.process_material.set("initial_velocity_min", base_velocity * 0.8)
 	trails.process_material.set("initial_velocity_max", base_velocity * 1.2)
 	trails.process_material.color = base_color.lightened(0.2)
@@ -23,4 +23,3 @@ func setup(base_color : Color, base_velocity : float = 6.0, trails_count : int =
 	trails.process_material.sub_emitter_frequency = small_sparks
 	sparks.process_material.color = base_color.lightened(0.5)
 	sparks.amount = trails_count * small_sparks
-	
