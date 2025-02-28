@@ -12,7 +12,7 @@ config_version=5
 
 config/name="VFX notebook"
 run/main_scene="res://viewer/viewer.tscn"
-config/features=PackedStringArray("4.2", "Forward Plus")
+config/features=PackedStringArray("4.3", "Forward Plus")
 run/max_fps=60
 config/icon="res://sketchbook_icon.png"
 
@@ -20,10 +20,13 @@ config/icon="res://sketchbook_icon.png"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/window_width_override=1280
-window/size/window_height_override=720
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[editor]
+
+movie_writer/mjpeg_quality=0.9
+movie_writer/movie_file="/home/tibo/Vidéos/recording.avi"
 
 [importer_defaults]
 
@@ -49,4 +52,6 @@ texture={
 
 [rendering]
 
+camera/depth_of_field/depth_of_field_bokeh_shape=2
+camera/depth_of_field/depth_of_field_bokeh_quality=3
 anti_aliasing/quality/msaa_3d=2

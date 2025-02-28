@@ -1,0 +1,139 @@
+[gd_scene load_steps=20 format=3 uid="uid://nxkpjawkyjom"]
+
+[ext_resource type="PackedScene" uid="uid://cmj5l6xu36itg" path="res://turner/turner.tscn" id="1_ww2lr"]
+[ext_resource type="ArrayMesh" uid="uid://ckl81j1dcsvc3" path="res://effects/flower_field/butterfly.obj" id="3_kjpyr"]
+[ext_resource type="Material" uid="uid://dmq6w3n2d1tat" path="res://effects/butterflies_particles/materials/butterfly_mat.tres" id="4_3xn2b"]
+[ext_resource type="Shader" path="res://assets/ground_checkerboard.gdshader" id="5_80t1n"]
+[ext_resource type="Material" uid="uid://r0byvq7qib8t" path="res://effects/butterflies_particles/materials/butterflies_particles_system.tres" id="5_hpo0q"]
+[ext_resource type="Texture2D" uid="uid://3ro0yvv3roj3" path="res://assets/checkerboard.svg" id="6_ns5fj"]
+[ext_resource type="Material" uid="uid://d3ugpaqwmx60b" path="res://effects/butterflies_particles/materials/spark_dust_mat.tres" id="7_3id1e"]
+
+[sub_resource type="Environment" id="Environment_4u1me"]
+ambient_light_source = 2
+ambient_light_color = Color(0.490196, 0.517647, 0.533333, 1)
+tonemap_mode = 2
+tonemap_exposure = 1.1
+tonemap_white = 0.9
+glow_enabled = true
+glow_strength = 0.8
+glow_bloom = 0.5
+fog_light_color = Color(0.784314, 0.87451, 1, 1)
+
+[sub_resource type="Shader" id="Shader_88gv7"]
+code = "shader_type spatial;
+render_mode depth_draw_opaque, cull_back, unshaded;
+
+uniform vec3 albedo : source_color;
+uniform float proximity_fade_distance;
+uniform sampler2D depth_texture : hint_depth_texture, repeat_disable, filter_nearest;
+
+void fragment() {
+	ALBEDO = albedo;
+	float depth_tex = textureLod(depth_texture,SCREEN_UV,0.0).r;
+	vec4 world_pos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV*2.0-1.0,depth_tex,1.0);
+	world_pos.xyz/=world_pos.w;
+	ALPHA*=clamp(1.0-smoothstep(world_pos.z+proximity_fade_distance,world_pos.z,VERTEX.z),0.0,1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y2lxv"]
+render_priority = -128
+shader = SubResource("Shader_88gv7")
+shader_parameter/albedo = Color(0.14902, 0.14902, 0.14902, 1)
+shader_parameter/proximity_fade_distance = 8.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_2yi6f"]
+flip_faces = true
+radius = 1.0
+is_hemisphere = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_byywn"]
+render_priority = 0
+shader = ExtResource("5_80t1n")
+shader_parameter/albedo_color = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/uv_scale = 20.0
+shader_parameter/checkerboard_sampler = ExtResource("6_ns5fj")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_bwo2c"]
+size = Vector2(40, 40)
+
+[sub_resource type="Curve" id="Curve_liaqn"]
+_data = [Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_gtfi2"]
+curve = SubResource("Curve_liaqn")
+
+[sub_resource type="Curve" id="Curve_v6mtr"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_kl475"]
+curve = SubResource("Curve_v6mtr")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kqqn7"]
+particle_flag_align_y = true
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 0.1
+initial_velocity_max = 0.25
+gravity = Vector3(0, 1, 0)
+scale_min = 0.8
+scale_max = 1.2
+scale_curve = SubResource("CurveTexture_kl475")
+alpha_curve = SubResource("CurveTexture_gtfi2")
+
+[sub_resource type="QuadMesh" id="QuadMesh_tmdvm"]
+size = Vector2(0.1, 0.1)
+
+[node name="ButterfliesParticles" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_4u1me")
+
+[node name="Turner" parent="." instance=ExtResource("1_ww2lr")]
+transform = Transform3D(1, 0, 0, 0, 0.965925, 0.258819, 0, -0.258819, 0.965925, 0, 2.5, 0)
+_zoom = 7.0
+lock_x = true
+auto_spin = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.707107, -0.40558, 0.579228, 0, 0.819152, 0.573577, -0.707107, -0.40558, 0.579228, 0, 0, 0)
+light_energy = 1.25
+shadow_enabled = true
+directional_shadow_max_distance = 40.0
+directional_shadow_pancake_size = 10.0
+
+[node name="DomeFade" type="MeshInstance3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_y2lxv")
+cast_shadow = 0
+mesh = SubResource("SphereMesh_2yi6f")
+metadata/_edit_lock_ = true
+
+[node name="GroundMesh" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_byywn")
+mesh = SubResource("PlaneMesh_bwo2c")
+metadata/_edit_lock_ = true
+
+[node name="Butterfly" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+material_override = ExtResource("4_3xn2b")
+amount = 1024
+sub_emitter = NodePath("../Sparks")
+lifetime = 10.0
+preprocess = 5.0
+explosiveness = 0.25
+process_material = ExtResource("5_hpo0q")
+draw_pass_1 = ExtResource("3_kjpyr")
+
+[node name="Sparks" type="GPUParticles3D" parent="."]
+material_override = ExtResource("7_3id1e")
+emitting = false
+amount = 2048
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.4
+transform_align = 3
+process_material = SubResource("ParticleProcessMaterial_kqqn7")
+draw_pass_1 = SubResource("QuadMesh_tmdvm")

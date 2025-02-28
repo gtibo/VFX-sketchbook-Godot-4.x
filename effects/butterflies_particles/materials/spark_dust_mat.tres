@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://d3ugpaqwmx60b"]
+
+[ext_resource type="Shader" path="res://effects/butterflies_particles/materials/spark_dust.gdshader" id="1_nmgna"]
+
+[sub_resource type="Gradient" id="Gradient_cu1kk"]
+offsets = PackedFloat32Array(0, 0.2, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.0253636, 0.0253639, 0.0253638, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ld7wx"]
+gradient = SubResource("Gradient_cu1kk")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_nmgna")
+shader_parameter/gradient = SubResource("GradientTexture1D_ld7wx")

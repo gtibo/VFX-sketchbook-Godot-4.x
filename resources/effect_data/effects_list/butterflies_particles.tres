@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EffectData" load_steps=3 format=3 uid="uid://boa17f56764l4"]
+
+[ext_resource type="Script" path="res://resources/effect_data/effect_data_builder.gd" id="1_rxxai"]
+[ext_resource type="Texture2D" uid="uid://bvkioh7ux48w1" path="res://effects/butterflies_particles/butterflies_thumbnail.png" id="2_vlglu"]
+
+[resource]
+script = ExtResource("1_rxxai")
+title = "Butterflies Particles"
+thumbnail = ExtResource("2_vlglu")
+scene_path = "res://effects/butterflies_particles/butterflies_particles.tscn"

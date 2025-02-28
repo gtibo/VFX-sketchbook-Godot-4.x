@@ -1,6 +1,7 @@
-[gd_scene load_steps=18 format=3 uid="uid://ch335r23kc467"]
+[gd_scene load_steps=20 format=3 uid="uid://ch335r23kc467"]
 
 [ext_resource type="Script" path="res://viewer/viewer.gd" id="1_5q4lv"]
+[ext_resource type="Script" path="res://resources/effect_data/effect_data_builder.gd" id="2_a4s32"]
 [ext_resource type="Resource" uid="uid://qxume2dovxqc" path="res://resources/effect_data/effects_list/fireball.tres" id="2_p76a1"]
 [ext_resource type="Resource" uid="uid://dcp80g7lxvb5h" path="res://resources/effect_data/effects_list/fur.tres" id="3_6n4qv"]
 [ext_resource type="Resource" uid="uid://dv6crutag6cgk" path="res://resources/effect_data/effects_list/force_field.tres" id="3_hbqpy"]
@@ -13,6 +14,7 @@
 [ext_resource type="Resource" uid="uid://cuw4p2ui0wwe" path="res://resources/effect_data/effects_list/earth_spikes.tres" id="8_pucgf"]
 [ext_resource type="Resource" uid="uid://stnxnfiu0m7a" path="res://resources/effect_data/effects_list/flower_field.tres" id="9_p62b4"]
 [ext_resource type="Texture2D" uid="uid://dyi1gd7fbd11x" path="res://assets/left_arrow_icon.png" id="10_lnen5"]
+[ext_resource type="Resource" uid="uid://boa17f56764l4" path="res://resources/effect_data/effects_list/butterflies_particles.tres" id="13_thhbf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rj56n"]
 bg_color = Color(0, 0, 0, 0.5)
@@ -30,7 +32,7 @@ VScrollBar/styles/scroll = SubResource("StyleBoxFlat_3qj6h")
 
 [node name="Viewer" type="Node"]
 script = ExtResource("1_5q4lv")
-scene_data_list = Array[Resource("res://resources/effect_data/effect_data_builder.gd")]([ExtResource("2_p76a1"), ExtResource("3_6n4qv"), ExtResource("3_hbqpy"), ExtResource("5_x5vkp"), ExtResource("4_3nvx8"), ExtResource("5_5ksw4"), ExtResource("9_p62b4"), ExtResource("6_2f0w4"), ExtResource("7_yvbor"), ExtResource("8_pucgf")])
+scene_data_list = Array[ExtResource("2_a4s32")]([ExtResource("2_p76a1"), ExtResource("3_6n4qv"), ExtResource("13_thhbf"), ExtResource("5_x5vkp"), ExtResource("3_hbqpy"), ExtResource("4_3nvx8"), ExtResource("5_5ksw4"), ExtResource("9_p62b4"), ExtResource("6_2f0w4"), ExtResource("7_yvbor"), ExtResource("8_pucgf")])
 
 [node name="SceneHolder" type="Node" parent="."]
 unique_name_in_owner = true
